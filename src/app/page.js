@@ -1,6 +1,6 @@
 
 export default function Home() {
   return (
-    <p>pollo</p>
+    <p>pollo 1 </p>
   );
 }
