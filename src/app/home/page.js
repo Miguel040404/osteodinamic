@@ -1,6 +1,5 @@
 import Link from "next/link";
 
-
 export default function Home() {
     return (
         <div className="h-screen grid md:grid-cols-2 place-content-center place-items-center gap-4">
