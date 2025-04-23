@@ -20,18 +20,29 @@ async function page({ searchParams }) {
   const { error, callbackUrl } = await searchParams
   // Usamos globalThis para almacenar variable global
   // La usaremos en los actions de login
-  globalThis.callbackUrl = decodeURIComponent(callbackUrl ?? '/dashboard')
+  globalThis.callbackUrl = decodeURIComponent(callbackUrl ?? '/home')
 
   return (
     <>
-      <div className="mx-auto mt-10 w-80 p-8 border border-slate-300 rounded-md bg-slate-50">
-        {error && <h3>{errors.get(error)}</h3>}
-        <h1 className='text-3xl font-bold py-4'>Iniciar sesión</h1>
-        <LoginForm />
-        <Link href='/auth/register' className='text-blue-500 cursor-pointer'>
-          No tengo cuenta. Quiero crear una.
-        </Link>
-      </div>
+     <div className="mx-auto mt-10 max-w-sm p-8 border border-slate-300 rounded-2xl bg-white shadow-lg">
+  {error && (
+    <div className="mb-4 text-red-600 font-medium">
+      {errors.get(error)}
+    </div>
+  )}
+  
+  <h1 className="text-3xl font-bold text-center mb-6">Iniciar sesión</h1>
+  
+  <LoginForm />
+  
+  <p className="mt-6 text-center text-sm text-slate-600">
+    ¿No tienes cuenta?{" "}
+    <Link href="/auth/register" className="text-blue-600 hover:underline font-medium">
+      Crear cuenta
+    </Link>
+  </p>
+</div>
+
     </>
   )
 }

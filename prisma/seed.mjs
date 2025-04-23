@@ -3,7 +3,7 @@ const prisma = new PrismaClient();
 
 const usuarios = [
     {
-        name: "Pepe Viyuela",
+        name: "Pepe Viyuelas",
         email: "pepe@pepe.com",
         address: "C/ Nueva, 99",
         image: 'https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/male/128/28.jpg',
@@ -15,7 +15,7 @@ const usuarios = [
         email: "ana@ana.com",
         address: "C/ Ancha, 100",
         image: 'https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/female/128/28.jpg',
-        phone: '123456789',
+        phone: '111111111',
         role: 'USER'
     },
     {
@@ -23,7 +23,7 @@ const usuarios = [
         email: "jose@jose.com",
         address: "Avda. Constitución, 1",
         image: 'https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/male/128/14.jpg',
-        phone: '123456789',
+        phone: '444444444',
         role: 'ADMIN'
     }
 ];

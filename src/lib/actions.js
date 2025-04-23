@@ -3,7 +3,7 @@ import cloudinary from "@/lib/cloudinary"
 import bcrypt from 'bcryptjs'
 import prisma from '@/lib/prisma'
 import { signIn, signOut } from '@/auth'
-import { getUserByEmail } from '@/lib/data'
+import { getUserByEmail, getUserByPhone } from '@/lib/data'
 import { redirect } from 'next/navigation'
 import { revalidatePath } from 'next/cache'
 
@@ -15,11 +15,11 @@ import { revalidatePath } from 'next/cache'
 // REGISTER
 export async function register(prevState, formData) {
     const name = formData.get('name')
-    const email = formData.get('email')
+    const phone = formData.get('phone')
     const password = formData.get('password')
 
     // Comprobamos si el usuario ya está registrado
-    const user = await getUserByEmail(email);
+    const user = await getUserByPhone(phone);
 
     if (user) {
         return { error: 'El email ya está registrado' }
@@ -32,7 +32,7 @@ export async function register(prevState, formData) {
     await prisma.user.create({
         data: {
             name,
-            email,
+            phone,
             password: hashedPassword
         }
     })
@@ -44,11 +44,11 @@ export async function register(prevState, formData) {
 
 // LOGIN credentials
 export async function login(prevState, formData) {
-    const email = formData.get('email')
+    const phone = formData.get('phone')
     const password = formData.get('password')
 
     // Comprobamos si el usuario está registrado
-    const user = await getUserByEmail(email);
+    const user = await getUserByPhone(phone);
 
     if (!user) {
         return { error: 'Usuario no registrado.' }
@@ -65,7 +65,7 @@ export async function login(prevState, formData) {
     {
         await signIn('credentials',
             {
-                email, password,
+                phone, password,
                 redirectTo: globalThis.callbackUrl
             })
         return { success: "Inicio de sesión correcto" }
@@ -75,7 +75,23 @@ export async function login(prevState, formData) {
 
 }
 
-
+// LOGIN credentials
+// export async function login(formData) {
+//     const phone = formData.phone
+//     // const password = formData.get('password');
+  
+//     if (!phone) {
+//       return { error: "Debes ingresar tu número de teléfono." };
+//     }
+  
+//     const user = await getUserByPhone(phone);
+  
+//     if (!user) {
+//       return { error: "Usuario no encontrado." };
+//     }
+//     // validar contraseña, etc.
+//   }
+  
 
 // LOGOUT
 export async function logout() {

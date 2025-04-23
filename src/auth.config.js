@@ -3,7 +3,7 @@ import GitHub from '@auth/core/providers/github'
 import Spotify from '@auth/core/providers/spotify'
 import Gitlab from '@auth/core/providers/gitlab'
 import Credentials from "@auth/core/providers/credentials"
-import { getUserByEmail } from "@/lib/data"
+import { getUserByPhone } from "@/lib/data"
 
 const AuthConfig ={
     providers: [
@@ -14,7 +14,7 @@ const AuthConfig ={
         Credentials({
             async authorize(credentials) {
                 console.log('AUTHORIZE');
-                return getUserByEmail(credentials.email)
+                return await getUserByPhone(credentials.phone)
             },
         }),
     ]

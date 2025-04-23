@@ -10,5 +10,5 @@ import { redirect } from "next/navigation"; // IMPORTANTE: importar desde next/n
 
 
 export default function RootPage() {
-  redirect('/home')
+  redirect('/auth/login')
 }

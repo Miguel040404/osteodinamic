@@ -23,7 +23,7 @@ model User {
   image         String?
   role          String?   @default("USER")
   address       String?
-  phone         String?
+  phone         String?   @unique
   active        Boolean   @default(false)
 
   accounts      Account[]

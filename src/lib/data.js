@@ -25,9 +25,9 @@ export async function getUserById(id) {
 
 
 
-export async function getUserByEmail(email) {
+export async function getUserByPhone(phone) {
     const user = await prisma.user.findUnique({
-        where: { email }
+        where: { phone }
     });
     return user
 }
