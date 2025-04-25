@@ -46,7 +46,7 @@ function LoginForm() {
     //     </button>
     // </form>
 <div className="w-full flex flex-col justify-center md:justify-start items-center p-4 min-h-[65vh] md:min-h-0">
-<form action={action} className="w-full max-w-sm flex flex-col gap-6 md:gap-9 p-6 md:p-4 bg-white border border-slate-200 rounded-lg md:mt-10">
+<form action={action} className="w-full max-w-sm flex flex-col gap-6 md:gap-9 p-6 md:p-4 bg-red-50 border border-slate-200 rounded-lg md:mt-10">
 
       <div className="flex flex-col gap-2">
         <label htmlFor="phone" className="text-sm font-medium text-slate-700">Número de teléfono</label>
