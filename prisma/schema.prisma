@@ -54,7 +54,9 @@ model Session {
   sessionToken String       @unique
   expires      DateTime
   userId       String
-  type         SessionType  // Aquí usamos el enum definido arriba
+  // type         String?   // "YOGA", "PILATES" Aquí usamos el enum definido arriba
+  type         SessionType?  // Aquí usamos el enum definido arriba
+
 
   user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
