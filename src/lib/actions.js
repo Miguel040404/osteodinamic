@@ -75,6 +75,45 @@ export async function login(prevState, formData) {
 
 }
 
+// export async function login(prevState, formData) {
+//     const phone = formData.get('phone');
+//     const password = formData.get('password');
+
+//     // Comprobamos si el usuario está registrado
+//     const user = await getUserByPhone(phone);
+
+//     if (!user) {
+//         return { error: 'Usuario no registrado.' };
+//     }
+
+//     // Comparamos password
+//     let matchPassword = false;
+
+//     if (user.password == null) { // Si no hay contraseña almacenada en BD
+//         matchPassword = true;
+//     } else {
+//         matchPassword = await bcrypt.compare(password, user.password);
+//     }
+
+//     if (user && matchPassword) {
+//         // Generar token de sesión o cookie aquí
+//         const token = generateSessionToken(user); // Implementa esta función según tu lógica de autenticación
+
+//         // Configurar cookie de sesión
+//         document.cookie = `sessionToken=${token}; max-age=${24 * 60 * 60}; path=/; Secure; HttpOnly`;
+
+//         await signIn('credentials', {
+//             phone, password,
+//             redirectTo: globalThis.callbackUrl
+//         });
+
+//         return { success: "Inicio de sesión correcto" };
+//     } else {
+//         return { error: 'Credenciales incorrectas.' };
+//     }
+// }
+
+
 // LOGIN credentials
 // export async function login(formData) {
 //     const phone = formData.phone
