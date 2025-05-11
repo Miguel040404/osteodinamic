@@ -6,6 +6,7 @@ import { signIn, signOut } from '@/auth'
 import { getUserByEmail, getUserByPhone } from '@/lib/data'
 import { redirect } from 'next/navigation'
 import { revalidatePath } from 'next/cache'
+import { PaintBucket } from "lucide-react"
 
 
 
@@ -75,6 +76,9 @@ export async function login(prevState, formData) {
 
 }
 
+
+// Preguta pa Pani
+
 // export async function login(prevState, formData) {
 //     const phone = formData.get('phone');
 //     const password = formData.get('password');
@@ -112,6 +116,8 @@ export async function login(prevState, formData) {
 //         return { error: 'Credenciales incorrectas.' };
 //     }
 // }
+
+
 
 
 // LOGIN credentials
@@ -195,25 +201,50 @@ export async function newUser(prevState, formData) {
 
 }
 
+// editUser------------------------
+
+// export async function editUser(prevState, formData) {
+//     const id = formData.get('id')
+//     const name = formData.get('name');
+//     const email = formData.get('email');
+
+
+//     try {
+//         await prisma.user.update({
+//             where: { id },
+//             data: { name, email },
+//         })
+//         revalidatePath('/dashboard')
+//         return { success: 'Usuario modificado' }
+//     } catch (error) {
+//         return { error }
+//     }
+
+// }
+
 
 export async function editUser(prevState, formData) {
-    const id = formData.get('id')
+    const id = formData.get('id');
     const name = formData.get('name');
     const email = formData.get('email');
 
+    console.log("Updating user with ID:", id, "Name:", name, "Email:", email);
 
     try {
         await prisma.user.update({
             where: { id },
             data: { name, email },
-        })
-        revalidatePath('/dashboard')
-        return { success: 'Usuario modificado' }
-    } catch (error) {
-        return { error }
-    }
+        });
 
+        revalidatePath('/dashboard');
+        return { success: 'Usuario modificado' };
+    } catch (error) {
+        console.error("Error updating user:", error);
+        return { error: 'Error al modificar el usuario' };
+    }
 }
+
+
 
 export async function deleteUser(prevState, formData) {
     try {
