@@ -12,8 +12,10 @@
   "dependencies": {
     "@auth/prisma-adapter": "^2.8.0",
     "@prisma/client": "^6.5.0",
+    "bcrypt": "^5.1.1",
     "bcryptjs": "^3.0.2",
     "cloudinary": "^2.6.0",
+    "jsonwebtoken": "^9.0.2",
     "lucide-react": "^0.487.0",
     "next": "15.2.4",
     "next-auth": "^5.0.0-beta.25",

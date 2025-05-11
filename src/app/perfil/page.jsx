@@ -60,7 +60,7 @@
 //                         href="/perfil"
 //                         icon={<User className="h-5 w-5 text-blue-500" />}
 //                     /> */}
-                    
+
 //                     <PerfilLink
 //                         label="Normas"
 //                         href="/normas"
@@ -78,7 +78,7 @@
 //                         className="hover:bg-red-50 text-red-600"
 //                     />
 //                 </div>
-                
+
 //             </main>
 
 //             <Footer />
@@ -88,6 +88,7 @@
 
 // export default Perfil;
 
+import LogoutButton from "@/components/LogoutButton";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import PerfilLink from "@/components/perfil-link";
@@ -144,7 +145,7 @@ async function Perfil() {
                     </div>
 
                     {/* Botón para abrir modal */}
-                    
+
                     <EditarPerfilButton />
 
                 </div>
@@ -166,12 +167,19 @@ async function Perfil() {
                         href="/novedades"
                         icon={<Sparkles className="h-5 w-5 text-yellow-500" />}
                     />
-                    <PerfilLink
+
+
+                    <LogoutButton />
+                    {/* <PerfilLink
                         label="Cerrar sesión"
-                        href="/"
                         icon={<LogOut className="h-5 w-5 text-red-500" />}
-                        className="hover:bg-red-50 text-red-600"
-                    />
+                        className="text-red-600 hover:bg-red-50"
+                        onClick={() => {
+                            localStorage.removeItem("token"); // o sessionStorage/cookies según el caso
+                            window.location.href = "/auth/login";
+                        }}
+                    /> */}
+
                 </div>
             </main>
 
@@ -182,4 +190,3 @@ async function Perfil() {
 
 export default Perfil;
 
- 
