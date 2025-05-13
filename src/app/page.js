@@ -26,6 +26,18 @@ export default function RootPage() {
     }
   }, [status, router]);
 
-  return <div>Redirigiendo...</div>;
+  return (
+    <div style={{
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      height: '100vh',
+      fontSize: '24px',
+      fontWeight: 'bold',
+      color: '#333'
+    }}>
+      Redirigiendo...
+    </div>
+  );
 }
 
