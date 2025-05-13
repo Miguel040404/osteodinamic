@@ -77,9 +77,10 @@ export default function UserModificar({ user }) {
     const [state, action, pending] = useActionState(editUser, {})
 
     useEffect(() => {
+        console.log("State updated:", state);
         if (state?.success) {
             toast.success(state.success)
-            document.getElementById(formId).closest('dialog')?.close() 
+            document.getElementById(formId).closest('dialog')?.close()
         }
         if (state?.error) toast.error(state.error)
 

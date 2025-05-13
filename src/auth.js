@@ -26,6 +26,13 @@ export const options = {
             // console.log(session, user);
             session.user.id = token?.sub;     // Para incluir ID de usuario
             session.user.role = token?.role
+            const user = await getUserById(token.sub)
+            session.user.name = user?.name
+            session.user.image = user?.image
+            session.user.email = user?.email
+            
+
+
             return session
         },
         async jwt({ token }) {
