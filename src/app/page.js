@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 
+=======
+>>>>>>> 070049a79977fab18b55e70932dbbe0c20e0dcb0
 // import { redirect } from "next/navigation"; // IMPORTANTE: importar desde next/navigation
 
 // export default function RootPage() {
