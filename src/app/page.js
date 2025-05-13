@@ -6,26 +6,26 @@
 //   redirect('/auth/login')
 // }
 
+
 'use client'
-import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+
+import { useSession } from "next-auth/react";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 export default function RootPage() {
+  const { data: session, status } = useSession();
   const router = useRouter();
 
   useEffect(() => {
-    // Verificar si hay un token en localStorage
-    const token = localStorage.getItem('token');
+    if (status === "loading") return; // Espera mientras se carga la sesión
 
-    if (token) {
-      // Si hay un token, redirigir a la página principal
-      router.push('/home');
+    if (status === "authenticated") {
+      router.push("/home");
     } else {
-      // Si no hay un token, redirigir a la página de inicio de sesión
-      router.push('/auth/login');
+      router.push("/auth/login");
     }
-  }, [router]);
+  }, [status, router]);
 
-  // Puedes devolver un componente de carga o nada mientras se realiza la redirección
   return <div>Redirigiendo...</div>;
 }

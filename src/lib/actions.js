@@ -77,67 +77,6 @@ export async function login(prevState, formData) {
 }
 
 
-// Preguta pa Pani
-
-// export async function login(prevState, formData) {
-//     const phone = formData.get('phone');
-//     const password = formData.get('password');
-
-//     // Comprobamos si el usuario está registrado
-//     const user = await getUserByPhone(phone);
-
-//     if (!user) {
-//         return { error: 'Usuario no registrado.' };
-//     }
-
-//     // Comparamos password
-//     let matchPassword = false;
-
-//     if (user.password == null) { // Si no hay contraseña almacenada en BD
-//         matchPassword = true;
-//     } else {
-//         matchPassword = await bcrypt.compare(password, user.password);
-//     }
-
-//     if (user && matchPassword) {
-//         // Generar token de sesión o cookie aquí
-//         const token = generateSessionToken(user); // Implementa esta función según tu lógica de autenticación
-
-//         // Configurar cookie de sesión
-//         document.cookie = `sessionToken=${token}; max-age=${24 * 60 * 60}; path=/; Secure; HttpOnly`;
-
-//         await signIn('credentials', {
-//             phone, password,
-//             redirectTo: globalThis.callbackUrl
-//         });
-
-//         return { success: "Inicio de sesión correcto" };
-//     } else {
-//         return { error: 'Credenciales incorrectas.' };
-//     }
-// }
-
-
-
-
-// LOGIN credentials
-// export async function login(formData) {
-//     const phone = formData.phone
-//     // const password = formData.get('password');
-  
-//     if (!phone) {
-//       return { error: "Debes ingresar tu número de teléfono." };
-//     }
-  
-//     const user = await getUserByPhone(phone);
-  
-//     if (!user) {
-//       return { error: "Usuario no encontrado." };
-//     }
-//     // validar contraseña, etc.
-//   }
-  
-
 // LOGOUT
 export async function logout() {
     try {
@@ -236,14 +175,13 @@ export async function editUser(prevState, formData) {
             data: { name, email },
         });
 
-        revalidatePath('/dashboard');
+        revalidatePath('/perfil');
         return { success: 'Usuario modificado' };
     } catch (error) {
         console.error("Error updating user:", error);
         return { error: 'Error al modificar el usuario' };
     }
 }
-
 
 
 export async function deleteUser(prevState, formData) {

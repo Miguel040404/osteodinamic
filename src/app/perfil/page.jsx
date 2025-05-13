@@ -133,7 +133,7 @@ async function Perfil() {
                             </div>
                         )}
                         <div>
-                            <h2 className="text-xl font-semibold">{user.name}</h2>
+                            <h2 className="text-xl font-semibold mt-7">{user.name}</h2>
                             <p className="text-sm text-gray-600 capitalize">{user.role}</p>
                         </div>
                     </div>
