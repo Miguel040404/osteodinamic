@@ -27,6 +27,7 @@ model User {
   active        Boolean   @default(false)
 
   accounts      Account[]
+  reservas      Reserva[]
   sessions      Session[]
 }
 
@@ -63,6 +64,28 @@ model Session {
 
 enum SessionType {
   Pilates
-  Law
-  Bepo
+  Rehabilitacion_funcional
+  Entrenamiento_personal
+}
+
+model Horario {
+  id         String       @id @default(cuid())
+  dia        String       // "Lunes", "Martes"
+  hora       String       // "10:00"
+  tipo       SessionType
+  reservas   Reserva[]    // Relación con reservas
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+}
+
+model Reserva {
+  id         String     @id @default(cuid())
+  userId     String
+  horarioId  String
+  fechaReal  DateTime   // Fecha concreta de reserva, por ejemplo: 2025-05-10
+
+  user       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  horario    Horario    @relation(fields: [horarioId], references: [id], onDelete: Cascade)
+
+  createdAt  DateTime   @default(now())
 }

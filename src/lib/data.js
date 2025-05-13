@@ -3,7 +3,6 @@
 import prisma from "@/lib/prisma"
 
 
-
 // ----------------------------  USERS ---------------------------
 
 
@@ -15,15 +14,12 @@ export async function getUsers() {
 }
 
 
-
 export async function getUserById(id) {
     const user = await prisma.user.findUnique({
         where: { id }
     });
     return user
 }
-
-
 
 export async function getUserByPhone(phone) {
     const user = await prisma.user.findUnique({
@@ -33,70 +29,29 @@ export async function getUserByPhone(phone) {
 }
 
 
+// ---------------------   SESIONES   -----------------------
 
-
-
-// ---------------------   REPARTIDORES -----------------------
-
-async function obtenerRepartidores() {
-    const repartidores = await prisma.repartidor.findMany()
-    return repartidores
-}
-
-
-async function obtenerRepartidor(id) {
-    const repartidor = await prisma.repartidor.findUnique({
-        where: { id: +id }
-    })
-    return repartidor
-}
-
-
-// ---------------------   PEDIDOS -----------------------
-
-async function obtenerPedidos() {
-    const pedidos = await prisma.pedido.findMany({
+export async function getAllSessions() {
+    return await prisma.session.findMany({
         include: {
-            repartidor: true,
-            pizzas: true,
-        }
-    })
-    return pedidos
+            user: true, // Si quieres mostrar información del usuario también
+        },
+        orderBy: {
+            expires: 'desc',
+        },
+    });
 }
 
+// ---------------------   HORARIOS -----------------------
 
-async function obtenerPedido(id) {
-    const pedido = await prisma.pedido.findUnique({
-        where: { id: +id },
-        include: {
-            repartidor: true,
-            pizzas: true,
-        }
-    })
-    return pedido
-}
+export async function getHorariosConReservasPorTipo(tipo) {
+    const horarios = await prisma.horario.findMany({
+        where: { tipo },
+        include: { reservas: true },
+        orderBy: [{ hora: 'asc' }],
+    });
 
-// ---------------------   PIZZAS -----------------------
+    console.log('Horarios:', horarios);
 
-async function obtenerPizzas() {
-    const pizzas = await prisma.pizza.findMany()
-    return pizzas
-}
-
-
-async function obtenerPizza(id) {
-    const pizza = await prisma.pizza.findUnique({
-        where: { id: +id }
-    })
-    return pizza
-}
-
-
-export {
-    obtenerRepartidores,
-    obtenerRepartidor,
-    obtenerPedidos,
-    obtenerPedido,
-    obtenerPizzas,
-    obtenerPizza
+    return horarios;
 }
