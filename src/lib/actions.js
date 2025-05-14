@@ -44,37 +44,37 @@ export async function register(prevState, formData) {
 
 
 // LOGIN credentials
-export async function login(prevState, formData) {
-    const phone = formData.get('phone')
-    const password = formData.get('password')
+// export async function login(prevState, formData) {
+//     const phone = formData.get('phone')
+//     const password = formData.get('password')
 
-    // Comprobamos si el usuario está registrado
-    const user = await getUserByPhone(phone);
+//     // Comprobamos si el usuario está registrado
+//     const user = await getUserByPhone(phone);
 
-    if (!user) {
-        return { error: 'Usuario no registrado.' }
-    }
-    // Comparamos password 
-    let matchPassword = false
+//     if (!user) {
+//         return { error: 'Usuario no registrado.' }
+//     }
+//     // Comparamos password 
+//     let matchPassword = false
 
-    if (user.password == null)  // Si no hay contraseña almacenada en BD
-        matchPassword = true
-    else
-        matchPassword = await bcrypt.compare(password, user.password)
+//     if (user.password == null)  // Si no hay contraseña almacenada en BD
+//         matchPassword = true
+//     else
+//         matchPassword = await bcrypt.compare(password, user.password)
 
-    if (user && matchPassword)  // && user.emailVerified
-    {
-        await signIn('credentials',
-            {
-                phone, password,
-                redirectTo: globalThis.callbackUrl
-            })
-        return { success: "Inicio de sesión correcto" }
-    } else {
-        return { error: 'Credenciales incorrectas.' }
-    }
+//     if (user && matchPassword)  // && user.emailVerified
+//     {
+//         await signIn('credentials',
+//             {
+//                 phone, password,
+//                 redirectTo: globalThis.callbackUrl
+//             })
+//         return { success: "Inicio de sesión correcto" }
+//     } else {
+//         return { error: 'Credenciales incorrectas.' }
+//     }
 
-}
+// }
 
 
 // LOGOUT

@@ -45,7 +45,7 @@ export async function getAllSessions() {
 // ---------------------   HORARIOS -----------------------
 
 export async function getHorariosConReservasPorTipo(tipo) {
-    const horarios = await prisma.horario.findMany({
+    const horarios = await prisma.Horario.findMany({
         where: { tipo },
         include: { reservas: true },
         orderBy: [{ hora: 'asc' }],
