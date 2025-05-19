@@ -9,13 +9,13 @@ export default function Home() {
       <main>
         <h1 className="text-2xl font-bold">Elige una clase</h1>
         <div className="flex flex-col gap-4 mt-4">
-          <Link href="/clases/pilates">
+          <Link href="/clases/pilates/pilates">
             <button className="bg-blue-600 text-white px-4 py-2 rounded-xl">Pilates</button>
           </Link>
-          <Link href="/clases/rehabilitacion_funcional">
+          <Link href="/clases/rehabilitacion_funcional/rehabilitacion_funcional">
             <button className="bg-green-600 text-white px-4 py-2 rounded-xl">Rehabilitación funcional</button>
           </Link>
-          <Link href="/clases/entrenamiento_personal">
+          <Link href="/clases/entrenamiento_personal/entrenamiento_personal">
             <button className="bg-purple-600 text-white px-4 py-2 rounded-xl">Entrenamiento personal</button>
           </Link>
         </div>
