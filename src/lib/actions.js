@@ -5,6 +5,21 @@ import prisma from '@/lib/prisma'
 import { revalidatePath } from 'next/cache'
 import { auth } from "@/auth"; 
 
+
+// ------------------------ RESERVAS --------------------------------
+
+export async function getReservasDelUsuario(userId) {
+  return await prisma.reserva.findMany({
+    where: { userId },
+    include: {
+      horario: true, // Para incluir la hora y el día
+    },
+    orderBy: {
+      horario: { dia: "asc" },
+    },
+  });
+}
+
 // ------------------------ HORARIO --------------------------------
 
 // export async function apuntarseAHorario(horarioId) {
