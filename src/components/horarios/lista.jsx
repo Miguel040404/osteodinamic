@@ -1,5 +1,4 @@
 
-
 import { apuntarseAHorario, cancelarReserva } from "@/lib/actions";
 import { getHorariosConReservasPorTipo } from "@/lib/data";
 import { auth } from "@/auth";
