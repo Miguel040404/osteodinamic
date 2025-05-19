@@ -5,11 +5,42 @@ import prisma from '@/lib/prisma'
 import { revalidatePath } from 'next/cache'
 import { auth } from "@/auth"; 
 
-
 // ------------------------ HORARIO --------------------------------
 
-export async function apuntarseAHorario(horarioId) {
- const session = await auth();
+// export async function apuntarseAHorario(horarioId) {
+//  const session = await auth();
+//   if (!session) throw new Error("No autenticado");
+
+//   const userId = session.user.id;
+
+//   const yaReservado = await prisma.reserva.findFirst({
+//     where: { userId, horarioId },
+//   });
+
+//   if (yaReservado) {
+//     throw new Error("Ya estás apuntado a este horario.");
+//   }
+
+//   const total = await prisma.reserva.count({
+//     where: { horarioId },
+//   });
+
+//   if (total >= 6) {
+//     throw new Error("Este horario ya está completo.");
+//   }
+
+//   await prisma.reserva.create({
+//     data: {
+//       userId,
+//       horarioId,
+//       fechaReal: new Date(),
+//     },
+//   });
+
+//   revalidatePath("/clases/pilates"); 
+// }
+export async function apuntarseAHorario(horarioId, tipo) {
+  const session = await auth();
   if (!session) throw new Error("No autenticado");
 
   const userId = session.user.id;
@@ -38,12 +69,44 @@ export async function apuntarseAHorario(horarioId) {
     },
   });
 
-  // Forzar refresco del componente
-  revalidatePath("/clases/pilates"); // o la ruta donde se ve la lista
+  // Revalida la ruta correspondiente al tipo
+  revalidatePath(`/clases/${tipo}`);
+}
+
+// ------------------------  cancelarReserva --------------------------------
+
+// export async function cancelarReserva(horarioId) {
+//   const session = await auth();
+//   if (!session) throw new Error("No autenticado");
+
+//   const userId = session.user.id;
+
+//   await prisma.reserva.deleteMany({
+//     where: {
+//       userId,
+//       horarioId,
+//     },
+//   });
+
+//   revalidatePath("/clases/pilates"); 
+// }
+export async function cancelarReserva(horarioId, tipo) {
+  const session = await auth();
+  if (!session) throw new Error("No autenticado");
+
+  const userId = session.user.id;
+
+  await prisma.reserva.deleteMany({
+    where: {
+      userId,
+      horarioId,
+    },
+  });
+
+  revalidatePath(`/clases/${tipo}`);
 }
 
 // ------------------------  AUTH --------------------------------
-
 
 // REGISTER
 export async function register(prevState, formData) {
