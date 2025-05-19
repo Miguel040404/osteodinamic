@@ -15,7 +15,6 @@ export default function ClasePage({ params }) {
   setTipo(tipo);
 
   if (tipo) {
-    // Asegurarse de que los horarios se obtienen correctamente
     getHorariosConReservasPorTipo(tipo)
       .then((horarios) => {
         console.log('Horarios obtenidos:', horarios);

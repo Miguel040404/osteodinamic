@@ -2,13 +2,45 @@
 import cloudinary from "@/lib/cloudinary"
 import bcrypt from 'bcryptjs'
 import prisma from '@/lib/prisma'
-import { signIn, signOut } from '@/auth'
-import { getUserByEmail, getUserByPhone } from '@/lib/data'
-import { redirect } from 'next/navigation'
 import { revalidatePath } from 'next/cache'
-import { PaintBucket } from "lucide-react"
+import { auth } from "@/auth"; 
 
 
+// ------------------------ HORARIO --------------------------------
+
+export async function apuntarseAHorario(horarioId) {
+ const session = await auth();
+  if (!session) throw new Error("No autenticado");
+
+  const userId = session.user.id;
+
+  const yaReservado = await prisma.reserva.findFirst({
+    where: { userId, horarioId },
+  });
+
+  if (yaReservado) {
+    throw new Error("Ya estás apuntado a este horario.");
+  }
+
+  const total = await prisma.reserva.count({
+    where: { horarioId },
+  });
+
+  if (total >= 6) {
+    throw new Error("Este horario ya está completo.");
+  }
+
+  await prisma.reserva.create({
+    data: {
+      userId,
+      horarioId,
+      fechaReal: new Date(),
+    },
+  });
+
+  // Forzar refresco del componente
+  revalidatePath("/clases/pilates"); // o la ruta donde se ve la lista
+}
 
 // ------------------------  AUTH --------------------------------
 
