@@ -2,12 +2,6 @@
 import { useState } from "react";
 import { BarLoader } from "react-spinners";
 
-
-// const styles = {
-//     display: "block",
-//     margin: "0 auto",
-// };
-
 function Spinner2() {
     let [loading, setLoading] = useState(true);
 

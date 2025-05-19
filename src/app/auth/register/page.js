@@ -1,7 +1,6 @@
 import RegisterForm from '@/components/auth/register-form'
 import Link from 'next/link'
 
-
 function page() {
   return (
     <div className="mx-auto mt-5 max-w-sm p-8 border border-slate-300 rounded-2xl bg-white shadow-lg">

@@ -1,10 +1,3 @@
-// import { redirect } from "next/navigation"; // IMPORTANTE: importar desde next/navigation
-
-// export default function RootPage() {
-//   redirect('/auth/login')
-// }
-
-
 'use client'
 
 import { useSession } from "next-auth/react";
@@ -12,7 +5,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 export default function RootPage() {
-  const { data: session, status } = useSession();
+  const { data: status } = useSession();
   const router = useRouter();
 
   useEffect(() => {
@@ -39,4 +32,3 @@ export default function RootPage() {
     </div>
   );
 }
-

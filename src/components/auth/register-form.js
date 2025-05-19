@@ -61,9 +61,7 @@ function RegisterForm() {
             className="w-full p-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
-      
-        {/* <p className={`text-sm ${tipo}`}> {resultado} </p> */}
-      
+            
         <button
           disabled={pending}
           className="mt-2 px-6 py-3 rounded-lg bg-blue-500 text-white font-medium hover:bg-blue-600 transition disabled:opacity-50 disabled:cursor-not-allowed"
