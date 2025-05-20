@@ -4,6 +4,7 @@ import bcrypt from 'bcryptjs'
 import prisma from '@/lib/prisma'
 import { revalidatePath } from 'next/cache'
 import { auth } from "@/auth"; 
+import { getUserByPhone } from "./data"
 
 
 // ------------------------ RESERVAS --------------------------------
@@ -272,26 +273,97 @@ export async function newUser(prevState, formData) {
 // }
 
 
+// export async function editUser(prevState, formData) {
+//     const id = formData.get('id');
+//     const name = formData.get('name');
+//     const email = formData.get('email');
+
+//     console.log("Updating user with ID:", id, "Name:", name, "Email:", email);
+
+//     try {
+//         await prisma.user.update({
+//             where: { id },
+//             data: { name, email },
+//         });
+
+//         revalidatePath('/perfil');
+//         return { success: 'Usuario modificado' };
+//     } catch (error) {
+//         console.error("Error updating user:", error);
+//         return { error: 'Error al modificar el usuario' };
+//     }
+// }
+
+// export async function editUser(prevState, formData) {
+//     const id = formData.get('id');
+//     const name = formData.get('name');
+//     const email = formData.get('email');
+//     const role = formData.get('role');
+
+//     console.log("📥 role recibido:", role); // Verifica esto en la consola
+
+//     if (!id) {
+//         return { error: 'ID de usuario no proporcionado' };
+//     }
+
+//     try {
+//         await prisma.user.update({
+//             where: { id },
+//             data: {
+//                 name,
+//                 email,
+//                 ...(role && { role }) // solo si role no es null
+//             },
+//         });
+
+//         revalidatePath('/perfil');
+//         return { success: 'Usuario modificado' };
+//     } catch (error) {
+//         console.error("❌ Error updating user:", error);
+//         return { error: `Error al modificar el usuario: ${error.message}` };
+//     }
+// }
+
 export async function editUser(prevState, formData) {
-    const id = formData.get('id');
-    const name = formData.get('name');
-    const email = formData.get('email');
+  const id = formData.get('id')
+  const name = formData.get('name')
+  const email = formData.get('email')
+  const phone = formData.get('phone')
+  const role = formData.get('role')
 
-    console.log("Updating user with ID:", id, "Name:", name, "Email:", email);
-
-    try {
-        await prisma.user.update({
-            where: { id },
-            data: { name, email },
-        });
-
-        revalidatePath('/perfil');
-        return { success: 'Usuario modificado' };
-    } catch (error) {
-        console.error("Error updating user:", error);
-        return { error: 'Error al modificar el usuario' };
+  if (phone) {
+    const existingUser = await prisma.user.findFirst({
+      where: {
+        phone: phone,
+        NOT: { id: id }
+      }
+    });
+    
+    if (existingUser) {
+      return { error: 'Este número de teléfono ya está registrado' };
     }
+  }
+
+   try {
+    await prisma.user.update({
+      where: { id },
+      data: {
+        name: formData.get('name'),
+        email: formData.get('email'),
+        phone: phone,
+        ...(formData.get('role') && { role: formData.get('role') })
+      }
+    });
+    
+    revalidatePath('/perfil')
+    revalidatePath('/users')
+    return { success: 'Usuario actualizado correctamente' }
+  } catch (error) {
+    console.error("Error updating user:", error)
+    return { error: 'Error al actualizar el usuario' }
+  }
 }
+
 
 
 export async function deleteUser(prevState, formData) {

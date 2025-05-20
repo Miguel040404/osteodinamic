@@ -6,6 +6,7 @@ import UserModificar from '@/components/users/modificar';
 import UserEliminar from '@/components/users/eliminar';
 import { getUsers } from "@/lib/data";
 import UserInsertar from "./insertar";
+import RegisterForm from "../auth/register-form";
 
 async function Users() {
     const session = await auth()
@@ -18,7 +19,7 @@ async function Users() {
                 <div className='justify-self-end mb-2 mr-1 size-8 grid place-content-center rounded-full border border-green-500 text-green-700 bg-green-200 hover:bg-green-500 hover:text-white hover:cursor-pointer'>
                     <PlusIcon className='size-4' />
                 </div>}>
-                <UserInsertar />
+                <RegisterForm />
             </Modal>
 
             {users
@@ -38,8 +39,9 @@ async function Users() {
                                     <div className='size-8 grid place-content-center rounded-full border border-amber-500 text-amber-700 bg-amber-200 hover:bg-amber-500 hover:text-white hover:cursor-pointer'>
                                         <PencilIcon className='size-4' />
                                     </div>}>
-                                    <UserModificar user={user} />
+                                    <UserModificar user={user} sessionUser={session.user} />
                                 </Modal>
+
                                 <Modal openElement={
                                     <div className='size-8 grid place-content-center rounded-full border border-red-500 text-red-700 bg-red-200 hover:bg-red-500 hover:text-white hover:cursor-pointer'>
                                         <TrashIcon className='size-4' />

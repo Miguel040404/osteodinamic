@@ -28,8 +28,13 @@ export const options = {
             session.user.role = token?.role
             const user = await getUserById(token.sub)
             session.user.name = user?.name
-            session.user.image = user?.image
             session.user.email = user?.email
+            session.user.password = user?.password
+            session.user.address = user?.address
+            session.user.phone = user?.phone
+            session.user.active = user?.active
+            session.user.image = user?.image
+            session.user.role = user?.role
             
 
 

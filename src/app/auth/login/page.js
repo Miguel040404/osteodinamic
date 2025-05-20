@@ -33,13 +33,7 @@ async function page({ searchParams }) {
  <h1 className="text-3xl md:text-2xl font-bold text-center -mb-6 md:-mb-3">Iniciar sesión</h1>
 
   <LoginForm />
-  
-  <p className="mt-6 text-center text-sm text-slate-600">
-    ¿No tienes cuenta?{" "}
-    <Link href="/auth/register" className="text-blue-600 hover:underline font-medium">
-      Crear cuenta
-    </Link>
-  </p>
+
 </div>
 
     </>
