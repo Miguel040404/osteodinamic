@@ -53,22 +53,108 @@
 
 // export default Agenda;
 
+
 import Header from "@/components/header";
 import Footer from "@/components/footer";
-import { getReservasDelUsuario } from "@/lib/actions";
+import { getReservasDelUsuario, getTodasReservas, cancelarReserva, cancelarReservaAdmin } from "@/lib/actions";
 import { auth } from "@/auth";
+
+const ordenDias = {
+  "Lunes": 1,
+  "Martes": 2,
+  "Miércoles": 3,
+  "Jueves": 4,
+  "Viernes": 5,
+  "Sábado": 6,
+  "Domingo": 7
+};
 
 export default async function AgendaPage() {
   const session = await auth();
   const userId = session?.user?.id;
+  const esAdmin = session?.user?.role === "ADMIN";
 
-  const reservas = await getReservasDelUsuario(userId);
+  // Obtener datos según rol
+  let reservas = esAdmin
+    ? await getTodasReservas()
+    : await getReservasDelUsuario(userId);
 
+  // Ordenar y agrupar reservas para admins
+  if (esAdmin) {
+    reservas = reservas.sort((a, b) =>
+      ordenDias[a.horario.dia] - ordenDias[b.horario.dia]
+    );
+
+    // Agrupar por horario
+    const horariosAgrupados = reservas.reduce((acc, reserva) => {
+      const key = `${reserva.horario.dia}-${reserva.horario.hora}`;
+      if (!acc[key]) {
+        acc[key] = {
+          horario: reserva.horario,
+          usuarios: []
+        };
+      }
+      acc[key].usuarios.push(reserva.user);
+      return acc;
+    }, {});
+
+    return (
+      <div className="min-h-screen flex flex-col bg-gray-50 text-gray-800">
+        <Header />
+
+        <main className="flex-1 container mx-auto px-4 py-12 md:py-20">
+          <h1 className="text-2xl font-bold mb-4">Todas las reservas</h1>
+
+          <div className="space-y-6">
+            {Object.values(horariosAgrupados).map((grupo) => (
+              <div key={`${grupo.horario.dia}-${grupo.horario.hora}`} className="border p-4 rounded-lg bg-white">
+                <div className="flex items-center justify-between mb-3">
+                  <div>
+                    <h2 className="font-semibold">
+                      {grupo.horario.dia} - {grupo.horario.hora}
+                    </h2>
+                    <span className="text-sm text-blue-600 bg-blue-100 px-2 py-1 rounded">
+                      {grupo.horario.tipo}
+                    </span>
+                  </div>
+                  <span className="text-sm text-gray-500">
+                    {grupo.usuarios.length} participantes
+                  </span>
+                </div>
+
+                <ul className="space-y-2">
+                  {grupo.usuarios.map((usuario) => (
+                    <li key={usuario.id} className="flex justify-between items-center px-2 py-1">
+                      <span>{usuario.name}</span>
+                      <form action={cancelarReservaAdmin.bind(null, grupo.horario.id, grupo.horario.tipo, usuario.id)}>
+                        <button
+                          type="submit"
+                          className="text-red-500 hover:text-red-700 text-sm"
+                        >
+                          Eliminar
+                        </button>
+                      </form>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </main>
+        {/* ARREGLO PERUANO PANI */}
+        <div className="mt-12">
+          <Footer />
+        </div>
+      </div>
+    );
+  }
+
+  // Vista normal para usuarios
   return (
     <div className="min-h-screen flex flex-col bg-gray-50 text-gray-800">
       <Header />
 
-      <main className="flex-1 container mx-auto px-4 py-8">
+      <main className="flex-1 container mx-auto px-4 py-12 md:py-24">
         <h1 className="text-2xl font-bold mb-4">Mi Agenda</h1>
 
         {reservas.length === 0 ? (
@@ -80,18 +166,38 @@ export default async function AgendaPage() {
                 key={reserva.id}
                 className="flex items-center justify-between px-4 py-3 rounded-lg border bg-white"
               >
-                <div>
+                <div className="flex-1">
                   <span className="font-medium">{reserva.horario.dia}</span> -{" "}
                   <span>{reserva.horario.hora}</span>
+                  <span className="ml-2 text-sm text-blue-600 bg-blue-100 px-2 py-1 rounded">
+                    {reserva.horario.tipo}
+                  </span>
+                  <span className="ml-4 text-sm text-gray-500">
+                    ({new Date(reserva.fechaReal).toLocaleDateString()})
+                  </span>
                 </div>
-                <span className="text-sm text-gray-500">{new Date(reserva.fechaReal).toLocaleDateString()}</span>
+
+                {/* Botón de cancelación */}
+                <form
+                  action={cancelarReserva.bind(null, reserva.horarioId, reserva.horario.tipo)}
+                  className="ml-4"
+                >
+                  <button
+                    type="submit"
+                    className="px-3 py-1 text-sm bg-red-100 text-red-600 rounded hover:bg-red-200"
+                  >
+                    Cancelar
+                  </button>
+                </form>
               </li>
             ))}
           </ul>
         )}
       </main>
 
-      <Footer />
+     <div className="mt-12">
+          <Footer />
+        </div>
     </div>
   );
 }

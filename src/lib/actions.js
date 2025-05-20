@@ -7,6 +7,31 @@ import { auth } from "@/auth";
 import { getUserByPhone } from "./data"
 
 
+export async function getTodasReservas() {
+  return await prisma.reserva.findMany({
+    include: {
+      horario: true,
+      user: {
+        select: {
+          id: true,
+          name: true
+        }
+      }
+    }
+  });
+}
+
+export async function cancelarReservaAdmin(horarioId, tipo, userId) {
+  const session = await auth();
+  if (!session?.user?.role === "ADMIN") throw new Error("No autorizado");
+  
+  await prisma.reserva.deleteMany({
+    where: { userId, horarioId }
+  });
+
+  revalidatePath("/agenda");
+}
+
 // ------------------------ RESERVAS --------------------------------
 
 export async function getReservasDelUsuario(userId) {
@@ -89,7 +114,7 @@ export async function apuntarseAHorario(horarioId, tipo) {
   revalidatePath(`/clases/${tipo}`);
 }
 
-// ------------------------  cancelarReserva --------------------------------
+// ------------------------  cancelarReserva user --------------------------------
 
 // export async function cancelarReserva(horarioId) {
 //   const session = await auth();
@@ -121,7 +146,29 @@ export async function cancelarReserva(horarioId, tipo) {
 
   revalidatePath(`/clases/${tipo}`);
 }
+// ------------------------  cancelarReserva admin --------------------------------
 
+// export async function cancelarReservaAdmin(horarioId, tipo, userId) {
+//   const session = await auth();
+  
+//   if (!session?.user) {
+//     throw new Error("No autenticado");
+//   }
+  
+//   if (session.user.role !== "ADMIN") {
+//     throw new Error("No tienes permisos de administrador");
+//   }
+
+
+//   await prisma.reserva.deleteMany({
+//     where: {
+//       userId,
+//       horarioId,
+//     },
+//   });
+
+//   revalidatePath(`/clases/${tipo}`);
+// }
 // ------------------------  AUTH --------------------------------
 
 // REGISTER

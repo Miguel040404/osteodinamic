@@ -214,7 +214,6 @@ export default function UserModificar({ user, sessionUser }) {
                     />
                 </div>
 
-      // Añadir campo de teléfono en el formulario
                 <div>
                     <label className="block font-medium mb-2">Teléfono</label>
                     <input

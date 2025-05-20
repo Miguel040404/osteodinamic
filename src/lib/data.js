@@ -16,7 +16,8 @@ export async function getUsers() {
 
 export async function getUserById(id) {
     const user = await prisma.user.findUnique({
-        where: { id }
+        where: { id },
+        select: { id: true, name: true, email: true, role: true, image: true, active: true, address: true, phone: true, role: true },   
     });
     return user
 }
@@ -44,14 +45,31 @@ export async function getAllSessions() {
 
 // ---------------------   HORARIOS -----------------------
 
+// export async function getHorariosConReservasPorTipo(tipo) {
+//     const horarios = await prisma.Horario.findMany({
+//         where: { tipo },
+//         include: { reservas: true },
+//         orderBy: [{ hora: 'asc' }],
+//     });
+
+//     console.log('Horarios:', horarios);
+
+//     return horarios;
+// }
+
 export async function getHorariosConReservasPorTipo(tipo) {
-    const horarios = await prisma.Horario.findMany({
-        where: { tipo },
-        include: { reservas: true },
-        orderBy: [{ hora: 'asc' }],
-    });
-
-    console.log('Horarios:', horarios);
-
-    return horarios;
+  return await prisma.horario.findMany({
+    where: { tipo },
+    include: {
+      reservas: {
+        include: {
+          user: true, 
+        },
+      },
+    },
+    orderBy: [
+      { dia: 'asc' },
+      { hora: 'asc' },
+    ],
+  });
 }
