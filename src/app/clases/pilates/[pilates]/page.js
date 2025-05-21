@@ -13,7 +13,11 @@ export default function ClasePage() {
           <ListaHorarios tipo="Pilates" />
         </Suspense>
       </main>
+<div className="flex-1 max-w-3xl mx-auto px-4 py-8">
       <Footer />
+
+</div>
+
     </div>
   );
 }

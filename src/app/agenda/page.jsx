@@ -118,7 +118,7 @@ export default async function AgendaPage() {
                     </span>
                   </div>
                   <span className="text-sm text-gray-500">
-                    {grupo.usuarios.length} participantes
+                    Participantes: {grupo.usuarios.length} 
                   </span>
                 </div>
 
@@ -163,33 +163,40 @@ export default async function AgendaPage() {
           <ul className="space-y-3">
             {reservas.map((reserva) => (
               <li
-                key={reserva.id}
-                className="flex items-center justify-between px-4 py-3 rounded-lg border bg-white"
-              >
-                <div className="flex-1">
-                  <span className="font-medium">{reserva.horario.dia}</span> -{" "}
-                  <span>{reserva.horario.hora}</span>
-                  <span className="ml-2 text-sm text-blue-600 bg-blue-100 px-2 py-1 rounded">
-                    {reserva.horario.tipo}
-                  </span>
-                  <span className="ml-4 text-sm text-gray-500">
-                    ({new Date(reserva.fechaReal).toLocaleDateString()})
-                  </span>
-                </div>
-
-                {/* Botón de cancelación */}
-                <form
-                  action={cancelarReserva.bind(null, reserva.horarioId, reserva.horario.tipo)}
-                  className="ml-4"
-                >
-                  <button
-                    type="submit"
-                    className="px-3 py-1 text-sm bg-red-100 text-red-600 rounded hover:bg-red-200"
-                  >
-                    Cancelar
-                  </button>
-                </form>
-              </li>
+  key={reserva.id}
+  className="flex items-center justify-between px-4 py-3 rounded-lg border bg-white"
+>
+  <div className="flex-1">
+    <div className="flex items-center gap-2 mb-1">
+      <span className="font-medium">{reserva.horario.dia}</span> - 
+      <span>{reserva.horario.hora}</span>
+      <span className="text-sm text-blue-600 bg-blue-100 px-2 py-1 rounded">
+        {reserva.horario.tipo}
+      </span>
+    </div>
+    <div className="flex items-center gap-4">
+      <span className="text-sm text-gray-500">
+        {new Date(reserva.fechaReal).toLocaleDateString()}
+      </span>
+      <span className="text-sm text-gray-600">
+        Participantes: {reserva.horario._count?.reservas || 0} 
+      </span>
+    </div>
+  </div>
+  
+  {/* Botón de cancelación */}
+  <form
+    action={cancelarReserva.bind(null, reserva.horarioId, reserva.horario.tipo)}
+    className="ml-4"
+  >
+    <button
+      type="submit"
+      className="px-3 py-1 text-sm bg-red-100 text-red-600 rounded hover:bg-red-200"
+    >
+      Cancelar
+    </button>
+  </form>
+</li>
             ))}
           </ul>
         )}
