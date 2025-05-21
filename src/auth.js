@@ -35,9 +35,7 @@ export const options = {
             session.user.active = user?.active
             session.user.image = user?.image
             session.user.role = user?.role
-            
-
-
+        
             return session
         },
         async jwt({ token }) {
