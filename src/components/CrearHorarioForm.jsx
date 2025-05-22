@@ -244,7 +244,7 @@ export function EditarHorarioModal({ horario }) {
   useEffect(() => {
     if (state?.success) {
       modalRef.current?.closeModal();
-      toast.success('Cambios guardados exitosamente');
+      toast.success('Cambios guardados exitosamente!');
       formRef.current?.reset();
     }
     if (state?.error) toast.error(state.error);

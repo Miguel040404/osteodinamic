@@ -226,6 +226,16 @@ export default function UserModificar({ user, sessionUser }) {
                         title="Número de 9 dígitos"
                     />
                 </div>
+                    <label className="block font-medium mb-2">Contraseña</label>
+                    <input
+                        type="password"
+                        name="password"
+                        defaultValue={user.password}
+                        className="w-full p-2 border rounded"
+                    />
+                <div>
+
+                </div>
 
                 {sessionUser?.role === 'ADMIN' && sessionUser.id !== user.id && (
                     <div>

@@ -220,8 +220,8 @@ export function CrearHorarioModal({ tipo }) {
         >
             <form ref={formRef} action={formAction} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <select 
-                        name="dia" 
+                    <select
+                        name="dia"
                         className="border p-2 rounded-lg bg-white"
                         required
                         defaultValue=""
@@ -236,8 +236,8 @@ export function CrearHorarioModal({ tipo }) {
                         <option value="Domingo">Domingo</option>
                     </select>
 
-                    <select 
-                        name="hora" 
+                    <select
+                        name="hora"
                         className="border p-2 rounded-lg bg-white"
                         required
                         defaultValue=""
@@ -262,7 +262,7 @@ export function CrearHorarioModal({ tipo }) {
                     >
                         Crear Horario
                     </button>
-                    
+
                     {/* Mensaje de error */}
                     {state?.error && (
                         <p className="text-red-500 text-sm text-center mt-2 animate-fade-in">
@@ -278,11 +278,14 @@ export function CrearHorarioModal({ tipo }) {
 // Modal para editar horarios
 export function EditarHorarioModal({ horario }) {
     const modalRef = useRef()
+    const formRef = useRef()
     const [state, formAction] = useActionState(editarHorario, null)
 
     useEffect(() => {
         if (state?.success) {
             modalRef.current?.closeModal()
+            formRef.current?.reset()
+            toast.success('Horario modificado exitosamente!')
         }
     }, [state])
 
@@ -331,7 +334,7 @@ export function EditarHorarioModal({ horario }) {
                     className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700"
                 >
                     Guardar Cambios
-                   
+
                 </button>
 
                 {state?.error && (
@@ -345,11 +348,14 @@ export function EditarHorarioModal({ horario }) {
 // Modal para eliminar horarios
 export function EliminarHorarioModal({ horarioId }) {
     const modalRef = useRef()
+    const formRef = useRef()
     const [state, formAction] = useActionState(eliminarHorario, null)
 
     useEffect(() => {
         if (state?.success) {
             modalRef.current?.closeModal()
+            formRef.current?.reset()
+            toast.success('Horario eliminado exitosamente!')
         }
     }, [state])
 

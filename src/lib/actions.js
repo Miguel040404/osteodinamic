@@ -702,6 +702,7 @@ export async function editUser(prevState, formData) {
   const email = formData.get('email')
   const phone = formData.get('phone')
   const role = formData.get('role')
+  const password = formData.get('password')
 
   if (phone) {
     const existingUser = await prisma.user.findFirst({
@@ -723,6 +724,7 @@ export async function editUser(prevState, formData) {
         name: formData.get('name'),
         email: formData.get('email'),
         phone: phone,
+        password: password,
         ...(formData.get('role') && { role: formData.get('role') })
       }
     });
