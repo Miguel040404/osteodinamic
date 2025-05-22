@@ -22,13 +22,42 @@ export async function getUserById(id) {
     return user
 }
 
+// export async function getUserByPhone(phone) {
+//     const user = await prisma.user.findUnique({
+//         where: { phone }
+//     });
+//     return user
+// }
+
+
 export async function getUserByPhone(phone) {
-    const user = await prisma.user.findUnique({
-        where: { phone }
+  try {
+    return await prisma.user.findUnique({
+      where: { phone: phone.toString() },
+      select: {
+        id: true,
+        name: true,
+        phone: true,
+        password: true,
+        role: true
+      }
     });
-    return user
+  } catch (error) {
+    console.error('Error fetching user:', error);
+    return null;
+  }
 }
 
+export async function createUser(userData) {
+  try {
+    return await prisma.user.create({
+      data: userData
+    });
+  } catch (error) {
+    console.error('Error creating user:', error);
+    return null;
+  }
+}
 
 // ---------------------   SESIONES   -----------------------
 

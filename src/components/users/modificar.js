@@ -162,13 +162,14 @@
 
 'use client'
 import { editUser } from '@/lib/actions'
-import { useActionState, useEffect, useId } from 'react'
-import { XIcon, RefreshCwIcon } from 'lucide-react'
+import { useActionState, useEffect, useId, useState } from 'react'
+import { XIcon, RefreshCwIcon,Eye, EyeOff } from 'lucide-react'
 import { toast } from 'sonner'
 
 export default function UserModificar({ user, sessionUser }) {
     const formId = useId()
     const [state, action, pending] = useActionState(editUser, {})
+    const [showPassword, setShowPassword] = useState(false)
 
     useEffect(() => {
         if (state?.error) {
@@ -226,15 +227,25 @@ export default function UserModificar({ user, sessionUser }) {
                         title="Número de 9 dígitos"
                     />
                 </div>
+                 <div>
                     <label className="block font-medium mb-2">Contraseña</label>
-                    <input
-                        type="password"
-                        name="password"
-                        defaultValue={user.password}
-                        className="w-full p-2 border rounded"
-                    />
-                <div>
-
+                    <div className="flex gap-2">
+                        <input
+                            type={showPassword ? "text" : "password"}
+                            name="password"
+                             placeholder="Nueva contraseña"
+                            defaultValue={user.password}
+                            className="w-full p-2 border rounded"
+                        />
+                        <button
+                            type="button"
+                            onClick={() => setShowPassword(!showPassword)}
+                            className="px-3 border rounded hover:bg-gray-100 transition-colors"
+                            aria-label={showPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
+                        >
+                            {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                        </button>
+                    </div>
                 </div>
 
                 {sessionUser?.role === 'ADMIN' && sessionUser.id !== user.id && (

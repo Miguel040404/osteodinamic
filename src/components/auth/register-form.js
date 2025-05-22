@@ -98,16 +98,18 @@ function RegisterForm() {
     return (
         <form action={action} className="flex flex-col gap-5 py-6">
             <div className="flex flex-col gap-1">
-                <label htmlFor="name" className="text-sm font-medium text-slate-700">Nombre</label>
+                <label htmlFor="name" className="text-sm font-medium text-slate-700">Nombre y apellidos</label>
                 <input
                     id="name"
                     type="text"
                     name="name"
                     placeholder="Juan"
+                    pattern="[a-zA-Z\s]+"
+                    title="Solo se permiten letras y espacios"
                     className="w-full p-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
             </div>
-
+{/* 
             <div className="flex flex-col gap-1">
                 <label htmlFor="last_name" className="text-sm font-medium text-slate-700">Apellidos</label>
                 <input
@@ -117,7 +119,7 @@ function RegisterForm() {
                     placeholder="Cuesta"
                     className="w-full p-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
-            </div>
+            </div> */}
 
             <div className="flex flex-col gap-1">
                 <label htmlFor="phone" className="text-sm font-medium text-slate-700">Número de teléfono</label>

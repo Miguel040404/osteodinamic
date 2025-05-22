@@ -496,7 +496,34 @@ export async function cancelarReserva(horarioId, tipo) {
 // }
 // ------------------------  AUTH --------------------------------
 
-// REGISTER
+// REGISTER qie encripta
+// export async function register(prevState, formData) {
+//     const name = formData.get('name')
+//     const phone = formData.get('phone')
+//     const password = formData.get('password')
+
+//     // Comprobamos si el usuario ya está registrado
+//     const user = await getUserByPhone(phone);
+
+//     if (user) {
+//         return { error: 'El email ya está registrado' }
+//     }
+
+//     // Encriptamos password 
+//     const hashedPassword = await bcrypt.hash(password, 10)
+
+//     // Guardamos credenciales en base datos
+//     await prisma.user.create({
+//         data: {
+//             name,
+//             phone,
+//             password: hashedPassword
+//         }
+//     })
+
+//     return { success: "Registro correcto" }
+// }
+
 export async function register(prevState, formData) {
     const name = formData.get('name')
     const phone = formData.get('phone')
@@ -509,21 +536,17 @@ export async function register(prevState, formData) {
         return { error: 'El email ya está registrado' }
     }
 
-    // Encriptamos password 
-    const hashedPassword = await bcrypt.hash(password, 10)
-
-    // Guardamos credenciales en base datos
+    // Guardamos credenciales en base datos sin encriptar
     await prisma.user.create({
         data: {
             name,
             phone,
-            password: hashedPassword
+            password
         }
     })
 
     return { success: "Registro correcto" }
 }
-
 
 
 // LOGIN credentials
@@ -696,6 +719,64 @@ export async function newUser(prevState, formData) {
 //     }
 // }
 
+// export async function editUser(prevState, formData) {
+//   const id = formData.get('id')
+//   const name = formData.get('name')
+//   const email = formData.get('email')
+//   const phone = formData.get('phone')
+//   const role = formData.get('role')
+//   const password = formData.get('password')
+
+//   // Validar nombre duplicado
+//   if (name) {
+//     const existingUserByName = await prisma.user.findFirst({
+//       where: {
+//         name: name,
+//         NOT: { id: id }
+//       }
+//     });
+
+//     if (existingUserByName) {
+//       return { error: 'Este nombre ya está registrado' };
+//     }
+//   }
+
+//   // Validar teléfono duplicado
+//   if (phone) {
+//     const existingUserByPhone = await prisma.user.findFirst({
+//       where: {
+//         phone: phone,
+//         NOT: { id: id }
+//       }
+//     });
+
+//     if (existingUserByPhone) {
+//       return { error: 'Este número de teléfono ya está registrado' };
+//     }
+//   }
+
+//   try {
+//     await prisma.user.update({
+//       where: { id },
+//       data: {
+//         name,
+//         email,
+//         phone,
+//         password,
+//         ...(role && { role })
+//       }
+//     });
+
+//     revalidatePath('/perfil')
+//     revalidatePath('/users')
+//     return { success: 'Usuario actualizado correctamente' }
+
+//   } catch (error) {
+//     console.error("Error updating user:", error)
+//     return { error: 'Error al actualizar el usuario' }
+//   }
+// }
+
 export async function editUser(prevState, formData) {
   const id = formData.get('id')
   const name = formData.get('name')
@@ -704,31 +785,54 @@ export async function editUser(prevState, formData) {
   const role = formData.get('role')
   const password = formData.get('password')
 
+  const nameRegex = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/;
+  if (!nameRegex.test(name)) {
+    return { error: 'El nombre solo puede contener letras y espacios' };
+  }
+
+  // Validar si el nombre ya existe
+  const existingUserByName = await prisma.user.findFirst({
+    where: {
+      name,
+      NOT: { id }
+    }
+  });
+
+  if (existingUserByName) {
+    return { error: 'Este nombre ya está registrado' };
+  }
+
+  const phoneRegex = /^[0-9]+$/;
+  if (!phoneRegex.test(phone)) {
+    return { error: 'El teléfono solo puede contener números' };
+  }
+  // Validar si el teléfono ya existe
   if (phone) {
-    const existingUser = await prisma.user.findFirst({
+    const existingUserByPhone = await prisma.user.findFirst({
       where: {
-        phone: phone,
-        NOT: { id: id }
+        phone,
+        NOT: { id }
       }
     });
-    
-    if (existingUser) {
+
+    if (existingUserByPhone) {
       return { error: 'Este número de teléfono ya está registrado' };
     }
   }
 
-   try {
+  // Actualizar
+  try {
     await prisma.user.update({
       where: { id },
       data: {
-        name: formData.get('name'),
-        email: formData.get('email'),
-        phone: phone,
-        password: password,
-        ...(formData.get('role') && { role: formData.get('role') })
+        name,
+        email,
+        phone,
+        password,
+        ...(role && { role })
       }
     });
-    
+
     revalidatePath('/perfil')
     revalidatePath('/users')
     return { success: 'Usuario actualizado correctamente' }
