@@ -76,7 +76,11 @@ model Horario {
   reservas   Reserva[]    // Relación con reservas
   createdAt  DateTime     @default(now())
   updatedAt  DateTime     @updatedAt
+
+    @@unique([dia, hora, tipo], name: "dia_hora_tipo")
+    // @@unique([dia, hora, tipo], map: "unique_dia_hora_tipo")
 }
+
 
 model Reserva {
   id         String     @id @default(cuid())

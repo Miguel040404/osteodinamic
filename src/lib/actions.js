@@ -5,6 +5,328 @@ import prisma from '@/lib/prisma'
 import { revalidatePath } from 'next/cache'
 import { auth } from "@/auth"; 
 import { getUserByPhone } from "./data"
+import { Prisma } from "@prisma/client"
+
+//---------------eliminar horario------------------
+
+// export async function eliminarHorario(id) {
+//   const session = await auth();
+//   if (session?.user?.role !== "ADMIN") {
+//     throw new Error("No autorizado");
+//   }
+
+//   const horario = await prisma.horario.delete({
+//     where: { id },
+//   });
+
+//   revalidatePath(`/clases/${horario.tipo}`);
+// }
+
+export async function eliminarHorario(prevState, formData) {
+  const session = await auth();
+
+  if (session?.user?.role !== 'ADMIN') {
+    return { error: 'No autorizado' };
+  }
+
+  // Obtener y validar el ID
+  const horarioId = formData.get('horarioId')?.toString();
+  
+  if (!horarioId) {
+    return { error: 'ID de horario no proporcionado' };
+  }
+
+  try {
+    await prisma.horario.delete({
+      where: { id: horarioId }
+    });
+    
+    revalidatePath('/clases');
+    return { success: true, message: 'Horario eliminado correctamente' };
+    
+  } catch (error) {
+    console.error('Error eliminando horario:', error);
+    return { error: 'Error al eliminar el horario' };
+  }
+}
+
+//---------------editar horario------------------
+
+// sin modal
+
+// export async function editarHorario(id, dia, hora) {
+//   const session = await auth();
+//   if (session?.user?.role !== "ADMIN") {
+//     throw new Error("No autorizado");
+//   }
+
+//   try {
+//     const horarioActual = await prisma.horario.findUnique({ where: { id } });
+//     if (!horarioActual) throw new Error("Horario no encontrado");
+
+//     const actualizado = await prisma.horario.update({
+//       where: { id },
+//       data: { dia, hora },
+//     });
+
+//     revalidatePath(`/clases/${horarioActual.tipo}`);
+//     return actualizado;
+//   } catch (error) {
+//     if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2002") {
+//       throw new Error("Ya existe una sesión con ese día y hora");
+//     }
+//     throw error;
+//   }
+// }
+
+// viejo
+// export async function editarHorario(prevState, formData) {
+//   const session = await auth();
+  
+//   if (session?.user?.role !== 'ADMIN') {
+//     return { error: 'No autorizado' };
+//   }
+
+//   // Validar campos
+//   const horarioId = formData.get('horarioId')?.toString();
+//   const dia = formData.get('dia')?.toString().trim();
+//   const hora = formData.get('hora')?.toString().trim();
+
+//   if (!horarioId || !dia || !hora) {
+//     return { error: 'Todos los campos son requeridos' };
+//   }
+
+//   try {
+//     // Verificar existencia
+//     const horarioExistente = await prisma.horario.findUnique({
+//       where: { id: horarioId }
+//     });
+
+//     if (!horarioExistente) {
+//       return { error: 'El horario no existe' };
+//     }
+
+//     // Actualizar
+//     await prisma.horario.update({
+//       where: { id: horarioId },
+//       data: { dia, hora }
+//     });
+
+//     revalidatePath(`/clases/${horarioExistente.tipo}`);
+//     return { success: true, message: 'Horario actualizado' };
+    
+//   } catch (error) {
+//     console.error('Error actualizando horario:', error);
+//     return { error: 'Error al actualizar el horario' };
+//   }
+// }
+
+export async function editarHorario(prevState, formData) {
+  const session = await auth();
+  if (!session?.user || session.user.role !== 'ADMIN') return { error: 'No autorizado' };
+
+  try {
+    // Obtener valores originales primero
+    const horarioOriginal = await prisma.horario.findUnique({
+      where: { id: formData.get('horarioId') }
+    });
+
+    if (!horarioOriginal) return { error: 'Horario no encontrado' };
+
+    // Obtener valores editados o mantener originales
+    const nuevosValores = {
+      dia: formData.get('dia') || horarioOriginal.dia,
+      hora: formData.get('hora') || horarioOriginal.hora,
+      tipo: horarioOriginal.tipo // Mantener el tipo original
+    };
+
+    // Verificar si hay cambios
+    const mismosValores = 
+      nuevosValores.dia === horarioOriginal.dia &&
+      nuevosValores.hora === horarioOriginal.hora;
+
+    if (mismosValores) return { error: 'No se realizaron cambios' };
+
+    // Verificar colisiones
+    const conflicto = await prisma.horario.findFirst({
+      where: {
+        AND: [
+          { dia: nuevosValores.dia },
+          { hora: nuevosValores.hora },
+          { tipo: nuevosValores.tipo },
+          { NOT: { id: horarioOriginal.id } }
+        ]
+      }
+    });
+
+    if (conflicto) return { error: 'Ya existe un horario con estos valores' };
+
+    // Actualizar
+    await prisma.horario.update({
+      where: { id: horarioOriginal.id },
+      data: nuevosValores
+    });
+
+    revalidatePath(`/clases/${nuevosValores.tipo}`);
+    return { success: true };
+
+  } catch (error) {
+    console.error('Error en editarHorario:', error);
+    
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      switch (error.code) {
+        case 'P2002':
+          return { error: 'Conflicto: Horario duplicado' };
+        case 'P2025':
+          return { error: 'El horario no existe' };
+      }
+    }
+    
+    return { error: 'Error al actualizar. Intente nuevamente.' };
+  }
+}
+
+//---------------crear horario------------------
+
+// export async function crearHorario(prevState, formData) {
+//   const session = await auth();
+
+//   if (session?.user?.role !== "ADMIN") {
+//     return { success: false, message: "No autorizado" };
+//   }
+
+//   const dia = formData.get("dia")?.toString().trim();
+//   const hora = formData.get("hora")?.toString().trim();
+//   const tipo = formData.get("tipo")?.toString().trim();
+
+//   if (!dia || !hora || !tipo) {
+//     return { success: false, message: "Todos los campos son requeridos" };
+//   }
+
+//   try {
+//     const horarioExistente = await prisma.horario.findFirst({
+//       where: { dia, hora, tipo }
+//     });
+
+//     if (horarioExistente) {
+//       return { success: false, message: "Ya existe una sesión idéntica" };
+//     }
+
+//     await prisma.horario.create({ data: { dia, hora, tipo } });
+//     revalidatePath(`/clases/${tipo}`);
+//     return { success: true, message: "Horario creado exitosamente" };
+
+//   } catch (error) {
+//     console.error("Error creating schedule:", error);
+//     return { success: false, message: "Error al crear el horario" };
+//   }
+// }
+
+// viejo
+// export async function crearHorario(prevState, formData) {
+//   const session = await auth();
+
+//   if (session?.user?.role !== 'ADMIN') {
+//     return { error: 'No autorizado' };
+//   }
+
+//   // Obtener y limpiar datos
+//   const dia = formData.get('dia')?.toString().trim();
+//   const hora = formData.get('hora')?.toString().trim();
+//   const tipo = formData.get('tipo')?.toString().trim();
+
+//   // Validación básica
+//   if (!dia || !hora || !tipo) {
+//     return { error: 'Todos los campos son requeridos' };
+//   }
+
+//   try {
+//     // Verificar existencia de horario idéntico
+//     const existeHorario = await prisma.horario.findFirst({
+//       where: {
+//         dia: dia,
+//         hora: hora,
+//         tipo: tipo
+//       }
+//     });
+
+//     if (existeHorario) {
+//       return { error: 'Ya existe una sesión idéntica' };
+//     }
+
+//     // Crear nuevo horario
+//     await prisma.horario.create({
+//       data: { dia, hora, tipo }
+//     });
+
+//     revalidatePath(`/clases/${tipo}`);
+//     return { success: true, message: 'Horario creado exitosamente' };
+
+//   } catch (error) {
+//     console.error('Error creando horario:', error);
+//     return { error: 'Error al crear el horario' };
+//   }
+// }
+
+export async function crearHorario(prevState, formData) {
+  const session = await auth();
+  if (!session?.user || session.user.role !== 'ADMIN') {
+    return { error: 'No autorizado' };
+  }
+
+  // Obtener valores con validación mejorada
+  const getValue = (field) => {
+    const value = formData.get(field);
+    return value?.toString().trim() || null;
+  };
+
+  const rawData = {
+    dia: getValue('dia'),
+    hora: getValue('hora'),
+    tipo: getValue('tipo')
+  };
+
+  // Validación completa
+  if (Object.values(rawData).some(v => !v)) {
+    return { error: 'Todos los campos son requeridos' };
+  }
+
+  try {
+    // Verificación de existencia
+    const existe = await prisma.horario.findFirst({
+      where: {
+        AND: [
+          { dia: rawData.dia },
+          { hora: rawData.hora },
+          { tipo: rawData.tipo }
+        ]
+      }
+    });
+
+    if (existe) return { error: 'Ya existe un horario con estos valores' };
+
+    // Crear registro
+    await prisma.horario.create({
+      data: rawData
+    });
+
+    revalidatePath(`/clases/${rawData.tipo}`);
+    return { success: true };
+
+  } catch (error) {
+    console.error('Error en crearHorario:', error);
+    
+    // Manejo específico de error de Prisma
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      if (error.code === 'P2002') {
+        return { error: 'Ya existe un horario con estos valores' };
+      }
+    }
+    
+    return { error: 'Error al crear el horario. Intente nuevamente.' };
+  }
+}
+// ---------------TodasReservas------------------
 
 
 export async function getTodasReservas() {
@@ -38,11 +360,14 @@ export async function getReservasDelUsuario(userId) {
   return await prisma.reserva.findMany({
     where: { userId },
     include: {
-      horario: true, // Para incluir la hora y el día
-    },
-    orderBy: {
-      horario: { dia: "asc" },
-    },
+      horario: {
+        include: {
+          _count: {
+            select: { reservas: true } // Incluir conteo de reservas
+          }
+        }
+      }
+    }
   });
 }
 
@@ -377,6 +702,7 @@ export async function editUser(prevState, formData) {
   const email = formData.get('email')
   const phone = formData.get('phone')
   const role = formData.get('role')
+  const password = formData.get('password')
 
   if (phone) {
     const existingUser = await prisma.user.findFirst({
@@ -398,6 +724,7 @@ export async function editUser(prevState, formData) {
         name: formData.get('name'),
         email: formData.get('email'),
         phone: phone,
+        password: password,
         ...(formData.get('role') && { role: formData.get('role') })
       }
     });
