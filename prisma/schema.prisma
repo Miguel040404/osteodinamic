@@ -29,6 +29,7 @@ model User {
   accounts      Account[]
   reservas      Reserva[]
   sessions      Session[]
+  notifications Notification[]
 }
 
 model Account {
@@ -92,4 +93,14 @@ model Reserva {
   horario    Horario    @relation(fields: [horarioId], references: [id], onDelete: Cascade)
 
   createdAt  DateTime   @default(now())
+}
+
+model Notification {
+  id          String   @id @default(cuid())
+  title       String
+  message     String
+  createdAt   DateTime @default(now())
+  createdBy   String
+
+  creator     User     @relation(fields: [createdBy], references: [id], onDelete: Cascade)
 }

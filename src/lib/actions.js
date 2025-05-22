@@ -5,22 +5,10 @@ import prisma from '@/lib/prisma'
 import { revalidatePath } from 'next/cache'
 import { auth } from "@/auth"; 
 import { getUserByPhone } from "./data"
+import { redirect } from 'next/navigation'
 import { Prisma } from "@prisma/client"
 
-//---------------eliminar horario------------------
-
-// export async function eliminarHorario(id) {
-//   const session = await auth();
-//   if (session?.user?.role !== "ADMIN") {
-//     throw new Error("No autorizado");
-//   }
-
-//   const horario = await prisma.horario.delete({
-//     where: { id },
-//   });
-
-//   revalidatePath(`/clases/${horario.tipo}`);
-// }
+//--------------- ELIMINAR HORARIO ------------------
 
 export async function eliminarHorario(prevState, formData) {
   const session = await auth();
@@ -50,76 +38,7 @@ export async function eliminarHorario(prevState, formData) {
   }
 }
 
-//---------------editar horario------------------
-
-// sin modal
-
-// export async function editarHorario(id, dia, hora) {
-//   const session = await auth();
-//   if (session?.user?.role !== "ADMIN") {
-//     throw new Error("No autorizado");
-//   }
-
-//   try {
-//     const horarioActual = await prisma.horario.findUnique({ where: { id } });
-//     if (!horarioActual) throw new Error("Horario no encontrado");
-
-//     const actualizado = await prisma.horario.update({
-//       where: { id },
-//       data: { dia, hora },
-//     });
-
-//     revalidatePath(`/clases/${horarioActual.tipo}`);
-//     return actualizado;
-//   } catch (error) {
-//     if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2002") {
-//       throw new Error("Ya existe una sesión con ese día y hora");
-//     }
-//     throw error;
-//   }
-// }
-
-// viejo
-// export async function editarHorario(prevState, formData) {
-//   const session = await auth();
-  
-//   if (session?.user?.role !== 'ADMIN') {
-//     return { error: 'No autorizado' };
-//   }
-
-//   // Validar campos
-//   const horarioId = formData.get('horarioId')?.toString();
-//   const dia = formData.get('dia')?.toString().trim();
-//   const hora = formData.get('hora')?.toString().trim();
-
-//   if (!horarioId || !dia || !hora) {
-//     return { error: 'Todos los campos son requeridos' };
-//   }
-
-//   try {
-//     // Verificar existencia
-//     const horarioExistente = await prisma.horario.findUnique({
-//       where: { id: horarioId }
-//     });
-
-//     if (!horarioExistente) {
-//       return { error: 'El horario no existe' };
-//     }
-
-//     // Actualizar
-//     await prisma.horario.update({
-//       where: { id: horarioId },
-//       data: { dia, hora }
-//     });
-
-//     revalidatePath(`/clases/${horarioExistente.tipo}`);
-//     return { success: true, message: 'Horario actualizado' };
-    
-//   } catch (error) {
-//     console.error('Error actualizando horario:', error);
-//     return { error: 'Error al actualizar el horario' };
-//   }
-// }
+//---------------EDITAR HORARIO ------------------
 
 export async function editarHorario(prevState, formData) {
   const session = await auth();
@@ -186,87 +105,7 @@ export async function editarHorario(prevState, formData) {
   }
 }
 
-//---------------crear horario------------------
-
-// export async function crearHorario(prevState, formData) {
-//   const session = await auth();
-
-//   if (session?.user?.role !== "ADMIN") {
-//     return { success: false, message: "No autorizado" };
-//   }
-
-//   const dia = formData.get("dia")?.toString().trim();
-//   const hora = formData.get("hora")?.toString().trim();
-//   const tipo = formData.get("tipo")?.toString().trim();
-
-//   if (!dia || !hora || !tipo) {
-//     return { success: false, message: "Todos los campos son requeridos" };
-//   }
-
-//   try {
-//     const horarioExistente = await prisma.horario.findFirst({
-//       where: { dia, hora, tipo }
-//     });
-
-//     if (horarioExistente) {
-//       return { success: false, message: "Ya existe una sesión idéntica" };
-//     }
-
-//     await prisma.horario.create({ data: { dia, hora, tipo } });
-//     revalidatePath(`/clases/${tipo}`);
-//     return { success: true, message: "Horario creado exitosamente" };
-
-//   } catch (error) {
-//     console.error("Error creating schedule:", error);
-//     return { success: false, message: "Error al crear el horario" };
-//   }
-// }
-
-// viejo
-// export async function crearHorario(prevState, formData) {
-//   const session = await auth();
-
-//   if (session?.user?.role !== 'ADMIN') {
-//     return { error: 'No autorizado' };
-//   }
-
-//   // Obtener y limpiar datos
-//   const dia = formData.get('dia')?.toString().trim();
-//   const hora = formData.get('hora')?.toString().trim();
-//   const tipo = formData.get('tipo')?.toString().trim();
-
-//   // Validación básica
-//   if (!dia || !hora || !tipo) {
-//     return { error: 'Todos los campos son requeridos' };
-//   }
-
-//   try {
-//     // Verificar existencia de horario idéntico
-//     const existeHorario = await prisma.horario.findFirst({
-//       where: {
-//         dia: dia,
-//         hora: hora,
-//         tipo: tipo
-//       }
-//     });
-
-//     if (existeHorario) {
-//       return { error: 'Ya existe una sesión idéntica' };
-//     }
-
-//     // Crear nuevo horario
-//     await prisma.horario.create({
-//       data: { dia, hora, tipo }
-//     });
-
-//     revalidatePath(`/clases/${tipo}`);
-//     return { success: true, message: 'Horario creado exitosamente' };
-
-//   } catch (error) {
-//     console.error('Error creando horario:', error);
-//     return { error: 'Error al crear el horario' };
-//   }
-// }
+// --------------- CREAR HORARIO ------------------
 
 export async function crearHorario(prevState, formData) {
   const session = await auth();
@@ -326,9 +165,7 @@ export async function crearHorario(prevState, formData) {
     return { error: 'Error al crear el horario. Intente nuevamente.' };
   }
 }
-// ---------------TodasReservas------------------
-
-
+// ---------------OBTENER TODAS LAS RESERVAS------------------
 export async function getTodasReservas() {
   return await prisma.reserva.findMany({
     include: {
@@ -371,40 +208,7 @@ export async function getReservasDelUsuario(userId) {
   });
 }
 
-// ------------------------ HORARIO --------------------------------
-
-// export async function apuntarseAHorario(horarioId) {
-//  const session = await auth();
-//   if (!session) throw new Error("No autenticado");
-
-//   const userId = session.user.id;
-
-//   const yaReservado = await prisma.reserva.findFirst({
-//     where: { userId, horarioId },
-//   });
-
-//   if (yaReservado) {
-//     throw new Error("Ya estás apuntado a este horario.");
-//   }
-
-//   const total = await prisma.reserva.count({
-//     where: { horarioId },
-//   });
-
-//   if (total >= 6) {
-//     throw new Error("Este horario ya está completo.");
-//   }
-
-//   await prisma.reserva.create({
-//     data: {
-//       userId,
-//       horarioId,
-//       fechaReal: new Date(),
-//     },
-//   });
-
-//   revalidatePath("/clases/pilates"); 
-// }
+// ------------------------ APUNTARSE A HORARIO --------------------------------
 export async function apuntarseAHorario(horarioId, tipo) {
   const session = await auth();
   if (!session) throw new Error("No autenticado");
@@ -439,23 +243,7 @@ export async function apuntarseAHorario(horarioId, tipo) {
   revalidatePath(`/clases/${tipo}`);
 }
 
-// ------------------------  cancelarReserva user --------------------------------
 
-// export async function cancelarReserva(horarioId) {
-//   const session = await auth();
-//   if (!session) throw new Error("No autenticado");
-
-//   const userId = session.user.id;
-
-//   await prisma.reserva.deleteMany({
-//     where: {
-//       userId,
-//       horarioId,
-//     },
-//   });
-
-//   revalidatePath("/clases/pilates"); 
-// }
 export async function cancelarReserva(horarioId, tipo) {
   const session = await auth();
   if (!session) throw new Error("No autenticado");
@@ -471,30 +259,7 @@ export async function cancelarReserva(horarioId, tipo) {
 
   revalidatePath(`/clases/${tipo}`);
 }
-// ------------------------  cancelarReserva admin --------------------------------
 
-// export async function cancelarReservaAdmin(horarioId, tipo, userId) {
-//   const session = await auth();
-  
-//   if (!session?.user) {
-//     throw new Error("No autenticado");
-//   }
-  
-//   if (session.user.role !== "ADMIN") {
-//     throw new Error("No tienes permisos de administrador");
-//   }
-
-
-//   await prisma.reserva.deleteMany({
-//     where: {
-//       userId,
-//       horarioId,
-//     },
-//   });
-
-//   revalidatePath(`/clases/${tipo}`);
-// }
-// ------------------------  AUTH --------------------------------
 
 // REGISTER qie encripta
 // export async function register(prevState, formData) {
@@ -548,6 +313,7 @@ export async function register(prevState, formData) {
     return { success: "Registro correcto" }
 }
 
+<<<<<<< HEAD
 
 // LOGIN credentials
 // export async function login(prevState, formData) {
@@ -583,6 +349,8 @@ export async function register(prevState, formData) {
 // }
 
 
+=======
+>>>>>>> 53518d6ca19141eb1a16124c1e357dc45dffc3b0
 // LOGOUT
 export async function logout() {
     try {
@@ -593,11 +361,9 @@ export async function logout() {
 }
 
 
-
 // ------------------------  UPLOAD IMAGE --------------------------------
 
 async function uploadImage(file) {
-    // console.log(file);
 
     const fileBuffer = await file.arrayBuffer();
 
@@ -627,8 +393,6 @@ async function uploadImage(file) {
 
 
 // ------------------------  USERS --------------------------------
-
-
 export async function newUser(prevState, formData) {
     try {
         const name = formData.get('name');
@@ -648,6 +412,7 @@ export async function newUser(prevState, formData) {
 
 // editUser------------------------
 
+<<<<<<< HEAD
 // export async function editUser(prevState, formData) {
 //     const id = formData.get('id')
 //     const name = formData.get('name');
@@ -777,6 +542,8 @@ export async function newUser(prevState, formData) {
 //   }
 // }
 
+=======
+>>>>>>> 53518d6ca19141eb1a16124c1e357dc45dffc3b0
 export async function editUser(prevState, formData) {
   const id = formData.get('id')
   const name = formData.get('name')
@@ -843,7 +610,6 @@ export async function editUser(prevState, formData) {
 }
 
 
-
 export async function deleteUser(prevState, formData) {
     try {
         const id = formData.get('id')
@@ -856,208 +622,42 @@ export async function deleteUser(prevState, formData) {
     } catch (error) {
         return { error }
     }
-
 }
 
 
-// //  ------------------------ REPARTIDORES ------------------------
+// //  ------------------------ NOTIFICACIONES ------------------------
+export async function crearNotificacion(formData) {
+  const session = await auth()
 
+  if (!session?.user || session.user.role !== 'ADMIN') {
+    throw new Error('No autorizado')
+  }
 
-// export async function insertarRepartidor(prevState, formData) {
-//     const nombre = formData.get('nombre')
-//     const telefono = formData.get('telefono')
+  const title = formData.get('title')
+  const message = formData.get('message')
 
-//     await prisma.repartidor.create({
-//         data: { nombre, telefono }
-//     })
+  await prisma.notification.create({
+    data: {
+      title,
+      message,
+      createdBy: session.user.id,
+    },
+  })
 
-//     revalidatePath('/repartidores')
-//     return { success: 'Repartidor guardado' }
+  redirect('/notificaciones')
+}
 
+//---------------- ELIMINAR NOTIFICACION ------------------
+export async function eliminarNotificacion(id) {
+  const session = await auth()
 
-// }
+  if (!session?.user || session.user.role !== 'ADMIN') {
+    throw new Error('No autorizado')
+  }
 
+  await prisma.notification.delete({
+    where: { id }
+  })
 
-
-// export async function modificarRepartidor(prevState, formData) {
-//     const id = Number(formData.get('id'))
-//     const nombre = formData.get('nombre')
-//     const telefono = formData.get('telefono')
-
-
-//     await prisma.repartidor.update({
-//         where: { id },
-//         data: { nombre, telefono }
-//     })
-
-//     revalidatePath('/repartidores')
-//     return { success: 'Repartidor modificado' }
-
-// }
-
-
-
-// export async function eliminarRepartidor(prevState, formData) {
-//     const id = Number(formData.get('id'))
-
-//     await prisma.repartidor.delete({
-//         where: {
-//             id: id
-//         }
-//     })
-
-//     revalidatePath('/repartidores')
-//     return { success: 'Repartidor eliminado' }
-
-
-// }
-
-
-// //  ------------------------ PEDIDOS ------------------------
-
-
-// export async function insertarPedido(prevState, formData) {
-//     const fecha_hora = new Date(formData.get('fecha_hora'))
-//     const nombre_cliente = formData.get('nombre_cliente')
-//     const direccion_cliente = formData.get('direccion_cliente')
-
-//     const repartidorId = Number(formData.get('repartidorId')) || null
-
-//     const pizzasIDs = await prisma.pizza.findMany({
-//         select: { id: true }
-//     })
-//     // console.log(pizzasIDs);
-//     const connect = pizzasIDs.filter(p => formData.get(`pizza${p.id}`) !== null)
-//     // console.log(connect);
-
-//     await prisma.pedido.create({
-//         data: {
-//             fecha_hora: fecha_hora,
-//             nombre_cliente: nombre_cliente,
-//             direccion_cliente: direccion_cliente,
-//             repartidorId: repartidorId,
-//             pizzas: { connect }
-//         }
-//     })
-
-//     revalidatePath('/pedidos')
-//     return { success: 'Operación realizada correctamente' }
-
-// }
-
-
-
-// export async function modificarPedido(prevState, formData) {
-//     const id = Number(formData.get('id'))
-//     const fecha_hora = new Date(formData.get('fecha_hora'))
-//     const nombre_cliente = formData.get('nombre_cliente')
-//     const direccion_cliente = formData.get('direccion_cliente')
-
-//     const repartidorId = Number(formData.get('repartidorId')) || null
-
-//     const pizzasIDs = await prisma.pizza.findMany({
-//         select: { id: true }
-//     })
-//     // console.log(pizzasIDs);
-//     const connect = pizzasIDs.filter(p => formData.get(`pizza${p.id}`) !== null)
-//     const disconnect = pizzasIDs.filter(p => formData.get(`pizza${p.id}`) === null)
-//     // console.log(connect);
-
-//     await prisma.pedido.update({
-//         where: { id },
-//         data: {
-//             fecha_hora: fecha_hora,
-//             nombre_cliente: nombre_cliente,
-//             direccion_cliente: direccion_cliente,
-//             repartidorId: repartidorId,
-//             pizzas: { connect, disconnect }
-//         }
-//     })
-
-//     revalidatePath('/pedidos')
-//     return { success: 'Operación realizada correctamente' }
-// }
-
-
-
-// export async function eliminarPedido(prevState, formData) {
-//     const id = Number(formData.get('id'))
-
-//     await prisma.pedido.delete({
-//         where: {
-//             id: id
-//         }
-//     })
-
-//     revalidatePath('/pedidos')
-//     return { success: 'Operación realizada correctamente' }
-
-// }
-
-// // ------------------------------- PIZZAS -----------------------
-
-
-// export async function insertarPizza(prevState, formData) {
-//     const nombre = formData.get('nombre')
-//     const precio = Number(formData.get('precio'))
-//     const file = formData.get('file')
-
-//     // si tenemos nuevo archivo en el input type=file
-//     if (file.size > 0) {
-//         const foto = await uploadImage(file)
-//         await prisma.pizza.create({
-//             data: { nombre, precio, foto }
-//         })
-//     } else {
-//         await prisma.pizza.create({
-//             data: { nombre, precio }
-//         })
-//     }
-
-
-//     revalidatePath('/pizzas')
-//     return { success: 'Pizza creada' }
-
-// }
-
-
-
-// export async function modificarPizza(prevState, formData) {
-//     const id = Number(formData.get('id'))
-//     const nombre = formData.get('nombre')
-//     const precio = Number(formData.get('precio'))
-//     const file = formData.get('file')
-
-//     // si tenemos nuevo archivo en el input type=file
-//     if (file.size > 0) {
-//         const foto = await uploadImage(file)
-//         await prisma.pizza.update({
-//             where: { id },
-//             data: { nombre, precio, foto }
-//         })
-//     } else {
-//         await prisma.pizza.update({
-//             where: { id },
-//             data: { nombre, precio }
-//         })
-//     }
-
-//     revalidatePath('/pizzas')
-//     return { success: 'Pizza modificada' }
-// }
-
-
-
-// export async function eliminarPizza(prevState, formData) {
-//     const id = Number(formData.get('id'))
-
-//     await prisma.pizza.delete({
-//         where: { id }
-//     })
-
-//     revalidatePath('/pizzas')
-//     return { success: 'Pizza eliminada' }
-
-// }
-
-
+  redirect('/notificaciones') // recarga la página
+}
