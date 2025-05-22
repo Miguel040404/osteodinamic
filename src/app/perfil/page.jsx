@@ -3,7 +3,7 @@ import Header from "@/components/header"
 import Footer from "@/components/footer"
 import PerfilLink from "@/components/perfil-link"
 import EditarPerfilButton from "@/components/EditarPerfilButton"
-import { BookOpenCheck, Sparkles } from "lucide-react"
+import { BellRing, BookOpenCheck, Sparkles } from "lucide-react"
 import { auth } from "@/auth"
 import Users from "@/components/users/lista"
 import { getUserById } from "@/lib/data"
@@ -73,6 +73,11 @@ async function Perfil() {
             label="Novedades"
             href="/novedades"
             icon={<Sparkles className="h-5 w-5 text-yellow-500" />}
+          />
+          <PerfilLink
+          label="Notificaciones"
+            href="/notificaciones"
+            icon={<BellRing className="h-5 w-5 text-blue-500" />}
           />
           <LogoutButton />
         </div>
