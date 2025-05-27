@@ -264,7 +264,6 @@ function LoginForm() {
               name="password"
               type="password"
               placeholder="••••••"
-              minLength="6"
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               required
               disabled={loading}
