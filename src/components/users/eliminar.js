@@ -45,8 +45,8 @@ function UserEliminar({ user }) {
                     : <UserIcon className="size-16" />
                 } */}
 
-                {/* <img src={user.image || '/images/avatar-80.png'} alt="Imagen de usuario" width={192} /> */}
-                <img src='../../../images/avatar-80.png' alt="Imagen de usuario" width={192} />
+                <img src={user.image || '/images/avatar-80.png'} alt="Imagen de usuario" width={192} />
+                {/* <img src='../../../images/avatar-80.png' alt="Imagen de usuario" width={192} /> */}
 
                 <div>
                     <h1 className="text-xl">{user.name}</h1>
