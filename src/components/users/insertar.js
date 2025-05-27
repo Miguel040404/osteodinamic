@@ -3,6 +3,7 @@ import { newUser, newuser } from '@/lib/actions'
 import { useActionState, useEffect, useId } from 'react'
 import { PlusIcon, RefreshCwIcon } from 'lucide-react';
 import { toast } from 'sonner';
+import CheckRadio from '../check-radio';
 
 
 
@@ -32,6 +33,31 @@ export default function UserInsertar() {
                     : <div><PlusIcon className='inline' /> Guardar</div>
                 }
             </button>
+
+ <div className='grid place-items-center grid-cols-[repeat(auto-fill,minmax(40px,1fr))]'>
+                {/* Avatares 00 .. 79 */}
+                {[...Array(80)].map((_, index) => (
+                    <CheckRadio key={index}
+                        name='image'
+                        defaultValue={`/images/avatar-${String(index).padStart(2, '0')}.png`}
+                        className="size-14 has-checked:col-span-4 has-checked:row-span-3 has-checked:-order-1 has-checked:size-36 has-checked:bg-green-200 px-2 py-1 rounded-md"
+                    >
+                        <img src={`/images/avatar-${String(index).padStart(2, '0')}.png`} alt="Imagen de usuario" />
+                    </CheckRadio>
+                ))}
+                {/* por defecto */}
+                <CheckRadio key={80}
+                    name='image'
+                    defaultValue={'/images/avatar-80.png'}
+                    defaultChecked={true}
+                    className="size-14 has-checked:col-span-4 has-checked:row-span-3 has-checked:-order-1 has-checked:size-36 has-checked:bg-green-200 px-2 py-1 rounded-md"
+                >
+                    <img src={'/images/avatar-80.png'} alt="Imagen de usuario" />
+                </CheckRadio>
+            </div>
+
+
+
 
             <div className='flex flex-col md:flex-row md:gap-10'>
                 <div className='w-full md:w-2/3 flex flex-col gap-2'>

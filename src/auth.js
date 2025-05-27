@@ -47,6 +47,38 @@ export const options = {
 }
 
 
+/*
+ callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        token.id = user.id;
+        token.phone = user.phone;
+        token.role = user.role;
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      session.user = {
+        id: token.id,
+        name: token.name,
+        phone: token.phone,
+        role: token.role
+      };
+      return session;
+    }
+  },
+  pages: {
+    signIn: '/auth/login',
+    error: '/auth/login'
+  },
+  session: {
+    strategy: "jwt",
+    maxAge: 24 * 60 * 60 // 24 horas
+  },
+  secret: process.env.AUTH_SECRET,
+
+*/
+
 
 export const {
     handlers: { GET, POST },

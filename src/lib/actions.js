@@ -288,6 +288,8 @@ export async function cancelarReserva(horarioId, tipo) {
 
 //     return { success: "Registro correcto" }
 // }
+
+//NO FUNKA
 export async function register(prevState, formData) {
   const name = formData.get('name');
   const phone = formData.get('phone');
@@ -299,9 +301,9 @@ export async function register(prevState, formData) {
       return { error: 'El teléfono debe tener 9 dígitos' };
     }
 
-    if (password.length < 6) {
-      return { error: 'La contraseña debe tener al menos 6 caracteres' };
-    }
+    // if (password.length < 6) {
+    //   return { error: 'La contraseña debe tener al menos 6 caracteres' };
+    // }
 
     // Verificar usuario existente
     const existingUser = await prisma.user.findUnique({
@@ -333,6 +335,7 @@ export async function register(prevState, formData) {
   }
 }
 // FUNKA
+
 // export async function register(prevState, formData) {
 //     const name = formData.get('name')
 //     const phone = formData.get('phone')
@@ -403,9 +406,10 @@ export async function newUser(prevState, formData) {
     try {
         const name = formData.get('name');
         const email = formData.get('email');
+                const image = formData.get('image');
 
         await prisma.user.create({
-            data: { name, email },
+            data: { name, email, image },
         })
 
         revalidatePath('/dashboard')
@@ -419,116 +423,116 @@ export async function newUser(prevState, formData) {
 // editUser------------------------
 
 // // FUNKA
-// export async function editUser(prevState, formData) {
-//   const id = formData.get('id')
-//   const name = formData.get('name')
-//   const email = formData.get('email')
-//   const phone = formData.get('phone')
-//   const role = formData.get('role')
-//   const password = formData.get('password')
-
-//   const nameRegex = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/;
-//   if (!nameRegex.test(name)) {
-//     return { error: 'El nombre solo puede contener letras y espacios' };
-//   }
-
-//   // Validar si el nombre ya existe
-//   const existingUserByName = await prisma.user.findFirst({
-//     where: {
-//       name,
-//       NOT: { id }
-//     }
-//   });
-
-//   if (existingUserByName) {
-//     return { error: 'Este nombre ya está registrado' };
-//   }
-
-//   const phoneRegex = /^[0-9]+$/;
-//   if (!phoneRegex.test(phone)) {
-//     return { error: 'El teléfono solo puede contener números' };
-//   }
-//   // Validar si el teléfono ya existe
-//   if (phone) {
-//     const existingUserByPhone = await prisma.user.findFirst({
-//       where: {
-//         phone,
-//         NOT: { id }
-//       }
-//     });
-
-//     if (existingUserByPhone) {
-//       return { error: 'Este número de teléfono ya está registrado' };
-//     }
-//   }
-
-//   // Actualizar
-//   try {
-//     await prisma.user.update({
-//       where: { id },
-//       data: {
-//         name,
-//         email,
-//         phone,
-//         password,
-//         ...(role && { role })
-//       }
-//     });
-
-//     revalidatePath('/perfil')
-//     revalidatePath('/users')
-//     return { success: 'Usuario actualizado correctamente' }
-//   } catch (error) {
-//     console.error("Error updating user:", error)
-//     return { error: 'Error al actualizar el usuario' }
-//   }
-// }
-
-
-
-const SECRET_KEY = process.env.NEXT_PUBLIC_CRYPTO_SECRET || 'clave-secreta'
-
 export async function editUser(prevState, formData) {
-    const id = formData.get('id')
-    const name = formData.get('name')
-    const phone = formData.get('phone')
-    const role = formData.get('role')
-    const rawPassword = formData.get('password')
+  const id = formData.get('id')
+  const name = formData.get('name')
+  const email = formData.get('email')
+                  const image = formData.get('image');
+  const phone = formData.get('phone')
+  const role = formData.get('role')
+  const password = formData.get('password')
 
-    // Validaciones
-    if (!phone.match(/^\d{9}$/)) {
-        return { error: 'Teléfono inválido (9 dígitos requeridos)' }
+  const nameRegex = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/;
+  if (!nameRegex.test(name)) {
+    return { error: 'El nombre solo puede contener letras y espacios' };
+  }
+
+  // Validar si el nombre ya existe
+  const existingUserByName = await prisma.user.findFirst({
+    where: {
+      name,
+      NOT: { id }
     }
+  });
 
-    if (rawPassword.length < 6) {
-        return { error: 'La contraseña debe tener mínimo 6 caracteres' }
+  if (existingUserByName) {
+    return { error: 'Este nombre ya está registrado' };
+  }
+
+  const phoneRegex = /^[0-9]+$/;
+  if (!phoneRegex.test(phone)) {
+    return { error: 'El teléfono solo puede contener números' };
+  }
+  // Validar si el teléfono ya existe
+  if (phone) {
+    const existingUserByPhone = await prisma.user.findFirst({
+      where: {
+        phone,
+        NOT: { id }
+      }
+    });
+
+    if (existingUserByPhone) {
+      return { error: 'Este número de teléfono ya está registrado' };
     }
+  }
+  let hashedPassword
+    if (password)
+        hashedPassword = await bcrypt.hash(password, 10)
+  // Actualizar
+  try {
+    await prisma.user.update({
+      where: { id },
+      data: {
+        name,
+        email,
+        image,
+        phone,
+        ...(password && { password: hashedPassword }),
+        ...(role && { role })
+      }
+    });
 
-    // Cifrar contraseña
-    const encryptedPassword = CryptoJS.AES
-        .encrypt(rawPassword, SECRET_KEY)
-        .toString()
-
-    try {
-        await prisma.user.update({
-            where: { id },
-            data: {
-                name,
-                phone,
-                role,
-                password: encryptedPassword
-            }
-        })
-
-        revalidatePath('/perfil')
-        revalidatePath('/users')
-        return { success: 'Usuario actualizado' }
-    } catch (error) {
-        console.error("Error actualizando usuario:", error)
-        return { error: 'Error al actualizar el usuario' }
-    }
+    revalidatePath('/perfil')
+    revalidatePath('/users')
+    return { success: 'Usuario actualizado correctamente' }
+  } catch (error) {
+    console.error("Error updating user:", error)
+    return { error: 'Error al actualizar el usuario' }
+  }
 }
 
+
+
+// NO FUNKA
+// const SECRET_KEY = process.env.NEXT_PUBLIC_CRYPTO_SECRET || 'clave-secreta'
+
+// export async function editUser(prevState, formData) {
+//     const id = formData.get('id')
+//     const name = formData.get('name')
+//     const phone = formData.get('phone')
+//     const role = formData.get('role')
+//     const rawPassword = formData.get('password')
+
+//     if (!phone.match(/^\d{9}$/)) {
+//         return { error: 'Teléfono inválido (9 dígitos requeridos)' }
+//     }
+
+//     if (!rawPassword || rawPassword.length < 6) {
+//         return { error: 'La contraseña debe tener mínimo 6 caracteres' }
+//     }
+
+//     const encryptedPassword = CryptoJS.AES.encrypt(rawPassword, SECRET_KEY).toString()
+
+//     try {
+//         await prisma.user.update({
+//             where: { id },
+//             data: {
+//                 name,
+//                 phone,
+//                 role,
+//                 password: encryptedPassword
+//             }
+//         })
+
+//         revalidatePath('/perfil')
+//         revalidatePath('/users')
+//         return { success: 'Usuario actualizado' }
+//     } catch (error) {
+//         console.error("Error actualizando usuario:", error)
+//         return { error: 'Error al actualizar el usuario' }
+//     }
+// }
 
 export async function deleteUser(prevState, formData) {
     try {
