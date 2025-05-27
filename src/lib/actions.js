@@ -583,3 +583,44 @@ export async function eliminarNotificacion(id) {
 
   redirect('/notificaciones') // recarga la página
 }
+
+// login
+
+export async function authenticate(prevState, formData) {
+  try {
+    const phone = formData.get('phone');
+    const password = formData.get('password');
+    const callbackUrl = formData.get('callbackUrl') || '/home';
+
+    // Validación del servidor
+    if (!phone || !/^\d{9}$/.test(phone)) {
+      throw new Error('invalid_format');
+    }
+
+    const response = await signIn('credentials', {
+      redirect: false,
+      phone,
+      password,
+      callbackUrl: process.env.NEXTAUTH_URL + callbackUrl
+    });
+
+    if (response?.error) {
+      throw new AuthError(response.error);
+    }
+
+    return { success: true, url: response?.url || callbackUrl };
+
+  } catch (error) {
+    console.error('Auth Error:', error);
+    
+    if (error instanceof AuthError) {
+      switch (error.type) {
+        case 'CredentialsSignin':
+          return { error: 'invalid_credentials' };
+        default:
+          return { error: 'server_error' };
+      }
+    }
+    return { error: error.message || 'server_error' };
+  }
+}

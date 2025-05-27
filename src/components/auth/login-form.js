@@ -176,7 +176,6 @@ function LoginForm() {
   const searchParams = useSearchParams();
   const router = useRouter();
   
-  // Mejor manejo de callbackUrl
   const callbackUrl = searchParams.get('callbackUrl') || '/home';
 
   const handleSubmit = async (e) => {
@@ -187,34 +186,46 @@ function LoginForm() {
       const formData = new FormData(e.target);
       const credentials = Object.fromEntries(formData);
       
-      // Validación adicional del número de teléfono
+      // Validación mejorada del teléfono
       if (!/^\d{9}$/.test(credentials.phone)) {
-        throw new Error('El teléfono debe tener 9 dígitos');
+        throw new Error('InvalidPhoneFormat');
       }
+
+      // Construir URL absoluta para producción
+      const absoluteCallbackUrl = new URL(
+        callbackUrl,
+        process.env.NEXT_PUBLIC_BASE_URL || window.location.origin
+      ).toString();
 
       const result = await signIn('credentials', {
         redirect: false,
         ...credentials,
-        callbackUrl,
+        callbackUrl: absoluteCallbackUrl,
       });
 
       if (result?.error) {
         throw new Error(result.error);
       }
 
-      // Mejor manejo de redirección
-      toast.success("¡Bienvenido!");
-      router.push(result?.url || callbackUrl);
-      
+      // Redirección segura
+      if (result?.url) {
+        window.location.href = result.url; // Usar window.location para recargar sesión
+      } else {
+        router.refresh();
+        router.push(absoluteCallbackUrl);
+      }
+
     } catch (error) {
-      // Manejo más detallado de errores
-      const errorMessage = {
-        'CredentialsSignin': 'Credenciales inválidas',
-        'InvalidPhoneFormat': 'Formato de teléfono incorrecto',
-      }[error.message] || 'Error en el servidor';
+      const errorMessages = {
+        'CredentialsSignin': 'Credenciales incorrectas',
+        'InvalidPhoneFormat': 'Teléfono debe tener 9 dígitos',
+        'NetworkError': 'Error de conexión con el servidor',
+        'CallbackRouteError': 'Error en configuración del servidor'
+      };
       
-      toast.error(errorMessage);
-      console.error('Error de autenticación:', error.message);
+      toast.error(errorMessages[error.message] || 'Error desconocido');
+      console.error('Error de autenticación:', error);
+
     } finally {
       setLoading(false);
     }
@@ -253,6 +264,7 @@ function LoginForm() {
               name="password"
               type="password"
               placeholder="••••••"
+              minLength="6"
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               required
               disabled={loading}
