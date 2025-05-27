@@ -1,6 +1,14 @@
 {
   "name": "Osteodinamic",
   "short_name": "osteodinamic",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#000000",
+  "orientation": "portrait",
+  "scope": "/",
+  "lang": "es",
+  "description": "Osteodinamic is a web application designed to help users manage their osteopathic treatments and appointments effectively.",
   "icons": [
     {
       "src": "icon-48x48.png",
@@ -52,9 +60,5 @@
       "sizes": "512x512",
       "type": "image/png"
     }
-  ],
-  "start_url": "/",
-  "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#000000"
+  ]
 }
