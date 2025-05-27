@@ -38,7 +38,9 @@ async function Perfil() {
 
           <div className="grid md:grid-cols-[160px_auto]">
             <img 
-              src={user.image || '/images/avatar-80.png'} 
+              // src={user.image || '/images/avatar-80.png'} 
+              src={user.image || '../../../public/images/avatar-80.png'} 
+
               className="size-36" 
               alt="Imagen de usuario" 
             />
