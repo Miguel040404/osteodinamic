@@ -47,4 +47,6 @@ const Modal = forwardRef(({ openElement, children }, ref) => {
     )
 })
 
+Modal.displayName = "Modal";
+
 export default Modal
