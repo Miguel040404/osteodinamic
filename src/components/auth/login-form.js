@@ -112,7 +112,9 @@ function LoginForm() {
     if (res?.ok) {
       toast.success("Inicio de sesión correcto");
       window.location.href = res.url || callbackUrl;
+      console.log("funciona");
     } else {
+      console.log("no funciona");
       toast.error("Credenciales incorrectas o error en el servidor");
     }
   };
