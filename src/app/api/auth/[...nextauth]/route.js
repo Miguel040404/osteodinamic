@@ -56,6 +56,7 @@
 
 export const runtime = "nodejs";
 export { GET, POST } from "@/auth"
+import prisma from "@/lib/prisma";
 import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 
