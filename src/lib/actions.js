@@ -3,10 +3,11 @@ import cloudinary from "@/lib/cloudinary"
 import bcrypt from 'bcryptjs'
 import prisma from '@/lib/prisma'
 import { revalidatePath } from 'next/cache'
-import { auth } from "@/auth"; 
+import { auth, signIn } from "@/auth"; 
 import { getUserByPhone } from "./data"
 import { redirect } from 'next/navigation'
 import { Prisma } from "@prisma/client"
+// import { signIn } from "next-auth/react"
 
 //--------------- ELIMINAR HORARIO ------------------
 
