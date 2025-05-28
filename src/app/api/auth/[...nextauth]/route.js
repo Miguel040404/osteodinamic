@@ -1,3 +1,59 @@
+// export const runtime = "nodejs";
+// export { GET, POST } from "@/auth"
+// import NextAuth from 'next-auth';
+// import CredentialsProvider from 'next-auth/providers/credentials';
+
+// export const authOptions = {
+//   providers: [
+//     CredentialsProvider({
+//       name: 'Credentials',
+//       credentials: {
+//         phone: { label: "Teléfono", type: "text" },
+//         password: { label: "Contraseña", type: "password" }
+//       },
+//       async authorize(credentials) {
+//         // Validación del servidor
+//         if (!/^\d{9}$/.test(credentials.phone)) {
+//           throw new Error('InvalidPhoneFormat');
+//         }
+
+//         // Aquí tu lógica de autenticación real
+//         const user = await yourAuthenticationMethod(credentials);
+
+//         if (!user) throw new Error('CredentialsSignin');
+//         return user;
+//       }
+//     })
+//   ],
+//   session: {
+//     strategy: "jwt",
+//     maxAge: 30 * 24 * 60 * 60, // 30 días
+//   },
+//   cookies: {
+//     sessionToken: {
+//       name: '__Secure-next-auth.session-token',
+//       options: {
+//         httpOnly: true,
+//         sameSite: 'lax',
+//         path: '/',
+//         secure: process.env.NODE_ENV === 'production'
+//       }
+//     }
+//   },
+//   trustHost: true, // Necesario para Vercel
+//   pages: {
+//     signIn: '/login',
+//     error: '/login'
+//   },
+//   callbacks: {
+//     async redirect({ url, baseUrl }) {
+//       return url.startsWith(baseUrl) ? url : baseUrl;
+//     }
+//   }
+// };
+
+// export const { handlers, auth, signIn, signOut } = NextAuth(authOptions);
+
 export const runtime = "nodejs";
 export { GET, POST } from "@/auth"
 import NextAuth from 'next-auth';
@@ -12,16 +68,22 @@ export const authOptions = {
         password: { label: "Contraseña", type: "password" }
       },
       async authorize(credentials) {
-        // Validación del servidor
+        // Validar formato de teléfono
         if (!/^\d{9}$/.test(credentials.phone)) {
           throw new Error('InvalidPhoneFormat');
         }
-        
-        // Aquí tu lógica de autenticación real
-        const user = await yourAuthenticationMethod(credentials);
-        
-        if (!user) throw new Error('CredentialsSignin');
-        return user;
+
+        // Ejemplo con Prisma (debes implementar tu propia lógica)
+        const user = await prisma.user.findUnique({
+          where: { phone: credentials.phone }
+        });
+
+        // Verificar usuario y contraseña (usa bcrypt.compare en producción)
+        if (!user || user.password !== credentials.password) {
+          throw new Error('CredentialsSignin');
+        }
+
+        return { id: user.id, phone: user.phone };
       }
     })
   ],
@@ -29,18 +91,21 @@ export const authOptions = {
     strategy: "jwt",
     maxAge: 30 * 24 * 60 * 60, // 30 días
   },
-  cookies: {
-    sessionToken: {
-      name: '__Secure-next-auth.session-token',
-      options: {
-        httpOnly: true,
-        sameSite: 'lax',
-        path: '/',
-        secure: process.env.NODE_ENV === 'production'
-      }
+cookies: {
+  sessionToken: {
+    name: `__Secure-next-auth.session-token`,
+    options: {
+      httpOnly: true,
+      sameSite: "lax",
+      path: "/",
+      secure: true, // Siempre true en producción
+      domain: process.env.NODE_ENV === 'production' 
+        ? '.tu-dominio.vercel.app' 
+        : undefined
     }
-  },
-  trustHost: true, // Necesario para Vercel
+  }
+},
+trustHost: true, // Obligatorio para Vercel
   pages: {
     signIn: '/login',
     error: '/login'
@@ -53,56 +118,6 @@ export const authOptions = {
 };
 
 export const { handlers, auth, signIn, signOut } = NextAuth(authOptions);
-
-
-// import NextAuth from 'next-auth';
-// import CredentialsProvider from 'next-auth/providers/credentials';
-// import bcrypt from 'bcryptjs';
-// import { getUserByPhone } from '@/lib/data';
-
-// export const authOptions = {
-//   providers: [
-//     CredentialsProvider({
-//       name: 'Credentials',
-//       credentials: {
-//         phone: { label: 'Teléfono', type: 'text' },
-//         password: { label: 'Contraseña', type: 'password' }
-//       },
-//       async authorize(credentials) {
-//         const { phone, password } = credentials;
-
-//         if (!/^\d{9}$/.test(phone)) {
-//           return null;
-//         }
-
-//         const user = await getUserByPhone(phone);
-//         if (!user) return null;
-
-//         const valid = await bcrypt.compare(password, user.password);
-//         if (!valid) return null;
-
-//         return {
-//           id: user.id,
-//           phone: user.phone,
-//           name: user.name
-//         };
-//       }
-//     })
-//   ],
-//   session: {
-//     strategy: 'jwt'
-//   },
-//   secret: process.env.NEXTAUTH_SECRET,
-//   trustHost: true,
-//   pages: {
-//     signIn: '/login',
-//     error: '/login'
-//   }
-// };
-
-// const handler = NextAuth(authOptions); // ✅ Esto debe ejecutarse después de authOptions
-// export { handler as GET, handler as POST };
-
 
 
 
