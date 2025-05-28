@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { PlusIcon } from "lucide-react"
 import { auth } from '@/auth'   // o el método que uses para obtener la sesión
 import { redirect } from 'next/navigation'
+import prisma from '@/lib/prisma'
 
 export default async function NotificacionesPage() {
   const session = await auth()

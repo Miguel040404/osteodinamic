@@ -20,7 +20,7 @@ model User {
   email         String?   @unique
   password      String?
   emailVerified DateTime?
-  image         String?
+  image         String?   @default("/images/avatar-80.png")
   role          String?   @default("USER")
   address       String?
   phone         String?   @unique
