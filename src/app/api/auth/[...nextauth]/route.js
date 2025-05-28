@@ -135,7 +135,7 @@ export const authOptions = {
         secure: true,
         // Elimina la configuración de dominio
         domain: process.env.NODE_ENV === 'production'
-          ? '.vercel.app' // ¡NUEVO DOMINIO!
+          ? 'osteoosteodinamic.vercel.app' // ¡NUEVO DOMINIO!
           : undefined
       }
     }
