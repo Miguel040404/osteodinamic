@@ -3,7 +3,7 @@ import cloudinary from "@/lib/cloudinary"
 import bcrypt from 'bcryptjs'
 import prisma from '@/lib/prisma'
 import { revalidatePath } from 'next/cache'
-import { auth, signIn } from "@/auth"; 
+import { auth, signIn } from "@/auth";
 import { getUserByPhone } from "./data"
 import { redirect } from 'next/navigation'
 import { Prisma } from "@prisma/client"
@@ -20,7 +20,7 @@ export async function eliminarHorario(prevState, formData) {
 
   // Obtener y validar el ID
   const horarioId = formData.get('horarioId')?.toString();
-  
+
   if (!horarioId) {
     return { error: 'ID de horario no proporcionado' };
   }
@@ -29,10 +29,10 @@ export async function eliminarHorario(prevState, formData) {
     await prisma.horario.delete({
       where: { id: horarioId }
     });
-    
+
     revalidatePath('/clases');
     return { success: true, message: 'Horario eliminado correctamente' };
-    
+
   } catch (error) {
     console.error('Error eliminando horario:', error);
     return { error: 'Error al eliminar el horario' };
@@ -61,7 +61,7 @@ export async function editarHorario(prevState, formData) {
     };
 
     // Verificar si hay cambios
-    const mismosValores = 
+    const mismosValores =
       nuevosValores.dia === horarioOriginal.dia &&
       nuevosValores.hora === horarioOriginal.hora;
 
@@ -92,7 +92,7 @@ export async function editarHorario(prevState, formData) {
 
   } catch (error) {
     console.error('Error en editarHorario:', error);
-    
+
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
       switch (error.code) {
         case 'P2002':
@@ -101,7 +101,7 @@ export async function editarHorario(prevState, formData) {
           return { error: 'El horario no existe' };
       }
     }
-    
+
     return { error: 'Error al actualizar. Intente nuevamente.' };
   }
 }
@@ -155,14 +155,14 @@ export async function crearHorario(prevState, formData) {
 
   } catch (error) {
     console.error('Error en crearHorario:', error);
-    
+
     // Manejo específico de error de Prisma
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
       if (error.code === 'P2002') {
         return { error: 'Ya existe un horario con estos valores' };
       }
     }
-    
+
     return { error: 'Error al crear el horario. Intente nuevamente.' };
   }
 }
@@ -184,7 +184,7 @@ export async function getTodasReservas() {
 export async function cancelarReservaAdmin(horarioId, tipo, userId) {
   const session = await auth();
   if (!session?.user?.role === "ADMIN") throw new Error("No autorizado");
-  
+
   await prisma.reserva.deleteMany({
     where: { userId, horarioId }
   });
@@ -363,11 +363,11 @@ export async function register(prevState, formData) {
 
 // LOGOUT
 export async function logout() {
-    try {
-        await signOut({ redirectTo: '/' })
-    } catch (error) {
-        throw error
-    }
+  try {
+    await signOut({ redirectTo: '/' })
+  } catch (error) {
+    throw error
+  }
 }
 
 
@@ -375,49 +375,49 @@ export async function logout() {
 
 async function uploadImage(file) {
 
-    const fileBuffer = await file.arrayBuffer();
+  const fileBuffer = await file.arrayBuffer();
 
-    let mime = file.type;
-    let encoding = "base64";
-    let base64Data = Buffer.from(fileBuffer).toString("base64");
-    let fileUri = "data:" + mime + ";" + encoding + "," + base64Data;
+  let mime = file.type;
+  let encoding = "base64";
+  let base64Data = Buffer.from(fileBuffer).toString("base64");
+  let fileUri = "data:" + mime + ";" + encoding + "," + base64Data;
 
-    try {
-        const result = await cloudinary.uploader.upload(fileUri, {
-            invalidate: true,
-            folder: "pizzeria",
-            public_id: file.name.split(".").slice(0, -1).join("."),
-            aspect_ratio: "1.0",
-            width: 800,
-            crop: "fill",
-            gravity: "center",
-            format: 'avif'
-        });
-        // console.log(result);
-        return result.secure_url;
-    } catch (error) {
-        console.log(error);
-        return null;
-    }
+  try {
+    const result = await cloudinary.uploader.upload(fileUri, {
+      invalidate: true,
+      folder: "pizzeria",
+      public_id: file.name.split(".").slice(0, -1).join("."),
+      aspect_ratio: "1.0",
+      width: 800,
+      crop: "fill",
+      gravity: "center",
+      format: 'avif'
+    });
+    // console.log(result);
+    return result.secure_url;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
 }
 
 
 // ------------------------  USERS --------------------------------
 export async function newUser(prevState, formData) {
-    try {
-        const name = formData.get('name');
-        const email = formData.get('email');
-                const image = formData.get('image');
+  try {
+    const name = formData.get('name');
+    const email = formData.get('email');
+    const image = formData.get('image');
 
-        await prisma.user.create({
-            data: { name, email, image },
-        })
+    await prisma.user.create({
+      data: { name, email, image },
+    })
 
-        revalidatePath('/dashboard')
-        return { success: 'Usuario guardado' }
-    } catch (error) {
-        return { error }
-    }
+    revalidatePath('/dashboard')
+    return { success: 'Usuario guardado' }
+  } catch (error) {
+    return { error }
+  }
 
 }
 
@@ -428,7 +428,7 @@ export async function editUser(prevState, formData) {
   const id = formData.get('id')
   const name = formData.get('name')
   const email = formData.get('email')
-                  const image = formData.get('image');
+  const image = formData.get('image');
   const phone = formData.get('phone')
   const role = formData.get('role')
   const password = formData.get('password')
@@ -468,8 +468,8 @@ export async function editUser(prevState, formData) {
     }
   }
   let hashedPassword
-    if (password)
-        hashedPassword = await bcrypt.hash(password, 10)
+  if (password)
+    hashedPassword = await bcrypt.hash(password, 10)
   // Actualizar
   try {
     await prisma.user.update({
@@ -534,17 +534,17 @@ export async function editUser(prevState, formData) {
 // }
 
 export async function deleteUser(prevState, formData) {
-    try {
-        const id = formData.get('id')
+  try {
+    const id = formData.get('id')
 
-        await prisma.user.delete({
-            where: { id },
-        })
-        revalidatePath('/dashboard')
-        return { success: 'Usuario eliminado' }
-    } catch (error) {
-        return { error }
-    }
+    await prisma.user.delete({
+      where: { id },
+    })
+    revalidatePath('/dashboard')
+    return { success: 'Usuario eliminado' }
+  } catch (error) {
+    return { error }
+  }
 }
 
 
@@ -587,6 +587,45 @@ export async function eliminarNotificacion(id) {
 
 // login
 
+// export async function authenticate(prevState, formData) {
+//   try {
+//     const phone = formData.get('phone');
+//     const password = formData.get('password');
+//     const callbackUrl = formData.get('callbackUrl') || '/home';
+
+//     // Validación del servidor
+//     if (!phone || !/^\d{9}$/.test(phone)) {
+//       throw new Error('invalid_format');
+//     }
+
+//     const response = await signIn('credentials', {
+//       redirect: false,
+//       phone,
+//       password,
+//       callbackUrl: process.env.NEXTAUTH_URL + callbackUrl
+//     });
+
+//     if (response?.error) {
+//       throw new AuthError(response.error);
+//     }
+
+//     return { success: true, url: response?.url || callbackUrl };
+
+//   } catch (error) {
+//     console.error('Auth Error:', error);
+
+//     if (error instanceof AuthError) {
+//       switch (error.type) {
+//         case 'CredentialsSignin':
+//           return { error: 'invalid_credentials' };
+//         default:
+//           return { error: 'server_error' };
+//       }
+//     }
+//     return { error: error.message || 'server_error' };
+//   }
+// }
+
 export async function authenticate(prevState, formData) {
   try {
     const phone = formData.get('phone');
@@ -598,22 +637,34 @@ export async function authenticate(prevState, formData) {
       throw new Error('invalid_format');
     }
 
-    const response = await signIn('credentials', {
-      redirect: false,
-      phone,
-      password,
-      callbackUrl: process.env.NEXTAUTH_URL + callbackUrl
-    });
+    const user = await getUserByPhone(phone);
 
-    if (response?.error) {
-      throw new AuthError(response.error);
+    if (!user) {
+      throw new Error('invalid_credentials');
     }
 
-    return { success: true, url: response?.url || callbackUrl };
+    const matchPassword = await bcrypt.compare(password, user.password);
+
+    if (!matchPassword) {
+      throw new Error('invalid_credentials');
+    }
+
+
+    if (user && matchPassword)  // && user.emailVerified
+    {
+      await signIn('credentials',
+        {
+          phone, password,
+          redirectTo: globalThis.callbackUrl
+        })
+      return { success: "Inicio de sesión correcto" }
+    } else {
+      return { error: 'Credenciales incorrectas.' }
+    }
 
   } catch (error) {
     console.error('Auth Error:', error);
-    
+
     if (error instanceof AuthError) {
       switch (error.type) {
         case 'CredentialsSignin':
