@@ -35,41 +35,43 @@
 //     }
 // }
 
-import bcrypt from 'bcryptjs';
-import { getUserByPhone } from '@/lib/data';
 
-CredentialsProvider({
-  name: 'Credentials',
-  credentials: {
-    phone: { label: "Teléfono", type: "text" },
-    password: { label: "Contraseña", type: "password" }
-  },
-  async authorize(credentials) {
-    const { phone, password } = credentials;
+// comentado por ahora
+// import bcrypt from 'bcryptjs';
+// import { getUserByPhone } from '@/lib/data';
 
-    if (!/^\d{9}$/.test(phone)) {
-      throw new Error('InvalidPhoneFormat');
-    }
+// CredentialsProvider({
+//   name: 'Credentials',
+//   credentials: {
+//     phone: { label: "Teléfono", type: "text" },
+//     password: { label: "Contraseña", type: "password" }
+//   },
+//   async authorize(credentials) {
+//     const { phone, password } = credentials;
 
-    const user = await getUserByPhone(phone);
+//     if (!/^\d{9}$/.test(phone)) {
+//       throw new Error('InvalidPhoneFormat');
+//     }
 
-    if (!user) {
-      console.error('Usuario no encontrado');
-      throw new Error('CredentialsSignin');
-    }
+//     const user = await getUserByPhone(phone);
 
-    const matchPassword = await bcrypt.compare(password, user.password);
+//     if (!user) {
+//       console.error('Usuario no encontrado');
+//       throw new Error('CredentialsSignin');
+//     }
 
-    if (!matchPassword) {
-      console.error('Contraseña incorrecta');
-      throw new Error('CredentialsSignin');
-    }
+//     const matchPassword = await bcrypt.compare(password, user.password);
 
-    // Devuelve un objeto usuario que se serializa en el token
-    return {
-      id: user.id,
-      phone: user.phone,
-      name: user.name // o cualquier otro campo necesario
-    };
-  }
-})
+//     if (!matchPassword) {
+//       console.error('Contraseña incorrecta');
+//       throw new Error('CredentialsSignin');
+//     }
+
+//     // Devuelve un objeto usuario que se serializa en el token
+//     return {
+//       id: user.id,
+//       phone: user.phone,
+//       name: user.name // o cualquier otro campo necesario
+//     };
+//   }
+// })

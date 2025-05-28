@@ -54,6 +54,58 @@ export const authOptions = {
 
 export const { handlers, auth, signIn, signOut } = NextAuth(authOptions);
 
+
+// import NextAuth from 'next-auth';
+// import CredentialsProvider from 'next-auth/providers/credentials';
+// import bcrypt from 'bcryptjs';
+// import { getUserByPhone } from '@/lib/data';
+
+// export const authOptions = {
+//   providers: [
+//     CredentialsProvider({
+//       name: 'Credentials',
+//       credentials: {
+//         phone: { label: 'Teléfono', type: 'text' },
+//         password: { label: 'Contraseña', type: 'password' }
+//       },
+//       async authorize(credentials) {
+//         const { phone, password } = credentials;
+
+//         if (!/^\d{9}$/.test(phone)) {
+//           return null;
+//         }
+
+//         const user = await getUserByPhone(phone);
+//         if (!user) return null;
+
+//         const valid = await bcrypt.compare(password, user.password);
+//         if (!valid) return null;
+
+//         return {
+//           id: user.id,
+//           phone: user.phone,
+//           name: user.name
+//         };
+//       }
+//     })
+//   ],
+//   session: {
+//     strategy: 'jwt'
+//   },
+//   secret: process.env.NEXTAUTH_SECRET,
+//   trustHost: true,
+//   pages: {
+//     signIn: '/login',
+//     error: '/login'
+//   }
+// };
+
+// const handler = NextAuth(authOptions); // ✅ Esto debe ejecutarse después de authOptions
+// export { handler as GET, handler as POST };
+
+
+
+
 // export const authOptions = {
 //   providers: [
 //     GitHubProvider({
