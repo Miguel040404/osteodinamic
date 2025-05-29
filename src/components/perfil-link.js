@@ -16,9 +16,8 @@ function PerfilLink({ label, href, icon, onClick }) {
         <Link
             href={href || "#"}
             onClick={handleClick}
-            className={`peer-not-checked:hidden flex gap-2 items-center p-4 rounded-full text-lg font-semibold active:bg-amber-700 hover:bg-slate-600 hover:text-white transition duration-300 ${
-                pathname.startsWith(href) && 'bg-slate-300 text-black'
-            }`}
+            className={`peer-not-checked:hidden flex gap-2 items-center p-4 rounded-full text-lg font-semibold active:bg-amber-700 hover:bg-slate-600 hover:text-white transition duration-300 ${pathname.startsWith(href) && 'bg-slate-300 text-black'
+                }`}
         >
             {icon} <span>{label}</span>
         </Link>

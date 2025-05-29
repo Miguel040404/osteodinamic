@@ -1,4 +1,5 @@
 'use client'
+
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -19,7 +20,6 @@ function MenuLink({ label, href, icon }) {
 
             <span className="mt-1 sm:mt-2 text-[0.75rem] sm:text-sm font-medium">{label}</span>
         </Link>
-
     );
 }
 

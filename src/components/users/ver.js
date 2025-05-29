@@ -1,14 +1,7 @@
-import { UserIcon } from "lucide-react";
-
-
 function UserVer({ user }) {
     return (
         <div>
             <div className="grid md:grid-cols-[80px_auto]">
-                {/* {user.image
-                    ? <img src={user.image} alt="Imagen de usuario" width={64} />
-                    : <UserIcon className="size-16" />
-                } */}
                 <img src={user.image || '/images/avatar-80.png'} alt="Imagen de usuario" width={192} />
 
                 <div>

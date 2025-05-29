@@ -1,8 +1,8 @@
 'use client'
+
 import { useRouter, useSearchParams } from 'next/navigation'
 import { PAGE, PER_PAGE } from '@/lib/pagination'
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
-
 
 function PaginationControls({ hasNextPage, hasPrevPage, total }) {
   const router = useRouter()

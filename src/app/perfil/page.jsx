@@ -10,7 +10,7 @@ import { getUserById } from "@/lib/data"
 
 async function Perfil() {
   const session = await auth()
-  
+
   if (!session?.user) {
     return (
       <div className="min-h-screen flex flex-col">
@@ -37,12 +37,10 @@ async function Perfil() {
           </div>
 
           <div className="grid md:grid-cols-[160px_auto]">
-            <img 
-              src={user.image || '/images/avatar-80.png'} 
-              // src={user.image || '../../../public/images/avatar-80.png'} 
-
-              className="size-36" 
-              alt="Imagen de usuario" 
+            <img
+              src={user.image || '/images/avatar-80.png'}
+              className="size-36"
+              alt="Imagen de usuario"
             />
 
             <div className="flex flex-col gap-1">
@@ -79,7 +77,7 @@ async function Perfil() {
             icon={<Sparkles className="h-5 w-5 text-yellow-500" />}
           />
           <PerfilLink
-          label="Notificaciones"
+            label="Notificaciones"
             href="/notificaciones"
             icon={<BellRing className="h-5 w-5 text-blue-500" />}
           />

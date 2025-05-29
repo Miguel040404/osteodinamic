@@ -12,7 +12,6 @@ async function Users() {
     const session = await auth()
     const users = await getUsers()
 
-
     return (
         <div>
             <Modal openElement={

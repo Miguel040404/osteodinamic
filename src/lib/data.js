@@ -4,15 +4,12 @@ import prisma from "@/lib/prisma"
 
 
 // ----------------------------  USERS ---------------------------
-
-
 export async function getUsers() {
     const users = await prisma.user.findMany({
         // include: { posts: true }
     });
     return users
 }
-
 
 export async function getUserById(id) {
     const user = await prisma.user.findUnique({
@@ -21,14 +18,6 @@ export async function getUserById(id) {
     });
     return user
 }
-
-// export async function getUserByPhone(phone) {
-//     const user = await prisma.user.findUnique({
-//         where: { phone }
-//     });
-//     return user
-// }
-
 
 export async function getUserByPhone(phone) {
   try {
