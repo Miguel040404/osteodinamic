@@ -60,8 +60,10 @@ async function Perfil() {
 
         {user.role === 'ADMIN' && (
           <>
-            <h1 className="text-xl font-bold mt-15">Lista de usuarios</h1>
-            <Users />
+            <details className="mt-15">
+              <summary className="text-xl font-bold cursor-pointer">Lista de usuarios</summary>
+              <Users />
+            </details>
           </>
         )}
 

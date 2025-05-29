@@ -104,8 +104,18 @@ function RegisterForm() {
                     type="text"
                     name="name"
                     placeholder="Juan"
-                    pattern="[a-zA-Z\s]+"
-                    title="Solo se permiten letras y espacios"
+                    pattern="[a-zA-ZáéíóúÁÉÍÓÚ\s]+"
+                    title="Solo se permiten letras, tildes y espacios"
+                    className="w-full p-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+            </div>
+            <div className="flex flex-col gap-1">
+                <label htmlFor="address" className="text-sm font-medium text-slate-700">Direccion</label>
+                <input
+                    id="address"
+                    type="text"
+                    name="address"
+                    placeholder="Calle 123"
                     className="w-full p-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
             </div>

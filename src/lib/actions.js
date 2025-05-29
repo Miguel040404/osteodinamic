@@ -293,6 +293,7 @@ export async function cancelarReserva(horarioId, tipo) {
 //NO FUNKA
 export async function register(prevState, formData) {
   const name = formData.get('name');
+  const address = formData.get('address');
   const phone = formData.get('phone');
   const password = formData.get('password');
 
@@ -322,6 +323,7 @@ export async function register(prevState, formData) {
     await prisma.user.create({
       data: {
         name,
+        address,
         phone,
         password: hashedPassword,
         role: 'USER' // Asignar rol por defecto
@@ -427,6 +429,7 @@ export async function newUser(prevState, formData) {
 export async function editUser(prevState, formData) {
   const id = formData.get('id')
   const name = formData.get('name')
+  const address = formData.get('address')
   const email = formData.get('email')
   const image = formData.get('image');
   const phone = formData.get('phone')
@@ -476,6 +479,7 @@ export async function editUser(prevState, formData) {
       where: { id },
       data: {
         name,
+        address,
         email,
         image,
         phone,
@@ -569,6 +573,29 @@ export async function crearNotificacion(formData) {
 
   redirect('/notificaciones')
 }
+//---------------- EDITAR NOTIFICACION ------------------
+
+export async function editarNotificacion(id, formData) {
+  const session = await auth()
+
+  if (!session?.user || session.user.role !== 'ADMIN') {
+    throw new Error('No autorizado')
+  }
+
+  const title = formData.get('title')
+  const message = formData.get('message')
+
+  await prisma.notification.update({
+    where: { id },
+    data: {
+      title,
+      message,
+    },
+  })
+
+  redirect('/notificaciones')
+}
+
 
 //---------------- ELIMINAR NOTIFICACION ------------------
 export async function eliminarNotificacion(id) {
@@ -625,54 +652,3 @@ export async function authenticate(prevState, formData) {
     return { error: error.message || 'server_error' };
   }
 }
-
-// export async function authenticate(prevState, formData) {
-//   try {
-//     const phone = formData.get('phone');
-//     const password = formData.get('password');
-//     const callbackUrl = formData.get('callbackUrl') || '/home';
-
-//     // Validación del servidor
-//     if (!phone || !/^\d{9}$/.test(phone)) {
-//       throw new Error('invalid_format');
-//     }
-
-//     const user = await getUserByPhone(phone);
-
-//     if (!user) {
-//       throw new Error('invalid_credentials');
-//     }
-
-//     const matchPassword = await bcrypt.compare(password, user.password);
-
-//     if (!matchPassword) {
-//       throw new Error('invalid_credentials');
-//     }
-
-
-//     if (user && matchPassword)  // && user.emailVerified
-//     {
-//       await signIn('credentials',
-//         {
-//           phone, password,
-//           redirectTo: globalThis.callbackUrl
-//         })
-//       return { success: "Inicio de sesión correcto" }
-//     } else {
-//       return { error: 'Credenciales incorrectas.' }
-//     }
-
-//   } catch (error) {
-//     console.error('Auth Error:', error);
-
-//     if (error instanceof AuthError) {
-//       switch (error.type) {
-//         case 'CredentialsSignin':
-//           return { error: 'invalid_credentials' };
-//         default:
-//           return { error: 'server_error' };
-//       }
-//     }
-//     return { error: error.message || 'server_error' };
-//   }
-// }

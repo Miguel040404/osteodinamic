@@ -79,6 +79,16 @@ export default function UserModificar({ user, sessionUser }) {
                 </div>
 
                 <div>
+                    <label className="block font-medium mb-2">Dirección</label>
+                    <input
+                        type="text"
+                        name="address"
+                        defaultValue={user.address}
+                        className="w-full p-2 border rounded"
+                    />
+                </div>
+
+                <div>
                     <label className="block font-medium mb-2">Teléfono</label>
                     <input
                         type="tel"
