@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import { UserIcon } from "lucide-react";
 
 function UserVer({ user }) {
@@ -12,30 +11,6 @@ function UserVer({ user }) {
             alt="Imagen de usuario"
             className="w-24 h-24 rounded-full border object-cover shadow-sm"
           />
-=======
-function UserVer({ user }) {
-    return (
-        <div>
-            <div className="grid md:grid-cols-[80px_auto]">
-                <img src={user.image || '/images/avatar-80.png'} alt="Imagen de usuario" width={192} />
-
-                <div>
-                    <h1 className="text-xl">{user.name}</h1>
-                    <p className="text-xs text-gray-500">email: {user.email}</p>
-                </div>
-            </div>
-
-            <p className="font-bold my-4">Post realizados</p>
-            <p className="flex flex-col gap-1">
-                {user.posts
-                    ?.sort((a, b) => a.slug.localeCompare(b.slug))
-                    .map(post =>
-                        <span key={post.id} className="">
-                            {post.title}
-                        </span>
-                    )}
-            </p>
->>>>>>> 7508182c224d935fe67bd522edc67d0f573480d4
         </div>
 
         {/* Datos del usuario */}

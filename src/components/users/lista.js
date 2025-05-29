@@ -11,7 +11,6 @@ async function Users() {
   const session = await auth();
   const users = await getUsers();
 
-<<<<<<< HEAD
   return (
     <div className="space-y-4 mt-4">
 
@@ -26,16 +25,6 @@ async function Users() {
           <RegisterForm />
         </Modal>
       </div>
-=======
-    return (
-        <div>
-            <Modal openElement={
-                <div className='justify-self-end mb-2 mr-1 size-8 grid place-content-center rounded-full border border-green-500 text-green-700 bg-green-200 hover:bg-green-500 hover:text-white hover:cursor-pointer'>
-                    <PlusIcon className='size-4' />
-                </div>}>
-                <RegisterForm />
-            </Modal>
->>>>>>> 7508182c224d935fe67bd522edc67d0f573480d4
 
       <div className="divide-y border rounded-md overflow-hidden">
         {users
