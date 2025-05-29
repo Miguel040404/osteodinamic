@@ -30,6 +30,7 @@ model User {
   reservas      Reserva[]
   sessions      Session[]
   notifications Notification[]
+  normas        Norma[]
 }
 
 model Account {
@@ -103,4 +104,16 @@ model Notification {
   createdBy   String
 
   creator     User     @relation(fields: [createdBy], references: [id], onDelete: Cascade)
+}
+
+model Norma {
+  id          String   @id @default(cuid())
+  titulo      String
+  contenido   String   // Puedes usar Markdown, HTML o texto plano
+  publicada   Boolean  @default(true)
+  creadaEn    DateTime @default(now())
+  actualizada DateTime @updatedAt
+
+  autorId     String?
+  autor       User?    @relation(fields: [autorId], references: [id], onDelete: SetNull)
 }
