@@ -1,13 +1,23 @@
+import Footer from "@/components/footer";
 import ListaHorarios from "@/components/horarios/lista";
 import { Suspense } from "react";
 
 export default function ClasePage() {
   return (
-    <div className="max-w-3xl mx-auto">
-      <h1 className="text-2xl font-bold mb-6">Lista de clases de Rehabilitación funcional</h1>
-      <Suspense fallback={<p>Cargando horarios...</p>}>
-        <ListaHorarios tipo="Rehabilitacion_funcional" />
-      </Suspense>
+    <div className="min-h-screen flex flex-col">
+      <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <Suspense fallback={
+          <div className="flex justify-center py-12">
+            <p className="text-lg">Cargando horarios...</p>
+          </div>
+        }>
+          <ListaHorarios tipo="Rehabilitacion_funcional" />
+        </Suspense>
+      </main>
+
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <Footer />
+      </div>
     </div>
   );
 }

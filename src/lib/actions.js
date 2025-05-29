@@ -557,22 +557,36 @@ export async function authenticate(prevState, formData) {
 }
 
 
-// lib/data.js
-
+// clases contadas
 export async function getClassCounts() {
   try {
-    const counts = await prisma.horario.groupBy({
-      by: ['tipo'],
-      _count: {
-        _all: true
+    // Obtener todos los horarios con el conteo de sus reservas
+    const horariosConReservas = await prisma.horario.findMany({
+      include: {
+        _count: {
+          select: { reservas: true }
+        }
       }
     });
 
-    // Transform counts to object format
-    return counts.reduce((acc, item) => {
-      acc[item.tipo.toLowerCase()] = item._count._all;
+    // Filtrar solo los horarios que tienen menos de 6 reservas
+    const horariosDisponibles = horariosConReservas.filter(
+      horario => horario._count.reservas < 6
+    );
+
+    // Agrupar manualmente por tipo
+    const counts = horariosDisponibles.reduce((acc, horario) => {
+      const tipo = horario.tipo.toLowerCase();
+      acc[tipo] = (acc[tipo] || 0) + 1;
       return acc;
     }, {});
+
+    // Asegurar que todos los tipos tengan un valor
+    return {
+      pilates: counts.pilates || 0,
+      rehabilitacion_funcional: counts.rehabilitacion_funcional || 0,
+      entrenamiento_personal: counts.entrenamiento_personal || 0
+    };
   } catch (error) {
     console.error("Error fetching class counts:", error);
     return {
