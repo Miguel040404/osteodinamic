@@ -368,54 +368,139 @@ export async function newUser(prevState, formData) {
 // editUser------------------------
 
 // // FUNKA
+// export async function editUser(prevState, formData) {
+//   const id = formData.get('id')
+//   const name = formData.get('name')
+//   const address = formData.get('address')
+//   const email = formData.get('email')
+//   const image = formData.get('image');
+//   const phone = formData.get('phone')
+//   const role = formData.get('role')
+//   const password = formData.get('password')
+
+//   const nameRegex = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/;
+//   if (!nameRegex.test(name)) {
+//     return { error: 'El nombre solo puede contener letras y espacios' };
+//   }
+
+//   // Validar si el nombre ya existe
+//   const existingUserByName = await prisma.user.findFirst({
+//     where: {
+//       name,
+//       NOT: { id }
+//     }
+//   });
+
+//   if (existingUserByName) {
+//     return { error: 'Este nombre ya está registrado' };
+//   }
+
+//   const phoneRegex = /^[0-9]+$/;
+//   if (!phoneRegex.test(phone)) {
+//     return { error: 'El teléfono solo puede contener números' };
+//   }
+//   // Validar si el teléfono ya existe
+//   if (phone) {
+//     const existingUserByPhone = await prisma.user.findFirst({
+//       where: {
+//         phone,
+//         NOT: { id }
+//       }
+//     });
+
+//     if (existingUserByPhone) {
+//       return { error: 'Este número de teléfono ya está registrado' };
+//     }
+//   }
+//   let hashedPassword
+//   if (password)
+//     hashedPassword = await bcrypt.hash(password, 10)
+//   // Actualizar
+//   try {
+//     await prisma.user.update({
+//       where: { id },
+//       data: {
+//         name,
+//         address,
+//         email,
+//         image,
+//         phone,
+//         ...(password && { password: hashedPassword }),
+//         ...(role && { role })
+//       }
+//     });
+
+//     revalidatePath('/perfil')
+//     revalidatePath('/users')
+//     return { success: 'Usuario actualizado correctamente' }
+//   } catch (error) {
+//     console.error("Error updating user:", error)
+//     return { error: 'Error al actualizar el usuario' }
+//   }
+// }
 export async function editUser(prevState, formData) {
   const id = formData.get('id')
   const name = formData.get('name')
   const address = formData.get('address')
   const email = formData.get('email')
-  const image = formData.get('image');
+  const image = formData.get('image')
   const phone = formData.get('phone')
   const role = formData.get('role')
   const password = formData.get('password')
 
-  const nameRegex = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/;
+  const nameRegex = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/
   if (!nameRegex.test(name)) {
-    return { error: 'El nombre solo puede contener letras y espacios' };
+    return { error: 'El nombre solo puede contener letras y espacios' }
   }
 
   // Validar si el nombre ya existe
   const existingUserByName = await prisma.user.findFirst({
     where: {
       name,
-      NOT: { id }
-    }
-  });
+      NOT: { id },
+    },
+  })
 
   if (existingUserByName) {
-    return { error: 'Este nombre ya está registrado' };
+    return { error: 'Este nombre ya está registrado' }
   }
 
-  const phoneRegex = /^[0-9]+$/;
+  const phoneRegex = /^[0-9]+$/
   if (!phoneRegex.test(phone)) {
-    return { error: 'El teléfono solo puede contener números' };
+    return { error: 'El teléfono solo puede contener números' }
   }
+
   // Validar si el teléfono ya existe
   if (phone) {
     const existingUserByPhone = await prisma.user.findFirst({
       where: {
         phone,
-        NOT: { id }
-      }
-    });
+        NOT: { id },
+      },
+    })
 
     if (existingUserByPhone) {
-      return { error: 'Este número de teléfono ya está registrado' };
+      return { error: 'Este número de teléfono ya está registrado' }
     }
   }
+
   let hashedPassword
-  if (password)
+  if (password) {
     hashedPassword = await bcrypt.hash(password, 10)
-  // Actualizar
+  }
+
+  // Obtener el usuario actual
+  const user = await prisma.user.findUnique({ where: { id } })
+  if (!user) {
+    return { error: 'Usuario no encontrado' }
+  }
+
+  // Prevenir cambio de rol si es el jefe
+  const isJefe = id === 'cmaf8dd9v0002vhiwojgid5lp'
+  if (isJefe && role && role !== user.role) {
+    return { error: 'No se puede cambiar el rol del jefe.' }
+  }
+
   try {
     await prisma.user.update({
       where: { id },
@@ -426,31 +511,65 @@ export async function editUser(prevState, formData) {
         image,
         phone,
         ...(password && { password: hashedPassword }),
-        ...(role && { role })
-      }
-    });
+        ...(!isJefe && role && { role }),
+      },
+    })
 
     revalidatePath('/perfil')
     revalidatePath('/users')
     return { success: 'Usuario actualizado correctamente' }
   } catch (error) {
-    console.error("Error updating user:", error)
+    console.error('Error updating user:', error)
     return { error: 'Error al actualizar el usuario' }
   }
 }
 
 // ------------------------ deleteUser------------------------
+// export async function deleteUser(prevState, formData) {
+//   try {
+//     const id = formData.get('id')
+
+//     await prisma.user.delete({
+//       where: { id },
+//     })
+//     revalidatePath('/dashboard')
+//     return { success: 'Usuario eliminado' }
+//   } catch (error) {
+//     return { error }
+//   }
+// }
+
 export async function deleteUser(prevState, formData) {
   try {
     const id = formData.get('id')
 
+    // Mensaje especial si es el jefe (antes de consultar la base de datos)
+    if (id === 'cmaf8dd9v0002vhiwojgid5lp') {
+      return { error: 'No se puede eliminar al jefe.' }
+    }
+
+    // Obtener el usuario para verificar su rol
+    const user = await prisma.user.findUnique({
+      where: { id },
+    })
+
+    if (!user) {
+      return { error: 'Usuario no encontrado.' }
+    }
+
+    // Evitar eliminación si el rol es ADMIN
+    if (user.role === 'ADMIN') {
+      return { error: 'No se puede eliminar un usuario con rol ADMIN.' }
+    }
+
     await prisma.user.delete({
       where: { id },
     })
+
     revalidatePath('/dashboard')
     return { success: 'Usuario eliminado' }
   } catch (error) {
-    return { error }
+    return { error: error.message || 'Error al eliminar el usuario' }
   }
 }
 
