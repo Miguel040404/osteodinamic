@@ -1,5 +1,5 @@
-
 'use client'
+
 import { forwardRef, useImperativeHandle, useRef } from "react";
 
 const Modal = forwardRef(({ openElement, children }, ref) => {

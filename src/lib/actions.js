@@ -1,4 +1,5 @@
 'use server'
+
 import cloudinary from "@/lib/cloudinary"
 import bcrypt from 'bcryptjs'
 import prisma from '@/lib/prisma'
@@ -261,36 +262,6 @@ export async function cancelarReserva(horarioId, tipo) {
   revalidatePath(`/clases/${tipo}`);
 }
 
-
-// REGISTER qie encripta
-// export async function register(prevState, formData) {
-//     const name = formData.get('name')
-//     const phone = formData.get('phone')
-//     const password = formData.get('password')
-
-//     // Comprobamos si el usuario ya está registrado
-//     const user = await getUserByPhone(phone);
-
-//     if (user) {
-//         return { error: 'El email ya está registrado' }
-//     }
-
-//     // Encriptamos password 
-//     const hashedPassword = await bcrypt.hash(password, 10)
-
-//     // Guardamos credenciales en base datos
-//     await prisma.user.create({
-//         data: {
-//             name,
-//             phone,
-//             password: hashedPassword
-//         }
-//     })
-
-//     return { success: "Registro correcto" }
-// }
-
-//NO FUNKA
 export async function register(prevState, formData) {
   const name = formData.get('name');
   const address = formData.get('address');
@@ -302,10 +273,6 @@ export async function register(prevState, formData) {
     if (!phone.match(/^\d{9}$/)) {
       return { error: 'El teléfono debe tener 9 dígitos' };
     }
-
-    // if (password.length < 6) {
-    //   return { error: 'La contraseña debe tener al menos 6 caracteres' };
-    // }
 
     // Verificar usuario existente
     const existingUser = await prisma.user.findUnique({
@@ -337,31 +304,6 @@ export async function register(prevState, formData) {
     return { error: 'Error al crear el usuario. Inténtalo de nuevo.' };
   }
 }
-// FUNKA
-
-// export async function register(prevState, formData) {
-//     const name = formData.get('name')
-//     const phone = formData.get('phone')
-//     const password = formData.get('password')
-
-//     // Comprobamos si el usuario ya está registrado
-//     const user = await getUserByPhone(phone);
-
-//     if (user) {
-//         return { error: 'El email ya está registrado' }
-//     }
-
-//     // Guardamos credenciales en base datos sin encriptar
-//     await prisma.user.create({
-//         data: {
-//             name,
-//             phone,
-//             password
-//         }
-//     })
-
-//     return { success: "Registro correcto" }
-// }
 
 // LOGOUT
 export async function logout() {
@@ -497,46 +439,7 @@ export async function editUser(prevState, formData) {
   }
 }
 
-// NO FUNKA
-// const SECRET_KEY = process.env.NEXT_PUBLIC_CRYPTO_SECRET || 'clave-secreta'
-
-// export async function editUser(prevState, formData) {
-//     const id = formData.get('id')
-//     const name = formData.get('name')
-//     const phone = formData.get('phone')
-//     const role = formData.get('role')
-//     const rawPassword = formData.get('password')
-
-//     if (!phone.match(/^\d{9}$/)) {
-//         return { error: 'Teléfono inválido (9 dígitos requeridos)' }
-//     }
-
-//     if (!rawPassword || rawPassword.length < 6) {
-//         return { error: 'La contraseña debe tener mínimo 6 caracteres' }
-//     }
-
-//     const encryptedPassword = CryptoJS.AES.encrypt(rawPassword, SECRET_KEY).toString()
-
-//     try {
-//         await prisma.user.update({
-//             where: { id },
-//             data: {
-//                 name,
-//                 phone,
-//                 role,
-//                 password: encryptedPassword
-//             }
-//         })
-
-//         revalidatePath('/perfil')
-//         revalidatePath('/users')
-//         return { success: 'Usuario actualizado' }
-//     } catch (error) {
-//         console.error("Error actualizando usuario:", error)
-//         return { error: 'Error al actualizar el usuario' }
-//     }
-// }
-
+// ------------------------ deleteUser------------------------
 export async function deleteUser(prevState, formData) {
   try {
     const id = formData.get('id')

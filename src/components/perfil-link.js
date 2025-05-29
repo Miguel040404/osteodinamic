@@ -13,6 +13,7 @@ function PerfilLink({ label, href, icon, onClick }) {
     }
   };
 
+<<<<<<< HEAD
   return (
     <Link
       href={href || "#"}
@@ -27,6 +28,18 @@ function PerfilLink({ label, href, icon, onClick }) {
       </div>
     </Link>
   );
+=======
+    return (
+        <Link
+            href={href || "#"}
+            onClick={handleClick}
+            className={`peer-not-checked:hidden flex gap-2 items-center p-4 rounded-full text-lg font-semibold active:bg-amber-700 hover:bg-slate-600 hover:text-white transition duration-300 ${pathname.startsWith(href) && 'bg-slate-300 text-black'
+                }`}
+        >
+            {icon} <span>{label}</span>
+        </Link>
+    );
+>>>>>>> 7508182c224d935fe67bd522edc67d0f573480d4
 }
 
 export default PerfilLink;

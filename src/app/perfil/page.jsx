@@ -32,6 +32,7 @@ export default async function Perfil() {
     <div className="min-h-screen flex flex-col bg-gray-50">
       <Header />
 
+<<<<<<< HEAD
       <main className="flex-1 container mx-auto px-4 py-10">
         {/* Perfil Card */}
         <section className="max-w-3xl mx-auto bg-white rounded-2xl p-6 sm:p-10 mb-10">
@@ -40,6 +41,19 @@ export default async function Perfil() {
               src={user.image || '/images/avatar-80.png'}
               alt="Imagen de usuario"
               className="w-36 h-36 rounded-full object-cover border-4 border-blue-100"
+=======
+      <main className="flex-1 container mx-auto px-4 py-12 md:py-20 mb-10">
+        <div className="max-w-2xl mx-auto bg-white shadow rounded-lg p-6 mb-10 relative">
+          <div className="flex justify-between">
+            <h1 className="text-3xl font-bold mb-4">Perfil</h1>
+          </div>
+
+          <div className="grid md:grid-cols-[160px_auto]">
+            <img
+              src={user.image || '/images/avatar-80.png'}
+              className="size-36"
+              alt="Imagen de usuario"
+>>>>>>> 7508182c224d935fe67bd522edc67d0f573480d4
             />
 
             <div className="flex-1 space-y-2 text-center sm:text-left">
@@ -80,6 +94,14 @@ export default async function Perfil() {
             icon={<BookOpenCheck className="h-5 w-5 text-green-500" />}
           />
           <PerfilLink
+<<<<<<< HEAD
+=======
+            label="Novedades"
+            href="/novedades"
+            icon={<Sparkles className="h-5 w-5 text-yellow-500" />}
+          />
+          <PerfilLink
+>>>>>>> 7508182c224d935fe67bd522edc67d0f573480d4
             label="Notificaciones"
             href="/notificaciones"
             icon={<BellRing className="h-5 w-5 text-blue-500" />}

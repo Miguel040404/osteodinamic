@@ -5,8 +5,6 @@ import { PlusIcon, RefreshCwIcon } from 'lucide-react';
 import { toast } from 'sonner';
 import CheckRadio from '../check-radio';
 
-
-
 export default function UserInsertar() {
     const formId = useId()
     const [state, action, pending] = useActionState(newUser, {})
@@ -34,7 +32,7 @@ export default function UserInsertar() {
                 }
             </button>
 
- <div className='grid place-items-center grid-cols-[repeat(auto-fill,minmax(40px,1fr))]'>
+            <div className='grid place-items-center grid-cols-[repeat(auto-fill,minmax(40px,1fr))]'>
                 {/* Avatares 00 .. 79 */}
                 {[...Array(80)].map((_, index) => (
                     <CheckRadio key={index}

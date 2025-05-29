@@ -1,45 +1,10 @@
 'use client'
+
 import { useActionState, useEffect, useRef } from 'react'
 import { crearHorario, editarHorario, eliminarHorario } from '@/lib/actions'
 import { toast } from 'sonner'
 import Modal from './modal'
 
-// Modal Crear viejo
-// export function CrearHorarioModal({ tipo }) {
-//   const modalRef = useRef()
-//   const formRef = useRef()
-//   const [state, formAction] = useActionState(crearHorario, null)
-
-//   useEffect(() => {
-//     if (state?.success) {
-//       modalRef.current?.closeModal()
-//       formRef.current?.reset()
-//       toast.success('Horario creado!')
-//     }
-//     if (state?.error) toast.error(state.error)
-//   }, [state])
-
-//   return (
-//     <Modal
-//       ref={modalRef}
-//       openElement={
-//         <button className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg">
-//           + Nuevo Horario
-//         </button>
-//       }
-//     >
-//       <form ref={formRef} action={formAction} className="space-y-4">
-//         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-//           {/* Campos del formulario... */}
-//         </div>
-//         <input type="hidden" name="tipo" value={tipo} />
-//         <button type="submit" className="w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700">
-//           Crear Horario
-//         </button>
-//       </form>
-//     </Modal>
-//   )
-// }
 export function CrearHorarioModal({ tipo }) {
   const modalRef = useRef();
   const formRef = useRef();
@@ -83,10 +48,10 @@ export function CrearHorarioModal({ tipo }) {
             defaultValue=""
           >
             <option value="" disabled>Selecciona una hora</option>
-            {["08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", 
+            {["08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00",
               "15:00", "16:00", "17:00", "18:00", "19:00", "20:00"].map(hora => (
-              <option key={hora} value={hora}>{hora}</option>
-            ))}
+                <option key={hora} value={hora}>{hora}</option>
+              ))}
           </select>
         </div>
 
@@ -99,7 +64,7 @@ export function CrearHorarioModal({ tipo }) {
           >
             Crear Horario
           </button>
-          
+
           {state?.error && (
             <p className="text-red-500 text-sm text-center animate-fade-in">
               {state.error}
@@ -154,10 +119,10 @@ export function EditarHorarioModal({ horario }) {
             defaultValue={horario.hora}
             className="flex-1 px-3 py-2 border rounded-lg bg-white"
           >
-            {["08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", 
+            {["08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00",
               "16:00", "17:00", "18:00", "19:00", "20:00"].map(h => (
-              <option key={h} value={h}>{h}</option>
-            ))}
+                <option key={h} value={h}>{h}</option>
+              ))}
           </select>
         </div>
 
