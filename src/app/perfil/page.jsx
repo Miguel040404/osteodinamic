@@ -14,7 +14,7 @@ export default async function Perfil() {
   if (!session?.user) {
     return (
       <div className="min-h-screen flex flex-col">
-        <Header />
+        {/* <Header /> */}
         <main className="flex-1 container mx-auto px-4 py-12">
           <p className="text-center text-red-500 text-lg font-semibold">
             No estás autenticado.
@@ -30,7 +30,7 @@ export default async function Perfil() {
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
-      <Header />
+      {/* <Header /> */}
 
       <main className="flex-1 container mx-auto px-4 py-10">
         {/* Perfil Card */}
@@ -48,10 +48,10 @@ export default async function Perfil() {
                 <EditarPerfilButton user={usuario} />
               </div>
               <p className="text-gray-600">
-                Direccion: <span className="font-medium">{usuario.address}</span>
+                Dirección: <span className="font-medium">{usuario.address}</span>
               </p>
               <p className="text-gray-600">
-                Telefono: <span className="font-medium">{usuario.phone}</span>
+                Teléfono: <span className="font-medium">{usuario.phone}</span>
               </p>
               <span className="inline-block mt-2 px-3 py-1 text-xs font-medium bg-blue-100 text-blue-700 rounded-full">
                 Rol: {user.role}

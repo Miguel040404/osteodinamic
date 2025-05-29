@@ -555,3 +555,30 @@ export async function authenticate(prevState, formData) {
     return { error: error.message || 'server_error' };
   }
 }
+
+
+// lib/data.js
+
+export async function getClassCounts() {
+  try {
+    const counts = await prisma.horario.groupBy({
+      by: ['tipo'],
+      _count: {
+        _all: true
+      }
+    });
+
+    // Transform counts to object format
+    return counts.reduce((acc, item) => {
+      acc[item.tipo.toLowerCase()] = item._count._all;
+      return acc;
+    }, {});
+  } catch (error) {
+    console.error("Error fetching class counts:", error);
+    return {
+      pilates: 0,
+      rehabilitacion_funcional: 0,
+      entrenamiento_personal: 0
+    };
+  }
+}
