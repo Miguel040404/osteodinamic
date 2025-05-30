@@ -11,7 +11,7 @@ export default async function Home() {
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-gray-50 to-indigo-50">
       <Header />
-      
+
       {/* Main Content */}
       <main className="flex-grow container mx-auto px-4 py-8 max-w-4xl">
         <div className="flex justify-between items-center mb-8">
@@ -33,17 +33,17 @@ export default async function Home() {
           <Link href="/clases/pilates/pilates">
             <div className="group relative h-64 rounded-2xl overflow-hidden shadow-lg cursor-pointer transform transition-all duration-300 hover:scale-105">
               <div className="absolute inset-0">
-                <Image 
-                  src="/images/PILATES-scaled.jpg" 
+                <Image
+                  src="/images/PILATES-scaled.jpg"
                   alt="Pilates"
                   layout="fill"
                   objectFit="cover"
                   className="transition-all duration-500 group-hover:scale-110 group-hover:blur-sm"
                 />
               </div>
-              
+
               <div className="absolute inset-0 bg-gradient-to-t from-blue-800 to-blue-600 opacity-80 transition-opacity duration-300 group-hover:opacity-70" />
-              
+
               <div className="absolute inset-0 flex flex-col justify-end p-6 text-white">
                 <h2 className="text-2xl font-bold mb-2">Pilates</h2>
                 <div className="flex justify-between items-center">
@@ -65,15 +65,15 @@ export default async function Home() {
           <Link href="/clases/rehabilitacion_funcional/rehabilitacion_funcional">
             <div className="group relative h-64 rounded-2xl overflow-hidden shadow-lg cursor-pointer transform transition-all duration-300 hover:scale-105">
               <div className="absolute inset-0">
-                <Image 
-                  src="/images/rehabilitacion.jpg" 
+                <Image
+                  src="/images/rehabilitacion.jpg"
                   alt="Rehabilitación Funcional"
                   layout="fill"
                   objectFit="cover"
                   className="transition-all duration-500 group-hover:scale-110 group-hover:blur-sm"
                 />
               </div>
-              
+
               <div className="absolute inset-0 bg-gradient-to-t from-green-800 to-green-600 opacity-80 transition-opacity duration-300 group-hover:opacity-70" />
               <div className="absolute inset-0 flex flex-col justify-end p-6 text-white">
                 <h2 className="text-2xl font-bold mb-2">Rehabilitación Funcional</h2>
@@ -96,15 +96,15 @@ export default async function Home() {
           <Link href="/clases/entrenamiento_personal/entrenamiento_personal">
             <div className="group relative h-64 rounded-2xl overflow-hidden shadow-lg cursor-pointer transform transition-all duration-300 hover:scale-105">
               <div className="absolute inset-0">
-                <Image 
-                  src="/images/entrenamiento.jpg" 
+                <Image
+                  src="/images/entrenamiento.jpg"
                   alt="Entrenamiento Personal"
                   layout="fill"
                   objectFit="cover"
                   className="transition-all duration-500 group-hover:scale-110 group-hover:blur-sm"
                 />
               </div>
-              
+
               <div className="absolute inset-0 bg-gradient-to-t from-purple-800 to-purple-600 opacity-80 transition-opacity duration-300 group-hover:opacity-70" />
               <div className="absolute inset-0 flex flex-col justify-end p-6 text-white">
                 <h2 className="text-2xl font-bold mb-2">Entrenamiento Personal</h2>

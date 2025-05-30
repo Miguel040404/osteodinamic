@@ -57,42 +57,29 @@ export default async function AgendaPage() {
 
 // Componente para vista de administrador
 function AdminView({ reservas }) {
-  // Ordenar y agrupar reservas
-  reservas = reservas.sort((a, b) =>
-    ordenDias[a.horario.dia] - ordenDias[b.horario.dia]
-  );
-
-  // Agrupar por horario
-  const horariosAgrupados = reservas.reduce((acc, reserva) => {
-    const key = `${reserva.horario.dia}-${reserva.horario.hora}`;
-    if (!acc[key]) {
-      acc[key] = {
-        horario: reserva.horario,
-        usuarios: []
-      };
+  // Agrupar reservas por tipo
+  const gruposPorTipo = reservas.reduce((acc, reserva) => {
+    const tipo = reserva.horario.tipo;
+    if (!acc[tipo]) {
+      acc[tipo] = [];
     }
-    acc[key].usuarios.push(reserva.user);
+    acc[tipo].push(reserva);
     return acc;
   }, {});
+
+  // Ordenar los tipos
+  const tiposOrdenados = Object.keys(gruposPorTipo).sort();
 
   return (
     <div className="bg-white rounded-xl shadow-lg p-6">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
         <div>
           <h2 className="text-xl font-bold text-gray-900">Todas las reservas</h2>
-          <p className="text-gray-600 mt-1">Agrupadas por horario</p>
-        </div>
-        <div className="mt-4 md:mt-0">
-          <div className="flex items-center gap-2 text-sm">
-            <div className="w-3 h-3 rounded-full bg-blue-500"></div>
-            <span>Entrenamiento</span>
-            <div className="w-3 h-3 rounded-full bg-purple-500 ml-2"></div>
-            <span>Clase grupal</span>
-          </div>
+          <p className="text-gray-600 mt-1">Agrupadas por tipo de actividad</p>
         </div>
       </div>
 
-      {Object.values(horariosAgrupados).length === 0 ? (
+      {tiposOrdenados.length === 0 ? (
         <div className="text-center py-12">
           <div className="text-gray-400 mb-4">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -103,68 +90,92 @@ function AdminView({ reservas }) {
           <p className="text-gray-600">Todavía no se han realizado reservas para ningún horario.</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-          {Object.values(horariosAgrupados).map((grupo) => (
-            <div 
-              key={`${grupo.horario.dia}-${grupo.horario.hora}`} 
-              className={`border rounded-xl p-5 transition-all duration-300 hover:shadow-md ${
-                grupo.horario.tipo === "Entrenamiento" 
-                  ? "border-blue-200 bg-blue-50" 
-                  : "border-purple-200 bg-purple-50"
-              }`}
-            >
-              <div className="flex justify-between items-start mb-4">
-                <div>
-                  <div className="flex items-center gap-2 mb-1">
-                    <span className="font-bold text-lg">{grupo.horario.dia}</span>
-                    <span className="text-gray-500">|</span>
-                    <span className="font-semibold text-gray-700">{grupo.horario.hora}</span>
-                  </div>
-                  <div className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
-                    grupo.horario.tipo === "Entrenamiento" 
-                      ? "bg-blue-100 text-blue-800" 
-                      : "bg-purple-100 text-purple-800"
-                  }`}>
-                    {grupo.horario.tipo}
-                  </div>
-                </div>
-                <div className="bg-white rounded-full px-3 py-1 text-sm font-medium border">
-                  {grupo.usuarios.length} {grupo.usuarios.length === 1 ? "participante" : "participantes"}
-                </div>
-              </div>
+        <div className="space-y-10">
+          {tiposOrdenados.map((tipo) => {
+            // Agrupar horarios por dia-hora para este tipo
+            const horariosAgrupados = gruposPorTipo[tipo].reduce((acc, reserva) => {
+              const key = `${reserva.horario.dia}-${reserva.horario.hora}`;
+              if (!acc[key]) {
+                acc[key] = {
+                  horario: reserva.horario,
+                  usuarios: []
+                };
+              }
+              acc[key].usuarios.push(reserva.user);
+              return acc;
+            }, {});
+            
+            // Ordenar horarios por día y hora
+            const horariosOrdenados = Object.values(horariosAgrupados).sort((a, b) => {
+              const diaA = ordenDias[a.horario.dia];
+              const diaB = ordenDias[b.horario.dia];
+              if (diaA !== diaB) return diaA - diaB;
+              return a.horario.hora.localeCompare(b.horario.hora);
+            });
 
-              <div className="mt-4">
-                <h3 className="text-sm font-medium text-gray-700 mb-2">Asistentes:</h3>
-                <ul className="space-y-2">
-                  {grupo.usuarios.map((usuario) => (
-                    <li 
-                      key={usuario.id} 
-                      className="flex justify-between items-center bg-white rounded-lg px-3 py-2 border"
+            return (
+              <div key={tipo} className="border-b pb-8 last:border-b-0">
+                <h2 className="text-2xl font-bold text-gray-900 mb-6 pb-2 border-b">
+                  {tipo}
+                </h2>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                  {horariosOrdenados.map((grupo) => (
+                    <div 
+                      key={`${grupo.horario.dia}-${grupo.horario.hora}`} 
+                      className={`border rounded-xl p-5 transition-all duration-300 hover:shadow-md ${
+                        tipo === "Entrenamiento" 
+                          ? "border-blue-200 bg-blue-50" 
+                          : "border-purple-200 bg-purple-50"
+                      }`}
                     >
-                      <div className="flex items-center">
-                        <div className="bg-gray-200 border-2 border-dashed rounded-xl w-8 h-8 flex items-center justify-center mr-3">
-                          <span className="text-xs font-bold text-gray-500">
-                            {usuario.name.split(' ').map(n => n[0]).join('')}
-                          </span>
+                      <div className="flex justify-between items-start mb-4">
+                        <div>
+                          <div className="flex items-center gap-2 mb-1">
+                            <span className="font-bold text-lg">{grupo.horario.dia}</span>
+                            <span className="text-gray-500">|</span>
+                            <span className="font-semibold text-gray-700">{grupo.horario.hora}</span>
+                          </div>
+                          <div className="mt-2">
+                          </div>
                         </div>
-                        <span className="font-medium">{usuario.name}</span>
+                        <div className="bg-white rounded-full px-3 py-1 text-sm font-medium border">
+                          {grupo.usuarios.length} {grupo.usuarios.length === 1 ? "participante" : "participantes"}
+                        </div>
                       </div>
-                      <form action={cancelarReservaAdmin.bind(null, grupo.horario.id, grupo.horario.tipo, usuario.id)}>
-                        <button
-                          type="submit"
-                          className="text-red-500 hover:text-red-700 text-sm flex items-center"
-                        >
-                          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                            <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
-                          </svg>
-                        </button>
-                      </form>
-                    </li>
+
+                      <div className="mt-4">
+                        <h3 className="text-sm font-medium text-gray-700 mb-2">Asistentes:</h3>
+                        <ul className="space-y-2">
+                          {grupo.usuarios.map((usuario) => (
+                            <li 
+                              key={usuario.id} 
+                              className="flex justify-between items-center bg-white rounded-lg px-3 py-2 border"
+                            >
+                              <div className="flex items-center">
+                               
+                                <span className="font-medium">{usuario.name}</span>
+                              </div>
+                              <form action={cancelarReservaAdmin.bind(null, grupo.horario.id, grupo.horario.tipo, usuario.id)}>
+                                <button
+                                  type="submit"
+                                  className="text-red-500 hover:text-red-700 text-sm flex items-center"
+                                >
+                                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
+                                  </svg>
+                                </button>
+                              </form>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
                   ))}
-                </ul>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
     </div>
@@ -173,12 +184,26 @@ function AdminView({ reservas }) {
 
 // Componente para vista de usuario
 function UserView({ reservas }) {
+  // Ordenar reservas por día (Lunes a Viernes) y luego por hora
+  const reservasOrdenadas = [...reservas].sort((a, b) => {
+    const diaA = ordenDias[a.horario.dia] || 99; // 99 para días no definidos (como sábado/domingo)
+    const diaB = ordenDias[b.horario.dia] || 99;
+    
+    // Primero por día
+    if (diaA !== diaB) {
+      return diaA - diaB;
+    }
+    
+    // Luego por hora
+    return a.horario.hora.localeCompare(b.horario.hora);
+  });
+
   return (
     <div className="bg-white rounded-xl shadow-lg p-6">
       <div className="flex justify-between items-center mb-6">
         <div>
           <h2 className="text-xl font-bold text-gray-900">Mis reservas</h2>
-          <p className="text-gray-600 mt-1">Próximas sesiones programadas</p>
+          {/* <p className="text-gray-600 mt-1">Próximas sesiones programadas</p> */}
         </div>
         <div className="text-sm font-medium px-3 py-1 bg-green-100 text-green-800 rounded-full">
           {reservas.length} {reservas.length === 1 ? "reserva" : "reservas"}
@@ -194,13 +219,10 @@ function UserView({ reservas }) {
           </div>
           <h3 className="text-xl font-medium text-gray-900 mb-2">No tienes sesiones reservadas</h3>
           <p className="text-gray-600 mb-6">Reserva tu primera sesión para empezar tu entrenamiento.</p>
-          <button className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-lg transition duration-300">
-            Buscar horarios disponibles
-          </button>
         </div>
       ) : (
         <div className="space-y-4">
-          {reservas.map((reserva) => (
+          {reservasOrdenadas.map((reserva) => (
             <div 
               key={reserva.id}
               className={`flex flex-col md:flex-row justify-between items-start md:items-center p-5 rounded-xl border ${
@@ -230,20 +252,6 @@ function UserView({ reservas }) {
                 </div>
                 
                 <div className="flex flex-wrap items-center gap-4 text-sm">
-                  <div className="flex items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-gray-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                    </svg>
-                    <span className="text-gray-700">
-                      {new Date(reserva.fechaReal).toLocaleDateString('es-ES', { 
-                        weekday: 'long', 
-                        year: 'numeric', 
-                        month: 'long', 
-                        day: 'numeric' 
-                      })}
-                    </span>
-                  </div>
-                  
                   <div className="flex items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-gray-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />

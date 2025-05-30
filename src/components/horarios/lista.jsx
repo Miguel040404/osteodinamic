@@ -117,15 +117,16 @@ export default async function ListaHorarios({ tipo }) {
             return (
               <div key={dia} className="border rounded-xl bg-white shadow-md overflow-hidden">
                 {/* Cabecera del día */}
-                <div className={`p-5 bg-gradient-to-r ${
-                  dia === 'Lunes' ? 'from-blue-50 to-indigo-50' :
-                  dia === 'Martes' ? 'from-indigo-50 to-purple-50' :
-                  dia === 'Miércoles' ? 'from-purple-50 to-pink-50' :
-                  dia === 'Jueves' ? 'from-pink-50 to-red-50' :
-                  dia === 'Viernes' ? 'from-red-50 to-orange-50' :
-                  dia === 'Sábado' ? 'from-orange-50 to-yellow-50' :
-                  'from-yellow-50 to-green-50'
-                }`}>
+                  <div className={`p-5 ${
+                      dia === 'Lunes' ? 'bg-blue-100' :
+                      dia === 'Martes' ? 'bg-indigo-100' :
+                      dia === 'Miércoles' ? 'bg-purple-100' :
+                      dia === 'Jueves' ? 'bg-pink-100' :
+                      dia === 'Viernes' ? 'bg-red-100' :
+                      dia === 'Sábado' ? 'bg-orange-100' :
+                        'bg-yellow-100'
+                  }`}>
+
                   <div className="flex items-center justify-between">
                     <h2 className="text-xl font-semibold text-gray-900 flex items-center gap-3">
                       <Calendar className="w-6 h-6 text-indigo-600" />
@@ -149,15 +150,43 @@ export default async function ListaHorarios({ tipo }) {
                       return (
                         <div key={horario.id} className="p-6">
                           <div className="flex flex-col md:flex-row justify-between gap-6">
-                            <div className="flex items-start gap-4">
+                            <div className="flex items-start gap-4 flex-1">
                               <div className="bg-indigo-50 p-3 rounded-lg">
                                 <Clock className="w-6 h-6 text-indigo-600" />
                               </div>
-                              <div>
-                                <h3 className="text-lg font-bold text-gray-900">
-                                  {horario.hora}
-                                </h3>
-                                <div className="mt-2 flex flex-wrap gap-2">
+                              <div className="flex-1">
+                                <div className="flex flex-wrap justify-between gap-3">
+                                  <h3 className="text-lg font-bold text-gray-900">
+                                    {horario.hora}
+                                  </h3>
+                                  
+                                  {/* Estado de plazas - Movido junto al título */}
+                                  <div className="flex items-center gap-2">
+                                    <div className="flex flex-col items-end">
+                                      <span className={`text-sm font-semibold ${
+                                        lleno
+                                          ? 'text-red-600'
+                                          : pocasPlazas
+                                            ? 'text-amber-600'
+                                            : 'text-green-600'
+                                      }`}>
+                                        {plazasRestantes} / 6 plazas
+                                      </span>
+                                      <div className="w-24 h-2 bg-gray-200 rounded-full overflow-hidden mt-1">
+                                        <div 
+                                          className={`h-full ${
+                                            lleno ? 'bg-red-500' : 
+                                            pocasPlazas ? 'bg-amber-500' : 'bg-green-500'
+                                          }`} 
+                                          style={{ width: `${(plazasRestantes / 6) * 100}%` }}
+                                        ></div>
+                                      </div>
+                                    </div>
+                                    <Users className="w-5 h-5 text-gray-500" />
+                                  </div>
+                                </div>
+                                
+                                <div className="mt-3 flex flex-wrap gap-2">
                                   <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${
                                     tipo === 'Entrenamiento' 
                                       ? 'bg-blue-100 text-blue-800' 
@@ -168,134 +197,112 @@ export default async function ListaHorarios({ tipo }) {
                                 </div>
                               </div>
                             </div>
+                          </div>
 
-                            {/* Estado de plazas */}
-                            <div className="flex flex-col items-end">
-                              <div className="flex items-center gap-2">
-                                <div className="flex flex-col items-end">
-                                  <span className={`text-lg font-semibold ${
-                                    lleno
-                                      ? 'text-red-600'
-                                      : pocasPlazas
-                                        ? 'text-amber-600'
-                                        : 'text-green-600'
-                                  }`}>
-                                    {plazasRestantes} / 6 plazas
-                                  </span>
-                                  <div className="w-24 h-2 bg-gray-200 rounded-full overflow-hidden mt-1">
-                                    <div 
-                                      className={`h-full ${
-                                        lleno ? 'bg-red-500' : 
-                                        pocasPlazas ? 'bg-amber-500' : 'bg-green-500'
-                                      }`} 
-                                      style={{ width: `${(plazasRestantes / 6) * 100}%` }}
-                                    ></div>
+                          {/* Botones de acción - Reubicados debajo de la información principal */}
+                          <div className="mt-6 flex flex-col sm:flex-row justify-between items-start gap-4">
+                            {esAdmin && horario.reservas.length > 0 && (
+
+                             <details className="group w-full">
+                                <summary className="flex items-center gap-2 cursor-pointer text-indigo-600 hover:text-indigo-800 font-medium text-sm list-none">
+                                  <span>Ver usuarios ({horario.reservas.length})</span>
+                                  <ChevronDown className="w-4 h-4 group-open:hidden" />
+                                  <ChevronUp className="w-4 h-4 hidden group-open:block" />
+                                </summary>
+  
+                                <div className="mt-4 bg-gray-50 p-5 rounded-lg border border-gray-200">
+                                  <h4 className="text-sm font-medium text-gray-700 mb-4 flex items-center gap-2">
+                                    <User className="w-4 h-4" />
+                                    <span>Usuarios apuntados:</span>
+                                  </h4>
+    
+                                {/* Contenedor grid responsivo */}
+                                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                                    {horario.reservas.map((r, idx) => (
+                                      <div 
+                                        key={idx} 
+                                        className="flex items-center justify-between bg-white p-4 rounded-lg border border-gray-200 shadow-sm"
+                                      >
+                                        <div className="flex items-center gap-3">
+                                          <div className="bg-gray-200 border-2 border-dashed rounded-xl w-8 h-8 flex items-center justify-center">
+                                            <span className="text-xs font-bold text-gray-500">
+                                              {r.user?.name?.split(' ').map(n => n[0]).join('') || "UA"}
+                                            </span>
+                                          </div>
+                                            <span className="font-medium text-gray-800 truncate max-w-[120px]">
+                                              {r.user?.name || "Usuario anónimo"}
+                                            </span>
+                                        </div>
+          
+                                          <form action={cancelarReservaAdmin.bind(null, horario.id, tipo, r.userId)}>
+                                            <button
+                                              type="submit"
+                                              className="text-red-500 hover:text-red-700 p-1 rounded-full hover:bg-red-50 transition-colors"
+                                              title="Eliminar reserva"
+                                            >
+                                              <XCircle className="w-5 h-5" />
+                                              </button>
+                                          </form>
+                                      </div>
+                                                  ))}
                                   </div>
                                 </div>
-                                <Users className="w-5 h-5 text-gray-500" />
-                              </div>
+                          </details>
+                            )}
+                            
+                            <div className="w-full sm:w-auto">
+                              {esAdmin ? (
+                                // <div className="flex flex-col sm:flex-row gap-3 sm:w-auto w-full">
+                                <div class="flex flex-row gap-3 w-full">
+
+                                  <EditarHorarioModal horario={horario}>
+                                    <button className="flex items-center justify-center gap-2 bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 px-4 py-2 rounded-lg transition-colors font-medium w-full sm:w-auto">
+                                      <Pencil className="w-4 h-4" />
+                                      <span>Editar</span>
+                                    </button>
+                                  </EditarHorarioModal>
+                                  
+                                  <EliminarHorarioModal horarioId={horario.id}>
+                                    <button className="flex items-center justify-center gap-2 bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 px-4 py-2 rounded-lg transition-colors font-medium w-full sm:w-auto">
+                                      <Trash2 className="w-4 h-4" />
+                                      <span>Eliminar</span>
+                                    </button>
+                                  </EliminarHorarioModal>
+                                </div>
+                              ) : (
+                                <form 
+                                  action={(yaApuntado ? cancelarReserva : apuntarseAHorario).bind(null, horario.id, tipo)}
+                                  className="w-full"
+                                >
+                                  <button
+                                    type="submit"
+                                    className={`w-full flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-medium transition-colors ${
+                                      yaApuntado
+                                        ? 'bg-red-100 text-red-700 hover:bg-red-200'
+                                        : lleno
+                                          ? 'bg-gray-100 text-gray-500 cursor-not-allowed'
+                                          : 'bg-indigo-100 text-indigo-700 hover:bg-indigo-200'
+                                    }`}
+                                    disabled={lleno || (!yaApuntado && lleno)}
+                                  >
+                                    {yaApuntado ? (
+                                      <>
+                                        <XCircle className="w-5 h-5" />
+                                        <span>Cancelar reserva</span>
+                                      </>
+                                    ) : lleno ? (
+                                      <span>Lleno</span>
+                                    ) : (
+                                      <>
+                                        <Plus className="w-5 h-5" />
+                                        <span>Reservar ahora</span>
+                                      </>
+                                    )}
+                                  </button>
+                                </form>
+                              )}
                             </div>
                           </div>
-
-                          {/* Botones de acción */}
-                          <div className="mt-6 flex justify-end">
-                            {esAdmin ? (
-                              <div className="flex gap-3">
-                                <EditarHorarioModal horario={horario}>
-                                  <button className="flex items-center gap-2 bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 px-4 py-2 rounded-lg transition-colors font-medium">
-                                    <Pencil className="w-4 h-4" />
-                                    <span>Editar</span>
-                                  </button>
-                                </EditarHorarioModal>
-                                
-                                <EliminarHorarioModal horarioId={horario.id}>
-                                  <button className="flex items-center gap-2 bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 px-4 py-2 rounded-lg transition-colors font-medium">
-                                    <Trash2 className="w-4 h-4" />
-                                    <span>Eliminar</span>
-                                  </button>
-                                </EliminarHorarioModal>
-                              </div>
-                            ) : (
-                              <form 
-                                action={(yaApuntado ? cancelarReserva : apuntarseAHorario).bind(null, horario.id, tipo)}
-                                className="w-full md:w-auto"
-                              >
-                                <button
-                                  type="submit"
-                                  className={`w-full flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-medium transition-colors ${
-                                    yaApuntado
-                                      ? 'bg-red-100 text-red-700 hover:bg-red-200'
-                                      : lleno
-                                        ? 'bg-gray-100 text-gray-500 cursor-not-allowed'
-                                        : 'bg-indigo-100 text-indigo-700 hover:bg-indigo-200'
-                                  }`}
-                                  disabled={lleno || (!yaApuntado && lleno)}
-                                >
-                                  {yaApuntado ? (
-                                    <>
-                                      <XCircle className="w-5 h-5" />
-                                      <span>Cancelar reserva</span>
-                                    </>
-                                  ) : lleno ? (
-                                    <span>Lleno</span>
-                                  ) : (
-                                    <>
-                                      <Plus className="w-5 h-5" />
-                                      <span>Reservar ahora</span>
-                                    </>
-                                  )}
-                                </button>
-                              </form>
-                            )}
-                          </div>
-
-                          {/* Lista de usuarios para admin */}
-                          {esAdmin && horario.reservas.length > 0 && (
-                            <details className="mt-6 group">
-                              <summary className="flex items-center gap-2 cursor-pointer text-indigo-600 hover:text-indigo-800 font-medium list-none">
-                                <span>Ver usuarios ({horario.reservas.length})</span>
-                                <ChevronDown className="w-4 h-4 group-open:hidden" />
-                                <ChevronUp className="w-4 h-4 hidden group-open:block" />
-                              </summary>
-                              
-                              <div className="mt-4 bg-gray-50 p-5 rounded-lg border border-gray-200">
-                                <h4 className="text-sm font-medium text-gray-700 mb-4 flex items-center gap-2">
-                                  <User className="w-4 h-4" />
-                                  <span>Usuarios apuntados:</span>
-                                </h4>
-                                
-                                <ul className="space-y-3">
-                                  {horario.reservas.map((r, idx) => (
-                                    <li 
-                                      key={idx} 
-                                      className="flex items-center justify-between bg-white p-4 rounded-lg border border-gray-200 shadow-sm"
-                                    >
-                                      <div className="flex items-center gap-3">
-                                        <div className="bg-gray-200 border-2 border-dashed rounded-xl w-8 h-8 flex items-center justify-center">
-                                          <span className="text-xs font-bold text-gray-500">
-                                            {r.user?.name?.split(' ').map(n => n[0]).join('') || "UA"}
-                                          </span>
-                                        </div>
-                                        <span className="font-medium text-gray-800">
-                                          {r.user?.name || "Usuario anónimo"}
-                                        </span>
-                                      </div>
-                                      
-                                      <form action={cancelarReservaAdmin.bind(null, horario.id, tipo, r.userId)}>
-                                        <button
-                                          type="submit"
-                                          className="text-red-500 hover:text-red-700 p-1 rounded-full hover:bg-red-50 transition-colors"
-                                          title="Eliminar reserva"
-                                        >
-                                          <XCircle className="w-5 h-5" />
-                                        </button>
-                                      </form>
-                                    </li>
-                                  ))}
-                                </ul>
-                              </div>
-                            </details>
-                          )}
                         </div>
                       );
                     })
@@ -311,6 +318,7 @@ export default async function ListaHorarios({ tipo }) {
           })
         )}
       </div>
+      
     </div>
   );
 }
