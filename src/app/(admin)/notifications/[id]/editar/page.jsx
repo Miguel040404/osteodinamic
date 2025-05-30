@@ -40,7 +40,7 @@ export default async function EditarNotificacionPage({ params }) {
               name="title"
               defaultValue={notificacion.title}
               required
-              className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"
+              className="!text-gray-700 w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"
             />
           </div>
 
@@ -51,7 +51,7 @@ export default async function EditarNotificacionPage({ params }) {
               defaultValue={notificacion.message}
               required
               rows={5}
-              className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition resize-none"
+              className="!text-gray-700 w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition resize-none"
             />
           </div>
 

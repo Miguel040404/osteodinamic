@@ -16,7 +16,9 @@ async function Users() {
 
       {/* Botón para añadir nuevo usuario */}
       <div className="flex justify-end mb-4">
-        <Modal openElement={
+        <Modal 
+        title="Crear perfil de usuario"
+        openElement={
           <button className="flex items-center gap-2 bg-green-100 text-green-700 px-4 py-2 rounded-md border border-green-400 hover:bg-green-500 hover:text-white transition">
             <PlusIcon className="w-4 h-4" />
             Añadir usuario
@@ -33,7 +35,9 @@ async function Users() {
             <div key={user.id} className="px-4 py-3 flex justify-between items-center bg-white hover:bg-gray-50 transition">
 
               {/* Nombre que abre el modal de detalles */}
-              <Modal openElement={
+              <Modal 
+              title="Ver perfil"
+              openElement={
                 <span className="font-medium text-blue-600 hover:underline cursor-pointer">
                   {user.name}
                 </span>
@@ -46,7 +50,8 @@ async function Users() {
                 <div className="flex gap-2">
 
                   {/* Editar usuario */}
-                  <Modal openElement={
+                  <Modal 
+                  title={`Editar perfil de ${user.name}`} openElement={
                     <button className="w-8 h-8 grid place-content-center rounded-full bg-yellow-100 text-yellow-700 border border-yellow-400 hover:bg-yellow-500 hover:text-white transition">
                       <PencilIcon className="w-4 h-4" />
                     </button>
@@ -55,7 +60,8 @@ async function Users() {
                   </Modal>
 
                   {/* Eliminar usuario */}
-                  <Modal openElement={
+                  <Modal 
+                  title={`Eliminar perfil de ${user.name}`} openElement={
                     <button className="w-8 h-8 grid place-content-center rounded-full bg-red-100 text-red-700 border border-red-400 hover:bg-red-500 hover:text-white transition">
                       <TrashIcon className="w-4 h-4" />
                     </button>

@@ -33,9 +33,7 @@ const getDiaNombre = (dia) => {
 
 // Función para ordenar horarios por día y hora
 const ordenarHorarios = (horarios) => {
-  // const diasOrden = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
   const diasOrden = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'];
-
   
   return horarios.sort((a, b) => {
     const diaA = diasOrden.indexOf(getDiaNombre(a.dia));
@@ -69,7 +67,6 @@ export default async function ListaHorarios({ tipo }) {
   });
 
   // Días ordenados
-  // const dias = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
   const dias = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'];
 
   return (
@@ -77,7 +74,7 @@ export default async function ListaHorarios({ tipo }) {
       {/* Encabezado */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
         <div>
-          <h1 className="text-2xl md:text-3xl font-bold text-gray-900 capitalize bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text">
+          <h1 className="text-2xl md:text-3xl font-bold text-gray-900 capitalize">
             {tipo.replace(/_/g, ' ')}
           </h1>
           <p className="text-gray-600 mt-2">
@@ -98,7 +95,7 @@ export default async function ListaHorarios({ tipo }) {
       {/* Lista de horarios por día */}
       <div className="space-y-8">
         {horarios.length === 0 ? (
-          <div className="text-center py-16 bg-white rounded-xl shadow-md">
+          <div className="text-center py-16 bg-white rounded-xl shadow-md border border-gray-200">
             <div className="bg-indigo-50 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
               <CalendarDays className="w-8 h-8 text-indigo-600" />
             </div>
@@ -115,31 +112,29 @@ export default async function ListaHorarios({ tipo }) {
             const horariosDelDia = horariosPorDia[dia] || [];
             
             return (
-              <div key={dia} className="border rounded-xl bg-white shadow-md overflow-hidden">
+              <div key={dia} className="border border-gray-200 rounded-xl bg-white shadow-md overflow-hidden">
                 {/* Cabecera del día */}
-                  <div className={`p-5 ${
-                      dia === 'Lunes' ? 'bg-blue-100' :
-                      dia === 'Martes' ? 'bg-indigo-100' :
-                      dia === 'Miércoles' ? 'bg-purple-100' :
-                      dia === 'Jueves' ? 'bg-pink-100' :
-                      dia === 'Viernes' ? 'bg-red-100' :
-                      dia === 'Sábado' ? 'bg-orange-100' :
-                        'bg-yellow-100'
-                  }`}>
-
+                <div className={`p-5 ${
+                  dia === 'Lunes' ? 'bg-blue-100' :
+                  dia === 'Martes' ? 'bg-indigo-100' :
+                  dia === 'Miércoles' ? 'bg-purple-100' :
+                  dia === 'Jueves' ? 'bg-pink-100' :
+                  dia === 'Viernes' ? 'bg-red-100' :
+                  'bg-yellow-100'
+                }`}>
                   <div className="flex items-center justify-between">
                     <h2 className="text-xl font-semibold text-gray-900 flex items-center gap-3">
-                      <Calendar className="w-6 h-6 text-indigo-600" />
+                      <Calendar className="w-6 h-6 text-gray-700" />
                       {dia}
                     </h2>
-                    <span className="bg-white text-indigo-700 px-3 py-1.5 rounded-full text-sm font-medium shadow-sm">
+                    <span className="bg-white text-gray-700 px-3 py-1.5 rounded-full text-sm font-medium shadow-sm border border-gray-200">
                       {horariosDelDia.length} horario{horariosDelDia.length !== 1 ? 's' : ''}
                     </span>
                   </div>
                 </div>
                 
                 {/* Lista de horarios para este día */}
-                <div className="divide-y">
+                <div className="divide-y divide-gray-100">
                   {horariosDelDia.length > 0 ? (
                     horariosDelDia.map(horario => {
                       const yaApuntado = horario.reservas.some((r) => r.userId === userId);
@@ -151,8 +146,8 @@ export default async function ListaHorarios({ tipo }) {
                         <div key={horario.id} className="p-6">
                           <div className="flex flex-col md:flex-row justify-between gap-6">
                             <div className="flex items-start gap-4 flex-1">
-                              <div className="bg-indigo-50 p-3 rounded-lg">
-                                <Clock className="w-6 h-6 text-indigo-600" />
+                              <div className="bg-gray-100 p-3 rounded-lg border border-gray-200">
+                                <Clock className="w-6 h-6 text-gray-700" />
                               </div>
                               <div className="flex-1">
                                 <div className="flex flex-wrap justify-between gap-3">
@@ -160,7 +155,7 @@ export default async function ListaHorarios({ tipo }) {
                                     {horario.hora}
                                   </h3>
                                   
-                                  {/* Estado de plazas - Movido junto al título */}
+                                  {/* Estado de plazas */}
                                   <div className="flex items-center gap-2">
                                     <div className="flex flex-col items-end">
                                       <span className={`text-sm font-semibold ${
@@ -189,8 +184,8 @@ export default async function ListaHorarios({ tipo }) {
                                 <div className="mt-3 flex flex-wrap gap-2">
                                   <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${
                                     tipo === 'Entrenamiento' 
-                                      ? 'bg-blue-100 text-blue-800' 
-                                      : 'bg-purple-100 text-purple-800'
+                                      ? 'bg-blue-100 text-blue-800 border border-blue-200' 
+                                      : 'bg-purple-100 text-purple-800 border border-purple-200'
                                   }`}>
                                     {tipo.replace(/_/g, ' ')}
                                   </span>
@@ -199,11 +194,10 @@ export default async function ListaHorarios({ tipo }) {
                             </div>
                           </div>
 
-                          {/* Botones de acción - Reubicados debajo de la información principal */}
+                          {/* Botones de acción */}
                           <div className="mt-6 flex flex-col sm:flex-row justify-between items-start gap-4">
                             {esAdmin && horario.reservas.length > 0 && (
-
-                             <details className="group w-full">
+                              <details className="group w-full">
                                 <summary className="flex items-center gap-2 cursor-pointer text-indigo-600 hover:text-indigo-800 font-medium text-sm list-none">
                                   <span>Ver usuarios ({horario.reservas.length})</span>
                                   <ChevronDown className="w-4 h-4 group-open:hidden" />
@@ -216,7 +210,7 @@ export default async function ListaHorarios({ tipo }) {
                                     <span>Usuarios apuntados:</span>
                                   </h4>
     
-                                {/* Contenedor grid responsivo */}
+                                  {/* Contenedor grid responsivo */}
                                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                                     {horario.reservas.map((r, idx) => (
                                       <div 
@@ -224,37 +218,35 @@ export default async function ListaHorarios({ tipo }) {
                                         className="flex items-center justify-between bg-white p-4 rounded-lg border border-gray-200 shadow-sm"
                                       >
                                         <div className="flex items-center gap-3">
-                                          <div className="bg-gray-200 border-2 border-dashed rounded-xl w-8 h-8 flex items-center justify-center">
-                                            <span className="text-xs font-bold text-gray-500">
+                                          <div className="bg-gray-100 border border-gray-300 rounded-xl w-8 h-8 flex items-center justify-center">
+                                            <span className="text-xs font-bold text-gray-700">
                                               {r.user?.name?.split(' ').map(n => n[0]).join('') || "UA"}
                                             </span>
                                           </div>
-                                            <span className="font-medium text-gray-800 truncate max-w-[120px]">
-                                              {r.user?.name || "Usuario anónimo"}
-                                            </span>
+                                          <span className="font-medium text-gray-800 truncate max-w-[120px]">
+                                            {r.user?.name || "Usuario anónimo"}
+                                          </span>
                                         </div>
           
-                                          <form action={cancelarReservaAdmin.bind(null, horario.id, tipo, r.userId)}>
-                                            <button
-                                              type="submit"
-                                              className="text-red-500 hover:text-red-700 p-1 rounded-full hover:bg-red-50 transition-colors"
-                                              title="Eliminar reserva"
-                                            >
-                                              <XCircle className="w-5 h-5" />
-                                              </button>
-                                          </form>
+                                        <form action={cancelarReservaAdmin.bind(null, horario.id, tipo, r.userId)}>
+                                          <button
+                                            type="submit"
+                                            className="text-red-500 hover:text-red-700 p-1 rounded-full hover:bg-red-50 transition-colors"
+                                            title="Eliminar reserva"
+                                          >
+                                            <XCircle className="w-5 h-5" />
+                                          </button>
+                                        </form>
                                       </div>
-                                                  ))}
+                                    ))}
                                   </div>
                                 </div>
-                          </details>
+                              </details>
                             )}
                             
                             <div className="w-full sm:w-auto">
                               {esAdmin ? (
-                                // <div className="flex flex-col sm:flex-row gap-3 sm:w-auto w-full">
                                 <div className="flex flex-row gap-3 w-full">
-
                                   <EditarHorarioModal horario={horario}>
                                     <button className="flex items-center justify-center gap-2 bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 px-4 py-2 rounded-lg transition-colors font-medium w-full sm:w-auto">
                                       <Pencil className="w-4 h-4" />
@@ -278,10 +270,10 @@ export default async function ListaHorarios({ tipo }) {
                                     type="submit"
                                     className={`w-full flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-medium transition-colors ${
                                       yaApuntado
-                                        ? 'bg-red-100 text-red-700 hover:bg-red-200'
+                                        ? 'bg-red-100 text-red-700 hover:bg-red-200 border border-red-200'
                                         : lleno
-                                          ? 'bg-gray-100 text-gray-500 cursor-not-allowed'
-                                          : 'bg-indigo-100 text-indigo-700 hover:bg-indigo-200'
+                                          ? 'bg-gray-100 text-gray-500 cursor-not-allowed border border-gray-200'
+                                          : 'bg-indigo-100 text-indigo-700 hover:bg-indigo-200 border border-indigo-200'
                                     }`}
                                     disabled={lleno || (!yaApuntado && lleno)}
                                   >
@@ -307,7 +299,7 @@ export default async function ListaHorarios({ tipo }) {
                       );
                     })
                   ) : (
-                    <div className="p-8 text-center text-gray-500 bg-gray-50">
+                    <div className="p-8 text-center text-gray-500 bg-gray-50 border-t border-gray-100">
                       <CalendarDays className="w-10 h-10 mx-auto text-gray-400 mb-3" />
                       <p className="text-gray-600">No hay horarios programados para este día</p>
                     </div>
@@ -318,11 +310,9 @@ export default async function ListaHorarios({ tipo }) {
           })
         )}
       </div>
-      
     </div>
   );
 }
-
 // import { CrearHorarioModal, EditarHorarioModal, EliminarHorarioModal } from "@/components/HorarioModals";
 // import { apuntarseAHorario, cancelarReserva, cancelarReservaAdmin } from "@/lib/actions";
 // import { auth } from "@/auth";

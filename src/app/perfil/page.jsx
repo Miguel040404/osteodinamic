@@ -44,7 +44,7 @@ export default async function Perfil() {
 
             <div className="flex-1 space-y-2 text-center sm:text-left">
               <div className="flex items-center justify-center sm:justify-start gap-2">
-                <h2 className="text-2xl font-bold">{user.name}</h2>
+                <h2 className="!text-gray-700 text-2xl font-bold">{user.name}</h2>
                 <EditarPerfilButton user={usuario} />
               </div>
               <p className="text-gray-600">
@@ -64,7 +64,7 @@ export default async function Perfil() {
         {user.role === 'ADMIN' && (
           <section className="max-w-3xl mx-auto mb-10">
             <details className="bg-white rounded-lg p-4">
-              <summary className="text-lg font-semibold cursor-pointer">Lista de usuarios</summary>
+              <summary className="!text-gray-600 text-lg font-semibold cursor-pointer">Lista de usuarios</summary>
               <div className="mt-4">
                 <Users />
               </div>

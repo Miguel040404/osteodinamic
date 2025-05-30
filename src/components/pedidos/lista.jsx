@@ -17,7 +17,8 @@ export default async function Pedidos() {
     return (
         <div className="flex flex-col gap-4">
             {session?.user.role === 'ADMIN' &&
-                <Modal openElement={
+                <Modal 
+                openElement={
                     <div className='justify-self-end size-8 grid place-content-center rounded-full border border-green-500 text-green-700 bg-green-200 hover:bg-green-500 hover:text-white hover:cursor-pointer'>
                         <PlusIcon className='size-4' />
                     </div>}>

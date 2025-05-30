@@ -28,7 +28,7 @@ export default function CrearNotificacionPage() {
               name="title"
               placeholder="Escribe un título descriptivo"
               required
-              className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"
+              className="w-full border !text-gray-800 border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"
             />
           </div>
 
@@ -39,7 +39,7 @@ export default function CrearNotificacionPage() {
               placeholder="Escribe el contenido completo de la notificación"
               required
               rows={5}
-              className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition resize-none"
+              className="w-full border !text-gray-800 border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition resize-none"
             />
           </div>
 

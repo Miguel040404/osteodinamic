@@ -30,7 +30,7 @@ async function page({ searchParams }) {
     </div>
   )}
   
- <h1 className="text-3xl md:text-2xl font-bold text-center -mb-6 md:-mb-3">Iniciar sesión</h1>
+ <h1 className="!text-gray-700 text-3xl md:text-2xl font-bold text-center -mb-6 md:-mb-3">Iniciar sesión</h1>
 
   <LoginForm />
 

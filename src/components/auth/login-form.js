@@ -81,7 +81,7 @@ function LoginForm() {
               inputMode="numeric"
               pattern="[0-9]{9}"
               placeholder="612345678"
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="!text-gray-700 w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               required
               disabled={loading}
               onInput={(e) => {
@@ -99,7 +99,7 @@ function LoginForm() {
               name="password"
               type="password"
               placeholder="••••••"
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className= "!text-gray-700 w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               required
               disabled={loading}
             />

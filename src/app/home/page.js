@@ -16,7 +16,7 @@ export default async function Home() {
       <main className="flex-grow container mx-auto px-4 py-8 max-w-4xl">
         <div className="flex justify-between items-center mb-8">
           <div>
-            <p className="text-gray-500 mt-2">Descubre nuestras clases disponibles</p>
+            <p className="text-gray-600 mt-2">Descubre nuestras clases disponibles</p>
           </div>
           <Link href="/notificaciones">
             <button className="flex items-center bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-xl transition-colors shadow-md hover:shadow-lg">
@@ -132,21 +132,21 @@ export default async function Home() {
               <div className="bg-indigo-100 rounded-full w-16 h-16 flex items-center justify-center mb-3">
                 <span className="text-indigo-600 text-2xl font-bold">1</span>
               </div>
-              <h3 className="font-semibold mb-2">Elige tu clase</h3>
+              <h3 className="!text-gray-700 font-semibold mb-2">Elige tu clase</h3>
               <p className="text-gray-600 text-sm">Selecciona entre nuestras diversas opciones de clases disponibles</p>
             </div>
             <div className="flex flex-col items-center text-center p-4">
               <div className="bg-indigo-100 rounded-full w-16 h-16 flex items-center justify-center mb-3">
                 <span className="text-indigo-600 text-2xl font-bold">2</span>
               </div>
-              <h3 className="font-semibold mb-2">Reserva tu horario</h3>
+              <h3 className="!text-gray-700 font-semibold mb-2">Reserva tu horario</h3>
               <p className="text-gray-600 text-sm">Selecciona el día y hora que mejor se adapte a tu agenda</p>
             </div>
             <div className="flex flex-col items-center text-center p-4">
               <div className="bg-indigo-100 rounded-full w-16 h-16 flex items-center justify-center mb-3">
                 <span className="text-indigo-600 text-2xl font-bold">3</span>
               </div>
-              <h3 className="font-semibold mb-2">Disfruta tu clase</h3>
+              <h3 className="!text-gray-700 font-semibold mb-2">Disfruta tu clase</h3>
               <p className="text-gray-600 text-sm">Asiste a tu clase y mejora tu bienestar con nuestros expertos</p>
             </div>
           </div>

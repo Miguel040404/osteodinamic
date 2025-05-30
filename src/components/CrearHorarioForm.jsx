@@ -51,7 +51,7 @@ export function CrearHorarioModal({ tipo }) {
           >
             <option value="" disabled>Selecciona una hora</option>
             {["08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00",
-              "15:00", "16:00", "17:00", "18:00", "19:00", "20:00"].map(hora => (
+              "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00"].map(hora => (
                 <option key={hora} value={hora}>{hora}</option>
               ))}
           </select>
@@ -124,7 +124,7 @@ export function EditarHorarioModal({ horario }) {
             className="flex-1 px-3 py-2 border rounded-lg bg-white"
           >
             {["08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00",
-              "16:00", "17:00", "18:00", "19:00", "20:00"].map(h => (
+              "16:00", "17:00", "18:00", "19:00", "20:00", "21:00"].map(h => (
                 <option key={h} value={h}>{h}</option>
               ))}
           </select>

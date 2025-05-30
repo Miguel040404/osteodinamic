@@ -12,6 +12,34 @@ import { Prisma } from "@prisma/client"
 
 //--------------- ELIMINAR HORARIO ------------------
 
+// export async function eliminarHorario(prevState, formData) {
+//   const session = await auth();
+
+//   if (session?.user?.role !== 'ADMIN') {
+//     return { error: 'No autorizado' };
+//   }
+
+//   // Obtener y validar el ID
+//   const horarioId = formData.get('horarioId')?.toString();
+
+//   if (!horarioId) {
+//     return { error: 'ID de horario no proporcionado' };
+//   }
+
+//   try {
+//     await prisma.horario.delete({
+//       where: { id: horarioId }
+//     });
+
+//     revalidatePath('/clases');
+//     return { success: true, message: 'Horario eliminado correctamente' };
+
+//   } catch (error) {
+//     console.error('Error eliminando horario:', error);
+//     return { error: 'Error al eliminar el horario' };
+//   }
+// }
+
 export async function eliminarHorario(prevState, formData) {
   const session = await auth();
 
@@ -19,27 +47,44 @@ export async function eliminarHorario(prevState, formData) {
     return { error: 'No autorizado' };
   }
 
-  // Obtener y validar el ID
   const horarioId = formData.get('horarioId')?.toString();
-
   if (!horarioId) {
     return { error: 'ID de horario no proporcionado' };
   }
 
   try {
+    // Primero obtenemos el horario para saber su tipo
+    const horario = await prisma.horario.findUnique({
+      where: { id: horarioId }
+    });
+
+    if (!horario) {
+      return { error: 'Horario no encontrado' };
+    }
+
+    const tipo = horario.tipo;
+
+    // Luego eliminamos
     await prisma.horario.delete({
       where: { id: horarioId }
     });
 
+    // Revalida ambas rutas importantes
     revalidatePath('/clases');
-    return { success: true, message: 'Horario eliminado correctamente' };
+    revalidatePath(`/clases/${tipo}`);
+    
+    // Devuelve el tipo para que el cliente sepa a dónde redirigir
+    return { 
+      success: true, 
+      message: 'Horario eliminado correctamente',
+      tipo: tipo
+    };
 
   } catch (error) {
     console.error('Error eliminando horario:', error);
     return { error: 'Error al eliminar el horario' };
   }
 }
-
 //---------------EDITAR HORARIO ------------------
 
 export async function editarHorario(prevState, formData) {
