@@ -85,7 +85,7 @@ export async function eliminarHorario(prevState, formData) {
     return { error: 'Error al eliminar el horario' };
   }
 }
-//---------------EDITAR HORARIO ------------------
+// ---------------EDITAR HORARIO ------------------
 
 export async function editarHorario(prevState, formData) {
   const session = await auth();
