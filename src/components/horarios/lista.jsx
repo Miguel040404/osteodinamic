@@ -253,7 +253,7 @@ export default async function ListaHorarios({ tipo }) {
                             <div className="w-full sm:w-auto">
                               {esAdmin ? (
                                 // <div className="flex flex-col sm:flex-row gap-3 sm:w-auto w-full">
-                                <div class="flex flex-row gap-3 w-full">
+                                <div className="flex flex-row gap-3 w-full">
 
                                   <EditarHorarioModal horario={horario}>
                                     <button className="flex items-center justify-center gap-2 bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 px-4 py-2 rounded-lg transition-colors font-medium w-full sm:w-auto">
