@@ -226,18 +226,18 @@ export function EliminarHorarioModal({ horarioId }) {
     const [state, formAction, isPending] = useActionState(eliminarHorario, null);
 
     // En EditarHorarioModal
-    useEffect(() => {
-        if (state?.success) {
-            modalRef.current?.closeModal();
-            formRef.current?.reset();
-            toast.success('Horario modificado exitosamente!');
+   useEffect(() => {
+    if (state?.success) {
+        modalRef.current?.closeModal();
+        formRef.current?.reset();
+        toast.success('Horario eliminado correctamente');
 
-            // Recargar la página después de 500ms
-            setTimeout(() => {
-                window.location.reload();
-            }, 500);
-        }
-    }, [state]);
+        // Preferible si estás usando App Router con SSR o ISR
+        setTimeout(() => {
+            router.refresh(); // en lugar de window.location.reload()
+        }, 300);
+    }
+}, [state]);
 
     return (
         <Modal

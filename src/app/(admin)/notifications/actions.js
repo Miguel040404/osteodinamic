@@ -5,21 +5,32 @@ import prisma from '@/lib/prisma'
 import { redirect } from 'next/navigation'
 
 // Crear notificación
+
+let lastExecution = 0
+
 export async function crearNotificacion(formData) {
-  const session = await auth()
-  if (!session?.user || session.user.role !== 'ADMIN') throw new Error('No autorizado')
+  const now = Date.now()
+  if (now - lastExecution < 2000) return // Bloquear por 2 segundos
+  lastExecution = now
 
-  const title = formData.get('title')
-  const message = formData.get('message')
+  try {
+    const session = await auth()
+    if (!session?.user || session.user.role !== 'ADMIN') throw new Error('No autorizado')
 
-  await prisma.notification.create({
-    data: {
-      title,
-      message,
-      createdBy: session.user.id,
-    },
-  })
+    const title = formData.get('title')
+    const message = formData.get('message')
 
+    await prisma.notification.create({
+      data: {
+        title,
+        message,
+        createdBy: session.user.id,
+      },
+    })
+  } finally {
+    // No necesitamos resetear ya que usamos timestamp
+  }
+  
   redirect('/notificaciones')
 }
 
