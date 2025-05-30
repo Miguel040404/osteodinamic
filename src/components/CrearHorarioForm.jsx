@@ -36,7 +36,9 @@ export function CrearHorarioModal({ tipo }) {
             defaultValue=""
           >
             <option value="" disabled>Selecciona un día</option>
-            {['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'].map(dia => (
+            {/* {['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'].map(dia => ( */}
+            {['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'].map(dia => (
+
               <option key={dia} value={dia}>{dia}</option>
             ))}
           </select>
@@ -109,7 +111,9 @@ export function EditarHorarioModal({ horario }) {
             defaultValue={horario.dia}
             className="flex-1 px-3 py-2 border rounded-lg bg-white"
           >
-            {['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'].map(d => (
+            {/* {['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'].map(d => ( */}
+            {['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'].map(d => (
+
               <option key={d} value={d}>{d}</option>
             ))}
           </select>

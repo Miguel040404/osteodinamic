@@ -25,15 +25,17 @@ const getDiaNombre = (dia) => {
     'WEDNESDAY': 'Miércoles',
     'THURSDAY': 'Jueves',
     'FRIDAY': 'Viernes',
-    'SATURDAY': 'Sábado',
-    'SUNDAY': 'Domingo'
+    // 'SATURDAY': 'Sábado',
+    // 'SUNDAY': 'Domingo'
   };
   return dias[dia.toUpperCase()] || dia;
 };
 
 // Función para ordenar horarios por día y hora
 const ordenarHorarios = (horarios) => {
-  const diasOrden = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
+  // const diasOrden = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
+  const diasOrden = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'];
+
   
   return horarios.sort((a, b) => {
     const diaA = diasOrden.indexOf(getDiaNombre(a.dia));
@@ -67,7 +69,8 @@ export default async function ListaHorarios({ tipo }) {
   });
 
   // Días ordenados
-  const dias = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
+  // const dias = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
+  const dias = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'];
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
