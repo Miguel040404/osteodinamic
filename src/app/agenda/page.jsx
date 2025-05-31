@@ -2,6 +2,7 @@ import Header from "@/components/header";
 import Footer from "@/components/footer";
 import { getReservasDelUsuario, getTodasReservas, cancelarReserva, cancelarReservaAdmin } from "@/lib/actions";
 import { auth } from "@/auth";
+import { Suspense } from "react"; // Importamos Suspense
 
 const ordenDias = {
   "Lunes": 1,
@@ -13,7 +14,42 @@ const ordenDias = {
   // "Domingo": 7
 };
 
+// Componente para el spinner de carga
+const LoadingSpinner = () => (
+  <div className="fixed inset-0 flex items-center justify-center z-50 bg-white bg-opacity-80">
+    <div className="text-center">
+      <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-blue-500 mx-auto"></div>
+      <p className="mt-4 text-lg text-gray-600 flex justify-center">
+        Cargando agenda
+        <span className="flex">
+          <span className="animate-bounce">.</span>
+          <span className="animate-bounce" style={{ animationDelay: '0.2s' }}>.</span>
+          <span className="animate-bounce" style={{ animationDelay: '0.4s' }}>.</span>
+        </span>
+      </p>
+    </div>
+  </div>
+);
+
 export default async function AgendaPage() {
+  return (
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-gray-50 to-blue-50 text-gray-800">
+      <Header />
+      
+      <main className="flex-1 container mx-auto px-4 py-8 md:py-12 max-w-6xl">
+        <Suspense fallback={<LoadingSpinner />}>
+          <AgendaContent />
+        </Suspense>
+      </main>
+      
+      <div className="mt-16">
+        <Footer />
+      </div>
+    </div>
+  );
+}
+
+async function AgendaContent() {
   const session = await auth();
   const userId = session?.user?.id;
   const esAdmin = session?.user?.role === "ADMIN";
@@ -24,34 +60,26 @@ export default async function AgendaPage() {
     : await getReservasDelUsuario(userId);
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-br from-gray-50 to-blue-50 text-gray-800">
-      <Header />
-      
-      <main className="flex-1 container mx-auto px-4 py-8 md:py-12 max-w-6xl">
-        <div className="mb-10 text-center">
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
-            {esAdmin ? "Panel de Administración" : "Mi Agenda"}
-          </h1>
-          <p className="text-gray-600 max-w-2xl mx-auto">
-            {esAdmin 
-              ? "Administra todas las reservas y horarios del sistema" 
-              : "Revisa y gestiona tus próximas sesiones programadas"}
-          </p>
-        </div>
-
-        {esAdmin ? (
-          // Vista de administrador mejorada
-          <AdminView reservas={reservas} />
-        ) : (
-          // Vista de usuario mejorada
-          <UserView reservas={reservas} />
-        )}
-      </main>
-      
-      <div className="mt-16">
-        <Footer />
+    <>
+      <div className="mb-10 text-center">
+        <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
+          {esAdmin ? "Panel de Administración" : "Mi Agenda"}
+        </h1>
+        <p className="text-gray-600 max-w-2xl mx-auto">
+          {esAdmin 
+            ? "Administra todas las reservas y horarios del sistema" 
+            : "Revisa y gestiona tus próximas sesiones programadas"}
+        </p>
       </div>
-    </div>
+
+      {esAdmin ? (
+        // Vista de administrador mejorada
+        <AdminView reservas={reservas} />
+      ) : (
+        // Vista de usuario mejorada
+        <UserView reservas={reservas} />
+      )}
+    </>
   );
 }
 
