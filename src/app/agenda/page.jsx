@@ -1,4 +1,3 @@
-import Header from "@/components/header";
 import Footer from "@/components/footer";
 import { getReservasDelUsuario, getTodasReservas, cancelarReserva, cancelarReservaAdmin } from "@/lib/actions";
 import { auth } from "@/auth";
@@ -34,7 +33,6 @@ const LoadingSpinner = () => (
 export default async function AgendaPage() {
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-gray-50 to-blue-50 text-gray-800">
-      <Header />
       
       <main className="flex-1 container mx-auto px-4 py-8 md:py-12 max-w-6xl">
         <Suspense fallback={<LoadingSpinner />}>
