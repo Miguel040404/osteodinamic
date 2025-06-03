@@ -111,6 +111,7 @@ model Notification {
   id          String   @id @default(cuid())
   title       String
   message     String
+  viewed      Boolean  @default(false)
   createdAt   DateTime @default(now())
   createdBy   String
 

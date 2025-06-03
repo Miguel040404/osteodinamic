@@ -923,3 +923,14 @@ export async function eliminarNorma(formData) {
 
   redirect('/normas')
 }
+
+// lib/actions.js
+export async function getUnviewedNotifications(userId) {
+  const notifications = await prisma.notification.findMany({
+    where: {
+      viewed: false,
+      createdBy: userId,
+    },
+  });
+  return notifications;
+}
