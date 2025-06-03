@@ -84,7 +84,7 @@ enum SessionType {
 model Horario {
   id         String       @id @default(cuid())
   dia        String       // "Lunes", "Martes"
-  hora       String       // "10:00"
+  hora       String       
   tipo       SessionType
   reservas   Reserva[]    // Relación con reservas
   createdAt  DateTime     @default(now())
