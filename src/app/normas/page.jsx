@@ -5,14 +5,14 @@ import prisma from '@/lib/prisma'
 
 import Footer from '@/components/footer'
 import { redirect } from 'next/navigation'
-import { eliminarNotificacion } from '@/lib/actions'
+import { eliminarNorma } from '@/lib/actions'
 
-export default async function NotificacionesPage() {
+export default async function NormasPage() {
   const session = await auth()
   if (!session?.user) redirect('/login')
 
-  const notificaciones = await prisma.notification.findMany({
-    orderBy: { createdAt: 'desc' },
+  const normas = await prisma.norma.findMany({
+    orderBy: { creadaEn: 'desc' },
   })
 
   return (
@@ -23,18 +23,18 @@ export default async function NotificacionesPage() {
           <div>
             <h1 className="text-2xl md:text-3xl font-bold text-gray-800 flex items-center gap-3">
               <BellIcon className="w-8 h-8 text-indigo-600" />
-              Notificaciones
+              Normas
             </h1>
             <p className="text-gray-500 mt-1">
-              {notificaciones.length} notificación{notificaciones.length !== 1 ? 'es' : ''} 
+              {normas.length} norma{normas.length !== 1 ? 's' : ''} 
             </p>
           </div>
           
           {session.user.role === 'ADMIN' && (
-            <Link href="/notifications">
+            <Link href="/normasAdmin">
               <button className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2.5 rounded-lg transition-colors shadow-sm hover:shadow-md">
                 <PlusIcon className="w-5 h-5" />
-                <span>Nueva Notificación</span>
+                <span>Nueva Norma</span>
               </button>
             </Link>
           )}
@@ -42,16 +42,16 @@ export default async function NotificacionesPage() {
 
         {/* Lista de notificaciones */}
         <div className="space-y-6">
-          {notificaciones.length === 0 ? (
+          {normas.length === 0 ? (
             <div className="text-center py-12 bg-white rounded-xl shadow-sm p-8">
               <div className="bg-indigo-50 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
                 <BellIcon className="w-8 h-8 text-indigo-600" />
               </div>
-              <h3 className="text-xl font-medium text-gray-700">No hay notificaciones</h3>
-              <p className="text-gray-500 mt-2">No se han publicado notificaciones aún</p>
+              <h3 className="text-xl font-medium text-gray-700">No hay normas</h3>
+              <p className="text-gray-500 mt-2">No se han publicado normas aún</p>
             </div>
           ) : (
-            notificaciones.map((n) => (
+            normas.map((n) => (
               <div 
                 key={n.id}
                 className="bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition overflow-hidden"
@@ -63,15 +63,15 @@ export default async function NotificacionesPage() {
                         <div className="bg-indigo-100 p-2 rounded-lg">
                           <BellIcon className="w-5 h-5 text-indigo-600" />
                         </div>
-                        <h2 className="text-xl font-semibold text-gray-800">{n.title}</h2>
+                        <h2 className="text-xl font-semibold text-gray-800">{n.titulo}</h2>
                       </div>
                       
-                      <p className="text-gray-600 mt-3">{n.message}</p>
+                      <p className="text-gray-600 mt-3">{n.contenido}</p>
                       
                       <div className="flex items-center gap-4 mt-4 text-sm text-gray-500">
                         <div className="flex items-center gap-2">
                           <ClockIcon className="w-4 h-4" />
-                          <span>{new Date(n.createdAt).toLocaleString()}</span>
+                          <span>{new Date(n.creadaEn).toLocaleString()}</span>
                         </div>
                         
                        
@@ -80,14 +80,14 @@ export default async function NotificacionesPage() {
                     
                     {session.user.role === 'ADMIN' && (
                       <div className="flex flex-col gap-3 min-w-[120px]">
-                        <Link href={`/notifications/${n.id}/editar`}>
+                        <Link href={`/normasAdmin/${n.id}/editar`}>
                           <button className="flex items-center gap-2 bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 w-full px-3 py-2 rounded-lg transition-colors">
                             <PencilIcon className="w-4 h-4" />
                             <span>Editar</span>
                           </button>
                         </Link>
                         
-                        <form action={eliminarNotificacion} className="w-full">
+                        <form action={eliminarNorma} className="w-full">
                           <input type="hidden" name="id" value={n.id} />
                           <button
                             type="submit"

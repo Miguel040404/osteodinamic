@@ -8,37 +8,12 @@ import { auth, signIn } from "@/auth";
 import { getUserByPhone } from "./data"
 import { redirect } from 'next/navigation'
 import { Prisma } from "@prisma/client"
+
 // import { signIn } from "next-auth/react"
 
+let lastExecution = 0
+let lastExecutionNorma = 0
 //--------------- ELIMINAR HORARIO ------------------
-
-// export async function eliminarHorario(prevState, formData) {
-//   const session = await auth();
-
-//   if (session?.user?.role !== 'ADMIN') {
-//     return { error: 'No autorizado' };
-//   }
-
-//   // Obtener y validar el ID
-//   const horarioId = formData.get('horarioId')?.toString();
-
-//   if (!horarioId) {
-//     return { error: 'ID de horario no proporcionado' };
-//   }
-
-//   try {
-//     await prisma.horario.delete({
-//       where: { id: horarioId }
-//     });
-
-//     revalidatePath('/clases');
-//     return { success: true, message: 'Horario eliminado correctamente' };
-
-//   } catch (error) {
-//     console.error('Error eliminando horario:', error);
-//     return { error: 'Error al eliminar el horario' };
-//   }
-// }
 
 export async function eliminarHorario(prevState, formData) {
   const session = await auth();
@@ -412,77 +387,6 @@ export async function newUser(prevState, formData) {
 
 // editUser------------------------
 
-// // FUNKA
-// export async function editUser(prevState, formData) {
-//   const id = formData.get('id')
-//   const name = formData.get('name')
-//   const address = formData.get('address')
-//   const email = formData.get('email')
-//   const image = formData.get('image');
-//   const phone = formData.get('phone')
-//   const role = formData.get('role')
-//   const password = formData.get('password')
-
-//   const nameRegex = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/;
-//   if (!nameRegex.test(name)) {
-//     return { error: 'El nombre solo puede contener letras y espacios' };
-//   }
-
-//   // Validar si el nombre ya existe
-//   const existingUserByName = await prisma.user.findFirst({
-//     where: {
-//       name,
-//       NOT: { id }
-//     }
-//   });
-
-//   if (existingUserByName) {
-//     return { error: 'Este nombre ya está registrado' };
-//   }
-
-//   const phoneRegex = /^[0-9]+$/;
-//   if (!phoneRegex.test(phone)) {
-//     return { error: 'El teléfono solo puede contener números' };
-//   }
-//   // Validar si el teléfono ya existe
-//   if (phone) {
-//     const existingUserByPhone = await prisma.user.findFirst({
-//       where: {
-//         phone,
-//         NOT: { id }
-//       }
-//     });
-
-//     if (existingUserByPhone) {
-//       return { error: 'Este número de teléfono ya está registrado' };
-//     }
-//   }
-//   let hashedPassword
-//   if (password)
-//     hashedPassword = await bcrypt.hash(password, 10)
-//   // Actualizar
-//   try {
-//     await prisma.user.update({
-//       where: { id },
-//       data: {
-//         name,
-//         address,
-//         email,
-//         image,
-//         phone,
-//         ...(password && { password: hashedPassword }),
-//         ...(role && { role })
-//       }
-//     });
-
-//     revalidatePath('/perfil')
-//     revalidatePath('/users')
-//     return { success: 'Usuario actualizado correctamente' }
-//   } catch (error) {
-//     console.error("Error updating user:", error)
-//     return { error: 'Error al actualizar el usuario' }
-//   }
-// }
 export async function editUser(prevState, formData) {
   const id = formData.get('id')
   const name = formData.get('name')
@@ -570,19 +474,6 @@ export async function editUser(prevState, formData) {
 }
 
 // ------------------------ deleteUser------------------------
-// export async function deleteUser(prevState, formData) {
-//   try {
-//     const id = formData.get('id')
-
-//     await prisma.user.delete({
-//       where: { id },
-//     })
-//     revalidatePath('/dashboard')
-//     return { success: 'Usuario eliminado' }
-//   } catch (error) {
-//     return { error }
-//   }
-// }
 
 export async function deleteUser(prevState, formData) {
   try {
@@ -620,66 +511,66 @@ export async function deleteUser(prevState, formData) {
 
 
 // //  ------------------------ NOTIFICACIONES ------------------------
-export async function crearNotificacion(formData) {
-  const session = await auth()
+// export async function crearNotificacion(formData) {
+//   const session = await auth()
 
-  if (!session?.user || session.user.role !== 'ADMIN') {
-    throw new Error('No autorizado')
-  }
+//   if (!session?.user || session.user.role !== 'ADMIN') {
+//     throw new Error('No autorizado')
+//   }
 
-  const title = formData.get('title')
-  const message = formData.get('message')
+//   const title = formData.get('title')
+//   const message = formData.get('message')
 
-  await prisma.notification.create({
-    data: {
-      title,
-      message,
-      createdBy: session.user.id,
-    },
-  })
+//   await prisma.notification.create({
+//     data: {
+//       title,
+//       message,
+//       createdBy: session.user.id,
+//     },
+//   })
 
-  redirect('/notificaciones')
-}
+//   redirect('/notificaciones')
+// }
 //---------------- EDITAR NOTIFICACION ------------------
 
-export async function editarNotificacion(id, formData) {
-  const session = await auth()
+// export async function editarNotificacion(id, formData) {
+//   const session = await auth()
 
-  if (!session?.user || session.user.role !== 'ADMIN') {
-    throw new Error('No autorizado')
-  }
+//   if (!session?.user || session.user.role !== 'ADMIN') {
+//     throw new Error('No autorizado')
+//   }
 
-  const title = formData.get('title')
-  const message = formData.get('message')
+//   const title = formData.get('title')
+//   const message = formData.get('message')
 
-  await prisma.notification.update({
-    where: { id },
-    data: {
-      title,
-      message,
-    },
-  })
+//   await prisma.notification.update({
+//     where: { id },
+//     data: {
+//       title,
+//       message,
+//     },
+//   })
 
-  redirect('/notificaciones')
-}
+//   redirect('/notificaciones')
+// }
 
 
 //---------------- ELIMINAR NOTIFICACION ------------------
-export async function eliminarNotificacion(id) {
-  const session = await auth()
+// export async function eliminarNotificacion(id) {
+//   const session = await auth()
 
-  if (!session?.user || session.user.role !== 'ADMIN') {
-    throw new Error('No autorizado')
-  }
+//   if (!session?.user || session.user.role !== 'ADMIN') {
+//     throw new Error('No autorizado')
+//   }
 
-  await prisma.notification.delete({
-    where: { id }
-  })
+//   await prisma.notification.delete({
+//     where: { id }
+//   })
 
-  redirect('/notificaciones') // recarga la página
-}
+//   redirect('/notificaciones') // recarga la página
+// }
 
-// login
+// LOGIN
 
 export async function authenticate(prevState, formData) {
   try {
@@ -720,7 +611,6 @@ export async function authenticate(prevState, formData) {
   }
 }
 
-
 // clases contadas
 export async function getClassCounts() {
   try {
@@ -759,4 +649,132 @@ export async function getClassCounts() {
       entrenamiento_personal: 0
     };
   }
+}
+
+export async function crearNotificacion(formData) {
+  const now = Date.now()
+  if (now - lastExecution < 2000) return // Bloquear por 2 segundos
+  lastExecution = now
+
+  try {
+    const session = await auth()
+    if (!session?.user || session.user.role !== 'ADMIN') throw new Error('No autorizado')
+
+    const title = formData.get('title')
+    const message = formData.get('message')
+
+    await prisma.notification.create({
+      data: {
+        title,
+        message,
+        createdBy: session.user.id,
+      },
+    })
+  } finally {
+    // No necesitamos resetear ya que usamos timestamp
+  }
+  
+  redirect('/notificaciones')
+}
+
+// Editar notificación
+export async function editarNotificacion(id, formData) {
+  const session = await auth()
+  if (!session?.user || session.user.role !== 'ADMIN') throw new Error('No autorizado')
+
+  const title = formData.get('title')
+  const message = formData.get('message')
+
+  await prisma.notification.update({
+    where: { id },
+    data: { title, message },
+  })
+
+  redirect('/notificaciones')
+}
+
+// Eliminar notificación
+export async function eliminarNotificacion(formData) {
+  const session = await auth()
+  if (!session?.user || session.user.role !== 'ADMIN') throw new Error('No autorizado')
+
+  const id = formData.get('id')
+  await prisma.notification.delete({ where: { id } })
+
+  redirect('/notificaciones')
+}
+
+export async function crearNorma(formData) {
+  const now = Date.now()
+  if (now - lastExecutionNorma < 2000) return // Bloqueo de 2 segundos
+  lastExecutionNorma = now
+
+  try {
+    const session = await auth()
+    if (!session?.user || session.user.role !== 'ADMIN') {
+      throw new Error('No autorizado')
+    }
+
+    const titulo = formData.get('titulo')?.toString()
+    const contenido = formData.get('contenido')?.toString()
+    const publicada = formData.get('publicada') === 'on'
+
+    if (!titulo || !contenido) {
+      throw new Error('Título y contenido son obligatorios')
+    }
+
+    await prisma.norma.create({
+      data: {
+        titulo,
+        contenido,
+        publicada,
+        autorId: session.user.id,
+      },
+    })
+  } finally {
+    // No se reinicia el contador porque usamos timestamps
+  }
+
+  redirect('/normas')
+}
+
+export async function editarNorma(id, formData) {
+  const session = await auth()
+  if (!session?.user || session.user.role !== 'ADMIN') {
+    throw new Error('No autorizado')
+  }
+
+  const titulo = formData.get('titulo')?.toString()
+  const contenido = formData.get('contenido')?.toString()
+  const publicada = formData.get('publicada') === 'on'
+
+  if (!titulo || !contenido) {
+    throw new Error('Título y contenido son obligatorios')
+  }
+
+  await prisma.norma.update({
+    where: { id },
+    data: {
+      titulo,
+      contenido,
+      publicada,
+      autorId: session.user.id,
+    },
+  })
+
+  redirect('/normas')
+}
+
+export async function eliminarNorma(formData) {
+  const session = await auth()
+  if (!session?.user || session.user.role !== 'ADMIN') {
+    throw new Error('No autorizado')
+  }
+
+  const id = formData.get('id')
+  if (!id) throw new Error('ID no proporcionado')
+
+  await prisma.norma.delete({ where: { id } })
+
+  redirect('/normas')
 }

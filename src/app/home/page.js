@@ -42,7 +42,7 @@ export default async function Home() {
                 />
               </div>
 
-              <div className="absolute inset-0 bg-gradient-to-t from-blue-800 to-blue-600 opacity-80 transition-opacity duration-300 group-hover:opacity-70" />
+              <div className="absolute inset-0 bg-gradient-to-t from-red-900 to-red-600 opacity-80 transition-opacity duration-300 group-hover:opacity-70" />
 
               <div className="absolute inset-0 flex flex-col justify-end p-6 text-white">
                 <h2 className="text-2xl font-bold mb-2">Pilates</h2>
@@ -74,7 +74,7 @@ export default async function Home() {
                 />
               </div>
 
-              <div className="absolute inset-0 bg-gradient-to-t from-green-800 to-green-600 opacity-80 transition-opacity duration-300 group-hover:opacity-70" />
+              <div className="absolute inset-0 bg-gradient-to-t from-green-900 to-green-600 opacity-80 transition-opacity duration-300 group-hover:opacity-70" />
               <div className="absolute inset-0 flex flex-col justify-end p-6 text-white">
                 <h2 className="text-2xl font-bold mb-2">Rehabilitación Funcional</h2>
                 <div className="flex justify-between items-center">
@@ -105,7 +105,7 @@ export default async function Home() {
                 />
               </div>
 
-              <div className="absolute inset-0 bg-gradient-to-t from-purple-800 to-purple-600 opacity-80 transition-opacity duration-300 group-hover:opacity-70" />
+              <div className="absolute inset-0 bg-gradient-to-t from-blue-900 to-blue-600 opacity-80 transition-opacity duration-300 group-hover:opacity-70" />
               <div className="absolute inset-0 flex flex-col justify-end p-6 text-white">
                 <h2 className="text-2xl font-bold mb-2">Entrenamiento Personal</h2>
                 <div className="flex justify-between items-center">
