@@ -282,19 +282,61 @@ export async function cancelarReserva(horarioId, tipo) {
   revalidatePath(`/clases/${tipo}`);
 }
 
+// export async function register(prevState, formData) {
+//   const name = formData.get('name');
+//   const address = formData.get('address');
+//   const phone = formData.get('phone');
+//   const password = formData.get('password');
+
+//   try {
+//     // Validación básica
+//     if (!phone.match(/^\d{9}$/)) {
+//       return { error: 'El teléfono debe tener 9 dígitos' };
+//     }
+
+//     // Verificar usuario existente
+//     const existingUser = await prisma.user.findUnique({
+//       where: { phone }
+//     });
+
+//     if (existingUser) {
+//       return { error: 'Este teléfono ya está registrado' };
+//     }
+
+//     // Encriptación correcta de la contraseña
+//     const hashedPassword = await bcrypt.hash(password, 10);
+
+//     // Crear usuario en la base de datos
+//     await prisma.user.create({
+//       data: {
+//         name,
+//         address,
+//         phone,
+//         password: hashedPassword,
+//         role: 'USER' // Asignar rol por defecto
+//       }
+//     });
+
+//     return { success: "¡Registro exitoso! Ya puedes iniciar sesión" };
+
+//   } catch (error) {
+//     console.error('Error en registro:', error);
+//     return { error: 'Error al crear el usuario. Inténtalo de nuevo.' };
+//   }
+// }
+
 export async function register(prevState, formData) {
   const name = formData.get('name');
   const address = formData.get('address');
   const phone = formData.get('phone');
   const password = formData.get('password');
+  const paidSessions = formData.getAll('paidSessions'); // Array de tipos de sesiones
 
   try {
-    // Validación básica
     if (!phone.match(/^\d{9}$/)) {
       return { error: 'El teléfono debe tener 9 dígitos' };
     }
 
-    // Verificar usuario existente
     const existingUser = await prisma.user.findUnique({
       where: { phone }
     });
@@ -303,17 +345,20 @@ export async function register(prevState, formData) {
       return { error: 'Este teléfono ya está registrado' };
     }
 
-    // Encriptación correcta de la contraseña
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Crear usuario en la base de datos
-    await prisma.user.create({
+    const user = await prisma.user.create({
       data: {
         name,
         address,
         phone,
         password: hashedPassword,
-        role: 'USER' // Asignar rol por defecto
+        role: 'USER',
+        paidSessions: {
+          create: paidSessions.map(sessionType => ({
+            sessionType: sessionType
+          }))
+        }
       }
     });
 
@@ -387,6 +432,92 @@ export async function newUser(prevState, formData) {
 
 // editUser------------------------
 
+// export async function editUser(prevState, formData) {
+//   const id = formData.get('id')
+//   const name = formData.get('name')
+//   const address = formData.get('address')
+//   const email = formData.get('email')
+//   const image = formData.get('image')
+//   const phone = formData.get('phone')
+//   const role = formData.get('role')
+//   const password = formData.get('password')
+
+//   const nameRegex = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/
+//   if (!nameRegex.test(name)) {
+//     return { error: 'El nombre solo puede contener letras y espacios' }
+//   }
+
+//   // Validar si el nombre ya existe
+//   const existingUserByName = await prisma.user.findFirst({
+//     where: {
+//       name,
+//       NOT: { id },
+//     },
+//   })
+
+//   if (existingUserByName) {
+//     return { error: 'Este nombre ya está registrado' }
+//   }
+
+//   const phoneRegex = /^[0-9]+$/
+//   if (!phoneRegex.test(phone)) {
+//     return { error: 'El teléfono solo puede contener números' }
+//   }
+
+//   // Validar si el teléfono ya existe
+//   if (phone) {
+//     const existingUserByPhone = await prisma.user.findFirst({
+//       where: {
+//         phone,
+//         NOT: { id },
+//       },
+//     })
+
+//     if (existingUserByPhone) {
+//       return { error: 'Este número de teléfono ya está registrado' }
+//     }
+//   }
+
+//   let hashedPassword
+//   if (password) {
+//     hashedPassword = await bcrypt.hash(password, 10)
+//   }
+
+//   // Obtener el usuario actual
+//   const user = await prisma.user.findUnique({ where: { id } })
+//   if (!user) {
+//     return { error: 'Usuario no encontrado' }
+//   }
+
+//   // Prevenir cambio de rol si es el jefe
+//   const isJefe = id === 'cmaf8dd9v0002vhiwojgid5lp'
+//   if (isJefe && role && role !== user.role) {
+//     return { error: 'No se puede cambiar el rol del jefe.' }
+//   }
+
+//   try {
+//     await prisma.user.update({
+//       where: { id },
+//       data: {
+//         name,
+//         address,
+//         email,
+//         image,
+//         phone,
+//         ...(password && { password: hashedPassword }),
+//         ...(!isJefe && role && { role }),
+//       },
+//     })
+
+//     revalidatePath('/perfil')
+//     revalidatePath('/users')
+//     return { success: 'Usuario actualizado correctamente' }
+//   } catch (error) {
+//     console.error('Error updating user:', error)
+//     return { error: 'Error al actualizar el usuario' }
+//   }
+// }
+
 export async function editUser(prevState, formData) {
   const id = formData.get('id')
   const name = formData.get('name')
@@ -396,13 +527,13 @@ export async function editUser(prevState, formData) {
   const phone = formData.get('phone')
   const role = formData.get('role')
   const password = formData.get('password')
+  const paidSessions = formData.getAll('paidSessions') // Array de tipos de sesiones
 
   const nameRegex = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/
   if (!nameRegex.test(name)) {
     return { error: 'El nombre solo puede contener letras y espacios' }
   }
 
-  // Validar si el nombre ya existe
   const existingUserByName = await prisma.user.findFirst({
     where: {
       name,
@@ -419,7 +550,6 @@ export async function editUser(prevState, formData) {
     return { error: 'El teléfono solo puede contener números' }
   }
 
-  // Validar si el teléfono ya existe
   if (phone) {
     const existingUserByPhone = await prisma.user.findFirst({
       where: {
@@ -438,31 +568,47 @@ export async function editUser(prevState, formData) {
     hashedPassword = await bcrypt.hash(password, 10)
   }
 
-  // Obtener el usuario actual
   const user = await prisma.user.findUnique({ where: { id } })
   if (!user) {
     return { error: 'Usuario no encontrado' }
   }
 
-  // Prevenir cambio de rol si es el jefe
   const isJefe = id === 'cmaf8dd9v0002vhiwojgid5lp'
   if (isJefe && role && role !== user.role) {
     return { error: 'No se puede cambiar el rol del jefe.' }
   }
 
   try {
-    await prisma.user.update({
-      where: { id },
-      data: {
-        name,
-        address,
-        email,
-        image,
-        phone,
-        ...(password && { password: hashedPassword }),
-        ...(!isJefe && role && { role }),
-      },
-    })
+    await prisma.$transaction([
+      // Actualizar datos básicos del usuario
+      prisma.user.update({
+        where: { id },
+        data: {
+          name,
+          address,
+          email,
+          image,
+          phone,
+          ...(password && { password: hashedPassword }),
+          ...(!isJefe && role && { role }),
+        },
+      }),
+      
+      // Eliminar sesiones pagadas existentes
+      prisma.paidSession.deleteMany({
+        where: { userId: id }
+      }),
+      
+      // Crear nuevas sesiones pagadas
+      ...(paidSessions.length > 0 ? [
+        prisma.paidSession.createMany({
+          data: paidSessions.map(sessionType => ({
+            userId: id,
+            sessionType: sessionType
+          }))
+        })
+      ] : [])
+    ])
 
     revalidatePath('/perfil')
     revalidatePath('/users')
@@ -472,7 +618,6 @@ export async function editUser(prevState, formData) {
     return { error: 'Error al actualizar el usuario' }
   }
 }
-
 // ------------------------ deleteUser------------------------
 
 export async function deleteUser(prevState, formData) {

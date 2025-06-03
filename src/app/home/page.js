@@ -190,6 +190,8 @@ export default function Home() {
   return <MainContent />;
 }
 
+
+
 // sin carga
 // import Header from "@/components/header";
 // import Footer from "@/components/footer";

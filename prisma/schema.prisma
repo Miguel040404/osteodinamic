@@ -31,6 +31,17 @@ model User {
   sessions      Session[]
   notifications Notification[]
   normas        Norma[]
+  paidSessions  PaidSession[]  // Nueva relación para sesiones pagadas
+}
+
+model PaidSession {
+  id          String      @id @default(cuid())
+  userId      String
+  sessionType SessionType 
+
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, sessionType])
 }
 
 model Account {
