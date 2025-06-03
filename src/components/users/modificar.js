@@ -10,21 +10,29 @@ export default function UserModificar({ user, sessionUser }) {
   const [showPassword, setShowPassword] = useState(false);
   const [avatarOpen, setAvatarOpen] = useState(false);
   const [selectedAvatar, setSelectedAvatar] = useState(user.image || '/images/avatar-80.png');
-  const [selectedSessions, setSelectedSessions] = useState(
-    user.paidSessions ? user.paidSessions.map(ps => ps.sessionType) : []
-  );
+  
+  // Estado para las sesiones pagadas
+  const [paidSessions, setPaidSessions] = useState([]);
   
   const avatares = [...Array(80)].map((_, index) => 
     `/images/avatar-${String(index).padStart(2, '0')}.png`
   );
   
+  // Inicializar sesiones cuando el usuario cambia
+  useEffect(() => {
+    // Extraemos los sessionType de las paidSessions del usuario
+    const sessions = user.paidSessions?.map(ps => ps.sessionType) || [];
+    setPaidSessions(sessions);
+  }, [user]);
+
   const handleAvatarChange = (avatar) => {
     setSelectedAvatar(avatar);
     setAvatarOpen(false);
   };
 
+  // Función para manejar cambios en las sesiones
   const handleSessionChange = (sessionType) => {
-    setSelectedSessions(prev => 
+    setPaidSessions(prev => 
       prev.includes(sessionType)
         ? prev.filter(s => s !== sessionType)
         : [...prev, sessionType]
@@ -47,7 +55,7 @@ export default function UserModificar({ user, sessionUser }) {
       toast.success(state.success);
       document.getElementById(formId)?.closest('dialog')?.close();
     }
-  }, [state]);
+  }, [state, formId]);
 
   return (
     <div className="max-w-md mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
@@ -168,41 +176,54 @@ export default function UserModificar({ user, sessionUser }) {
             </button>
           </div>
           
-          {/* Sección para sesiones pagadas - SOLO ADMINISTRADORES */}
+          {/* Sección para sesiones pagadas - SOLO ADMINISTRADORES - CON BOTONES TOGGLE */}
           {sessionUser?.role === 'ADMIN' && (
             <div className="mt-4">
               <label className="block text-sm font-medium text-gray-700 mb-3">Sesiones pagadas</label>
-              <div className="flex flex-wrap gap-4">
-                <label className="flex items-center gap-2">
+              <div className="flex flex-wrap gap-2">
+                {['Pilates', 'Rehabilitacion_funcional', 'Entrenamiento_personal'].map((session) => {
+                  const isActive = paidSessions.includes(session);
+                  let displayName = session;
+                  
+                  if (session === 'Rehabilitacion_funcional') displayName = 'Rehabilitación';
+                  if (session === 'Entrenamiento_personal') displayName = 'Entrenamiento';
+                  
+                  return (
+                    <button
+                      key={session}
+                      type="button"
+                      onClick={() => handleSessionChange(session)}
+                      className={`px-4 py-2 rounded-full transition-all ${
+                        isActive 
+                          ? 'bg-indigo-600 text-white shadow-md' 
+                          : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                      }`}
+                    >
+                      <div className="flex items-center gap-2">
+                        {isActive ? (
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                          </svg>
+                        ) : (
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                          </svg>
+                        )}
+                        <span>{displayName}</span>
+                      </div>
+                    </button>
+                  );
+                })}
+                
+                {/* Inputs ocultos para enviar las sesiones seleccionadas */}
+                {paidSessions.map(session => (
                   <input 
-                    type="checkbox"
-                    name="paidSessions"
-                    value="Pilates"
-                    checked={selectedSessions.includes('Pilates')}
-                    onChange={() => handleSessionChange('Pilates')}
+                    key={session} 
+                    type="hidden" 
+                    name="paidSessions" 
+                    value={session} 
                   />
-                  <span>Pilates</span>
-                </label>
-                <label className="flex items-center gap-2">
-                  <input 
-                    type="checkbox"
-                    name="paidSessions"
-                    value="Rehabilitacion_funcional"
-                    checked={selectedSessions.includes('Rehabilitacion_funcional')}
-                    onChange={() => handleSessionChange('Rehabilitacion_funcional')}
-                  />
-                  <span>Rehabilitación Funcional</span>
-                </label>
-                <label className="flex items-center gap-2">
-                  <input 
-                    type="checkbox"
-                    name="paidSessions"
-                    value="Entrenamiento_personal"
-                    checked={selectedSessions.includes('Entrenamiento_personal')}
-                    onChange={() => handleSessionChange('Entrenamiento_personal')}
-                  />
-                  <span>Entrenamiento Personal</span>
-                </label>
+                ))}
               </div>
             </div>
           )}
@@ -243,7 +264,6 @@ export default function UserModificar({ user, sessionUser }) {
     </div>
   )
 }
-
 // 'use client'
 // import { editUser } from '@/lib/actions'
 // import { useActionState, useEffect, useId, useState } from 'react'

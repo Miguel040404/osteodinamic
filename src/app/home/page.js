@@ -75,7 +75,7 @@ async function HomeContent() {
               <div className="absolute inset-0 flex flex-col justify-end p-6 text-white">
                 <h2 className="text-2xl font-bold mb-2">Pilates</h2>
                 <div className="flex justify-between items-center">
-                  <span className="bg-blue-500 bg-opacity-70 px-3 py-1 rounded-full text-sm">
+                  <span className="bg-red-500 bg-opacity-70 px-3 py-1 rounded-full text-sm">
                     {classCounts.pilates} clases disponibles
                   </span>
                   <div className="flex items-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -137,7 +137,7 @@ async function HomeContent() {
               <div className="absolute inset-0 flex flex-col justify-end p-6 text-white">
                 <h2 className="text-2xl font-bold mb-2">Entrenamiento Personal</h2>
                 <div className="flex justify-between items-center">
-                  <span className="bg-purple-500 bg-opacity-70 px-3 py-1 rounded-full text-sm">
+                  <span className="bg-blue-500 bg-opacity-70 px-3 py-1 rounded-full text-sm">
                     {classCounts.entrenamiento_personal} clases disponibles
                   </span>
                   <div className="flex items-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">

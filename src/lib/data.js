@@ -92,3 +92,22 @@ export async function getHorariosConReservasPorTipo(tipo) {
   });
 }
 
+export const hasPaidSession = async (userId, sessionType) => {
+  // Los administradores siempre tienen acceso
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: { role: true }
+  });
+  
+  if (user?.role === 'ADMIN') return true;
+
+  // Verificar sesión pagada para usuarios normales
+  const paidSession = await prisma.paidSession.findFirst({
+    where: {
+      userId: userId,
+      sessionType: sessionType,
+    },
+  });
+
+  return !!paidSession;
+};

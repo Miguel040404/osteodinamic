@@ -8,6 +8,7 @@ import { auth } from "@/auth"
 import Users from "@/components/users/lista"
 import { getUserById } from "@/lib/data"
 import { Suspense } from "react"
+import prisma from "@/lib/prisma" // Asegúrate de importar prisma
 
 // Componente para el spinner de carga
 const LoadingSpinner = () => (
@@ -52,11 +53,19 @@ async function PerfilData() {
     )
   }
 
-  const user = session.user
-  const usuario = await getUserById(user.id)
+  const user = session.user;
+  
+  // Obtener usuario con sesiones pagadas
+  const usuario = await prisma.user.findUnique({
+    where: { id: user.id },
+    include: { 
+      paidSessions: true  // ¡INCLUIR LAS SESIONES PAGADAS!
+    }
+  });
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
+      <Header />
       <main className="flex-1 container mx-auto px-4 py-10">
         {/* Perfil Card */}
         <section className="max-w-3xl mx-auto bg-white rounded-2xl p-6 sm:p-10 mb-10">
