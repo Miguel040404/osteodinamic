@@ -6,6 +6,7 @@ import prisma from '@/lib/prisma'
 import Footer from '@/components/footer'
 import { redirect } from 'next/navigation'
 import { Suspense } from 'react'
+import { eliminarNotificacion } from '@/lib/actions'
 
 // Componente para el spinner de carga
 const LoadingSpinner = () => (
