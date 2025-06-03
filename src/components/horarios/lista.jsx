@@ -103,9 +103,6 @@ export default async function ListaHorarios({ tipo }) {
             <p className="text-gray-600 max-w-md mx-auto mb-6">
               Prueba con otro día o consulta más tarde para ver nuevos horarios
             </p>
-            <Link href="/horarios" className="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-6 rounded-lg transition duration-300">
-              Ver todos los horarios
-            </Link>
           </div>
         ) : (
           dias.map(dia => {
@@ -134,177 +131,174 @@ export default async function ListaHorarios({ tipo }) {
                 </div>
                 
                 {/* Lista de horarios para este día */}
-                <div className="divide-y divide-gray-100">
-                  {horariosDelDia.length > 0 ? (
-                    horariosDelDia.map(horario => {
-                      const yaApuntado = horario.reservas.some((r) => r.userId === userId);
-                      const plazasRestantes = 6 - horario.reservas.length;
-                      const lleno = plazasRestantes === 0;
-                      const pocasPlazas = plazasRestantes > 0 && plazasRestantes <= 2;
+              <div className="divide-y divide-gray-100">
+  {horariosDelDia.length > 0 ? (
+    horariosDelDia.map(horario => {
+      const yaApuntado = horario.reservas.some((r) => r.userId === userId);
+      const plazasOcupadas = horario.reservas.length;
+      const plazasTotales = 6;
+      const lleno = plazasOcupadas === plazasTotales;
+      const pocasPlazas = plazasOcupadas >= 4 && plazasOcupadas < plazasTotales;
 
-                      return (
-                        <div key={horario.id} className="p-6">
-                          <div className="flex flex-col md:flex-row justify-between gap-6">
-                            <div className="flex items-start gap-4 flex-1">
-                              <div className="bg-gray-100 p-3 rounded-lg border border-gray-200">
-                                <Clock className="w-6 h-6 text-gray-700" />
-                              </div>
-                              <div className="flex-1">
-                                <div className="flex flex-wrap justify-between gap-3">
-                                  <h3 className="text-lg font-bold text-gray-900">
-                                    {horario.hora}
-                                  </h3>
-                                  
-                                  {/* Estado de plazas */}
-                                  <div className="flex items-center gap-2">
-                                    <div className="flex flex-col items-end">
-                                      <span className={`text-sm font-semibold ${
-                                        lleno
-                                          ? 'text-red-600'
-                                          : pocasPlazas
-                                            ? 'text-amber-600'
-                                            : 'text-green-600'
-                                      }`}>
-                                        {plazasRestantes} / 6 plazas
-                                      </span>
-                                      <div className="w-24 h-2 bg-gray-200 rounded-full overflow-hidden mt-1">
-                                        <div 
-                                          className={`h-full ${
-                                            lleno ? 'bg-red-500' : 
-                                            pocasPlazas ? 'bg-amber-500' : 'bg-green-500'
-                                          }`} 
-                                          style={{ width: `${(plazasRestantes / 6) * 100}%` }}
-                                        ></div>
-                                      </div>
-                                    </div>
-                                    <Users className="w-5 h-5 text-gray-500" />
-                                  </div>
-                                </div>
-                                
-                                <div className="mt-3 flex flex-wrap gap-2">
-                                  <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${
-                                    tipo === 'Entrenamiento' 
-                                      ? 'bg-blue-100 text-blue-800 border border-blue-200' 
-                                      : 'bg-purple-100 text-purple-800 border border-purple-200'
-                                  }`}>
-                                    {tipo.replace(/_/g, ' ')}
-                                  </span>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-
-                          {/* Botones de acción */}
-                          <div className="mt-6 flex flex-col sm:flex-row justify-between items-start gap-4">
-                            {esAdmin && horario.reservas.length > 0 && (
-                              <details className="group w-full">
-                                <summary className="flex items-center gap-2 cursor-pointer text-indigo-600 hover:text-indigo-800 font-medium text-sm list-none">
-                                  <span>Ver usuarios ({horario.reservas.length})</span>
-                                  <ChevronDown className="w-4 h-4 group-open:hidden" />
-                                  <ChevronUp className="w-4 h-4 hidden group-open:block" />
-                                </summary>
-  
-                                <div className="mt-4 bg-gray-50 p-5 rounded-lg border border-gray-200">
-                                  <h4 className="text-sm font-medium text-gray-700 mb-4 flex items-center gap-2">
-                                    <User className="w-4 h-4" />
-                                    <span>Usuarios apuntados:</span>
-                                  </h4>
-    
-                                  {/* Contenedor grid responsivo */}
-                                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                                    {horario.reservas.map((r, idx) => (
-                                      <div 
-                                        key={idx} 
-                                        className="flex items-center justify-between bg-white p-4 rounded-lg border border-gray-200 shadow-sm"
-                                      >
-                                        <div className="flex items-center gap-3">
-                                          {/* <div className="bg-gray-100 border border-gray-300 rounded-xl w-8 h-8 flex items-center justify-center">
-                                            <span className="text-xs font-bold text-gray-700">
-                                              {r.user?.name?.split(' ').map(n => n[0]).join('') || "UA"}
-                                            </span>
-                                          </div> */}
-                                          <span className="font-medium text-gray-800 truncate max-w-[180px]">
-                                            {r.user?.name || "Usuario anónimo"}
-                                          </span>
-                                        </div>
-          
-                                        <form action={cancelarReservaAdmin.bind(null, horario.id, tipo, r.userId)}>
-                                          <button
-                                            type="submit"
-                                            className="text-red-500 hover:text-red-700 p-1 rounded-full hover:bg-red-50 transition-colors"
-                                            title="Eliminar reserva"
-                                          >
-                                            <XCircle className="w-5 h-5" />
-                                          </button>
-                                        </form>
-                                      </div>
-                                    ))}
-                                  </div>
-                                </div>
-                              </details>
-                            )}
-                            
-                            <div className="w-full sm:w-auto">
-                              {esAdmin ? (
-                                <div className="flex flex-row gap-3 w-full">
-                                  <EditarHorarioModal horario={horario}>
-                                    <button className="flex items-center justify-center gap-2 bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 px-4 py-2 rounded-lg transition-colors font-medium w-full sm:w-auto">
-                                      <Pencil className="w-4 h-4" />
-                                      <span>Editar</span>
-                                    </button>
-                                  </EditarHorarioModal>
-                                  
-                                  <EliminarHorarioModal horarioId={horario.id}>
-                                    <button className="flex items-center justify-center gap-2 bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 px-4 py-2 rounded-lg transition-colors font-medium w-full sm:w-auto">
-                                      <Trash2 className="w-4 h-4" />
-                                      <span>Eliminar</span>
-                                    </button>
-                                  </EliminarHorarioModal>
-                                </div>
-                              ) : (
-                                <form 
-                                  action={(yaApuntado ? cancelarReserva : apuntarseAHorario).bind(null, horario.id, tipo)}
-                                  className="w-full"
-                                >
-                                  <button
-                                    type="submit"
-                                    className={`w-full flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-medium transition-colors ${
-                                      yaApuntado
-                                        ? 'bg-red-100 text-red-700 hover:bg-red-200 border border-red-200'
-                                        : lleno
-                                          ? 'bg-gray-100 text-gray-500 cursor-not-allowed border border-gray-200'
-                                          : 'bg-indigo-100 text-indigo-700 hover:bg-indigo-200 border border-indigo-200'
-                                    }`}
-                                    disabled={lleno || (!yaApuntado && lleno)}
-                                  >
-                                    {yaApuntado ? (
-                                      <>
-                                        <XCircle className="w-5 h-5" />
-                                        <span>Cancelar reserva</span>
-                                      </>
-                                    ) : lleno ? (
-                                      <span>Lleno</span>
-                                    ) : (
-                                      <>
-                                        <Plus className="w-5 h-5" />
-                                        <span>Reservar ahora</span>
-                                      </>
-                                    )}
-                                  </button>
-                                </form>
-                              )}
-                            </div>
-                          </div>
-                        </div>
-                      );
-                    })
-                  ) : (
-                    <div className="p-8 text-center text-gray-500 bg-gray-50 border-t border-gray-100">
-                      <CalendarDays className="w-10 h-10 mx-auto text-gray-400 mb-3" />
-                      <p className="text-gray-600">No hay horarios programados para este día</p>
+      return (
+        <div key={horario.id} className="p-6">
+          <div className="flex flex-col md:flex-row justify-between gap-6">
+            <div className="flex items-start gap-4 flex-1">
+              <div className="bg-gray-100 p-3 rounded-lg border border-gray-200">
+                <Clock className="w-6 h-6 text-gray-700" />
+              </div>
+              <div className="flex-1">
+                <div className="flex flex-wrap justify-between gap-3">
+                  <h3 className="text-lg font-bold text-gray-900">
+                    {horario.hora}
+                  </h3>
+                  
+                  {/* Estado de plazas - Modificado para mostrar ocupación */}
+                  <div className="flex items-center gap-2">
+                    <div className="flex flex-col items-end">
+                      <span className={`text-sm font-semibold ${
+                        lleno
+                          ? 'text-red-600'
+                          : pocasPlazas
+                            ? 'text-amber-600'
+                            : 'text-green-600'
+                      }`}>
+                        {plazasOcupadas} / {plazasTotales} plazas
+                      </span>
+                      <div className="w-24 h-2 bg-gray-200 rounded-full overflow-hidden mt-1">
+                        <div 
+                          className={`h-full ${
+                            lleno ? 'bg-red-500' : 
+                            pocasPlazas ? 'bg-amber-500' : 'bg-green-500'
+                          }`} 
+                          style={{ width: `${(plazasOcupadas / plazasTotales) * 100}%` }}
+                        ></div>
+                      </div>
                     </div>
-                  )}
+                    <Users className="w-5 h-5 text-gray-500" />
+                  </div>
                 </div>
+                
+                <div className="mt-3 flex flex-wrap gap-2">
+                  <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${
+                    tipo === 'Entrenamiento' 
+                      ? 'bg-blue-100 text-blue-800 border border-blue-200' 
+                      : 'bg-purple-100 text-purple-800 border border-purple-200'
+                  }`}>
+                    {tipo.replace(/_/g, ' ')}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Botones de acción */}
+          <div className="mt-6 flex flex-col sm:flex-row justify-between items-start gap-4">
+            {esAdmin && horario.reservas.length > 0 && (
+              <details className="group w-full">
+                <summary className="flex items-center gap-2 cursor-pointer text-indigo-600 hover:text-indigo-800 font-medium text-sm list-none">
+                  <span>Ver usuarios ({horario.reservas.length})</span>
+                  <ChevronDown className="w-4 h-4 group-open:hidden" />
+                  <ChevronUp className="w-4 h-4 hidden group-open:block" />
+                </summary>
+
+                <div className="mt-4 bg-gray-50 p-5 rounded-lg border border-gray-200">
+                  <h4 className="text-sm font-medium text-gray-700 mb-4 flex items-center gap-2">
+                    <User className="w-4 h-4" />
+                    <span>Usuarios apuntados:</span>
+                  </h4>
+    
+                  {/* Contenedor grid responsivo */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {horario.reservas.map((r, idx) => (
+                      <div 
+                        key={idx} 
+                        className="flex items-center justify-between bg-white p-4 rounded-lg border border-gray-200 shadow-sm"
+                      >
+                        <div className="flex items-center gap-3">
+                          <span className="font-medium text-gray-800 truncate max-w-[180px]">
+                            {r.user?.name || "Usuario anónimo"}
+                          </span>
+                        </div>
+          
+                        <form action={cancelarReservaAdmin.bind(null, horario.id, tipo, r.userId)}>
+                          <button
+                            type="submit"
+                            className="text-red-500 hover:text-red-700 p-1 rounded-full hover:bg-red-50 transition-colors"
+                            title="Eliminar reserva"
+                          >
+                            <XCircle className="w-5 h-5" />
+                          </button>
+                        </form>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </details>
+            )}
+            
+            <div className="w-full sm:w-auto">
+              {esAdmin ? (
+                <div className="flex flex-row gap-3 w-full">
+                  <EditarHorarioModal horario={horario}>
+                    <button className="flex items-center justify-center gap-2 bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 px-4 py-2 rounded-lg transition-colors font-medium w-full sm:w-auto">
+                      <Pencil className="w-4 h-4" />
+                      <span>Editar</span>
+                    </button>
+                  </EditarHorarioModal>
+                  
+                  <EliminarHorarioModal horarioId={horario.id}>
+                    <button className="flex items-center justify-center gap-2 bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 px-4 py-2 rounded-lg transition-colors font-medium w-full sm:w-auto">
+                      <Trash2 className="w-4 h-4" />
+                      <span>Eliminar</span>
+                    </button>
+                  </EliminarHorarioModal>
+                </div>
+              ) : (
+                <form 
+                  action={(yaApuntado ? cancelarReserva : apuntarseAHorario).bind(null, horario.id, tipo)}
+                  className="w-full"
+                >
+                  <button
+                    type="submit"
+                    className={`w-full flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-medium transition-colors ${
+                      yaApuntado
+                        ? 'bg-red-100 text-red-700 hover:bg-red-200 border border-red-200'
+                        : lleno
+                          ? 'bg-gray-100 text-gray-500 cursor-not-allowed border border-gray-200'
+                          : 'bg-indigo-100 text-indigo-700 hover:bg-indigo-200 border border-indigo-200'
+                    }`}
+                    disabled={lleno || (!yaApuntado && lleno)}
+                  >
+                    {yaApuntado ? (
+                      <>
+                        <XCircle className="w-5 h-5" />
+                        <span>Cancelar reserva</span>
+                      </>
+                    ) : lleno ? (
+                      <span>Lleno</span>
+                    ) : (
+                      <>
+                        <Plus className="w-5 h-5" />
+                        <span>Reservar ahora</span>
+                      </>
+                    )}
+                  </button>
+                </form>
+              )}
+            </div>
+          </div>
+        </div>
+      );
+    })
+  ) : (
+    <div className="p-8 text-center text-gray-500 bg-gray-50 border-t border-gray-100">
+      <CalendarDays className="w-10 h-10 mx-auto text-gray-400 mb-3" />
+      <p className="text-gray-600">No hay horarios programados para este día</p>
+    </div>
+  )}
+</div>
+                
               </div>
             );
           })
@@ -313,6 +307,8 @@ export default async function ListaHorarios({ tipo }) {
     </div>
   );
 }
+
+
 // import { CrearHorarioModal, EditarHorarioModal, EliminarHorarioModal } from "@/components/HorarioModals";
 // import { apuntarseAHorario, cancelarReserva, cancelarReservaAdmin } from "@/lib/actions";
 // import { auth } from "@/auth";
