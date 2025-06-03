@@ -12,7 +12,9 @@ export default function UserModificar({ user, sessionUser }) {
   const [selectedAvatar, setSelectedAvatar] = useState(user.image || '/images/avatar-80.png');
   
   // Estado para las sesiones pagadas
-  const [paidSessions, setPaidSessions] = useState([]);
+  const [paidSessions, setPaidSessions] = useState(user.paidSessions || []);
+
+  console.log(user, 'paidSessions');
   
   const avatares = [...Array(80)].map((_, index) => 
     `/images/avatar-${String(index).padStart(2, '0')}.png`

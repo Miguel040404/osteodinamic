@@ -59,9 +59,11 @@ async function PerfilData() {
   const usuario = await prisma.user.findUnique({
     where: { id: user.id },
     include: { 
-      paidSessions: true  // ¡INCLUIR LAS SESIONES PAGADAS!
+      paidSessions: true  
     }
   });
+
+  console.log('Usuario con sesiones pagadas:', usuario);
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
