@@ -218,12 +218,12 @@ export default async function ListaHorarios({ tipo }) {
                                         className="flex items-center justify-between bg-white p-4 rounded-lg border border-gray-200 shadow-sm"
                                       >
                                         <div className="flex items-center gap-3">
-                                          <div className="bg-gray-100 border border-gray-300 rounded-xl w-8 h-8 flex items-center justify-center">
+                                          {/* <div className="bg-gray-100 border border-gray-300 rounded-xl w-8 h-8 flex items-center justify-center">
                                             <span className="text-xs font-bold text-gray-700">
                                               {r.user?.name?.split(' ').map(n => n[0]).join('') || "UA"}
                                             </span>
-                                          </div>
-                                          <span className="font-medium text-gray-800 truncate max-w-[120px]">
+                                          </div> */}
+                                          <span className="font-medium text-gray-800 truncate max-w-[180px]">
                                             {r.user?.name || "Usuario anónimo"}
                                           </span>
                                         </div>

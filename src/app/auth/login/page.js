@@ -23,14 +23,14 @@ async function page({ searchParams }) {
 
   return (
     <>
-     <div className="mx-auto mt-10 max-w-sm p-8 border border-slate-300 rounded-2xl bg-white shadow-lg">
+     <div>
   {error && (
     <div className="mb-4 text-red-600 font-medium">
       {errors.get(error)}
     </div>
   )}
   
- <h1 className="!text-gray-700 text-3xl md:text-2xl font-bold text-center -mb-6 md:-mb-3">Iniciar sesión</h1>
+ {/* <h1 className="!text-gray-700 text-3xl md:text-2xl font-bold text-center -mb-6 md:-mb-3">Iniciar sesión</h1> */}
 
   <LoginForm />
 

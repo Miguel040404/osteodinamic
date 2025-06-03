@@ -7,14 +7,41 @@ import { BellRing, BookOpenCheck } from "lucide-react"
 import { auth } from "@/auth"
 import Users from "@/components/users/lista"
 import { getUserById } from "@/lib/data"
+import { Suspense } from "react"
 
-export default async function Perfil() {
+// Componente para el spinner de carga
+const LoadingSpinner = () => (
+  <div className="fixed inset-0 flex items-center justify-center z-50 bg-white bg-opacity-80">
+    <div className="text-center">
+      <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-blue-500 mx-auto"></div>
+      <p className="mt-4 text-lg text-gray-600 flex justify-center">
+        Cargando perfil
+        <span className="flex">
+          <span className="animate-bounce">.</span>
+          <span className="animate-bounce" style={{ animationDelay: '0.2s' }}>.</span>
+          <span className="animate-bounce" style={{ animationDelay: '0.4s' }}>.</span>
+        </span>
+      </p>
+    </div>
+  </div>
+);
+
+// Componente principal envuelto en Suspense
+function PerfilContent() {
+  return (
+    <Suspense fallback={<LoadingSpinner />}>
+      <PerfilData />
+    </Suspense>
+  );
+}
+
+// Componente que contiene la lógica de datos
+async function PerfilData() {
   const session = await auth()
 
   if (!session?.user) {
     return (
       <div className="min-h-screen flex flex-col">
-        {/* <Header /> */}
         <main className="flex-1 container mx-auto px-4 py-12">
           <p className="text-center text-red-500 text-lg font-semibold">
             No estás autenticado.
@@ -30,8 +57,6 @@ export default async function Perfil() {
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
-      {/* <Header /> */}
-
       <main className="flex-1 container mx-auto px-4 py-10">
         {/* Perfil Card */}
         <section className="max-w-3xl mx-auto bg-white rounded-2xl p-6 sm:p-10 mb-10">
