@@ -83,15 +83,15 @@ enum SessionType {
 
 model Horario {
   id         String       @id @default(cuid())
-  dia        String       // "Lunes", "Martes"
-  hora       String       
+  dia        String
+  hora       String
   tipo       SessionType
-  reservas   Reserva[]    // Relación con reservas
+  sala       String       @default("Sala 1") // Nuevo campo
+  reservas   Reserva[]
   createdAt  DateTime     @default(now())
   updatedAt  DateTime     @updatedAt
 
-    @@unique([dia, hora, tipo], name: "dia_hora_tipo")
-    // @@unique([dia, hora, tipo], map: "unique_dia_hora_tipo")
+  @@unique([dia, hora, tipo, sala], name: "dia_hora_tipo_sala") // Actualizar restricción única
 }
 
 

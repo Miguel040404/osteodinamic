@@ -28,7 +28,7 @@ export function CrearHorarioModal({ tipo }) {
       }
     >
       <form ref={formRef} action={formAction} className="space-y-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4"> {/* Cambiado a 3 columnas */}
           <select
             name="dia"
             className="border p-2 rounded-lg bg-white"
@@ -36,9 +36,7 @@ export function CrearHorarioModal({ tipo }) {
             defaultValue=""
           >
             <option value="" disabled>Selecciona un día</option>
-            {/* {['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'].map(dia => ( */}
             {['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'].map(dia => (
-
               <option key={dia} value={dia}>{dia}</option>
             ))}
           </select>
@@ -54,6 +52,17 @@ export function CrearHorarioModal({ tipo }) {
               "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00"].map(hora => (
                 <option key={hora} value={hora}>{hora}</option>
               ))}
+          </select>
+          
+          {/* Nuevo selector de sala */}
+          <select
+            name="sala"
+            className="border p-2 rounded-lg bg-white"
+            required
+            defaultValue="Sala 1"
+          >
+            <option value="Sala 1">Sala 1</option>
+            <option value="Sala 2">Sala 2</option>
           </select>
         </div>
 
@@ -77,6 +86,7 @@ export function CrearHorarioModal({ tipo }) {
     </Modal>
   );
 }
+
 // Modal Editar
 export function EditarHorarioModal({ horario }) {
   const modalRef = useRef();
@@ -111,9 +121,7 @@ export function EditarHorarioModal({ horario }) {
             defaultValue={horario.dia}
             className="flex-1 px-3 py-2 border rounded-lg bg-white"
           >
-            {/* {['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'].map(d => ( */}
             {['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'].map(d => (
-
               <option key={d} value={d}>{d}</option>
             ))}
           </select>
@@ -127,6 +135,16 @@ export function EditarHorarioModal({ horario }) {
               "16:00", "17:00", "18:00", "19:00", "20:00", "21:00"].map(h => (
                 <option key={h} value={h}>{h}</option>
               ))}
+          </select>
+          
+          {/* Nuevo selector de sala */}
+          <select
+            name="sala"
+            defaultValue={horario.sala}
+            className="flex-1 px-3 py-2 border rounded-lg bg-white"
+          >
+            <option value="Sala 1">Sala 1</option>
+            <option value="Sala 2">Sala 2</option>
           </select>
         </div>
 
@@ -144,7 +162,8 @@ export function EditarHorarioModal({ horario }) {
     </Modal>
   );
 }
-// Modal Eliminar
+
+// Modal Eliminar (sin cambios)
 export function EliminarHorarioModal({ horarioId }) {
   const modalRef = useRef()
   const [state, formAction] = useActionState(eliminarHorario, null)

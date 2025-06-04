@@ -98,6 +98,23 @@ export function CrearHorarioModal({ tipo }) {
                             ))}
                         </select>
                     </div>
+
+ <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Sala
+            </label>
+            <select
+              name="sala"
+              className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-colors"
+              required
+              defaultValue=""
+            >
+              <option value="" disabled>Selecciona una sala</option>
+              <option value="Sala 1">Sala 1</option>
+              <option value="Sala 2">Sala 2</option>
+            </select>
+          </div>
+                    
                 </div>
 
                 <input type="hidden" name="tipo" value={tipo} />
@@ -189,6 +206,23 @@ export function EditarHorarioModal({ horario }) {
                             ))}
                         </select>
                     </div>
+
+ <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Sala
+          </label>
+          <select
+            name="sala"
+            defaultValue={horario.sala}
+            className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+            required
+          >
+            {['Sala 1', 'Sala 2'].map(s => (
+              <option key={s} value={s}>{s}</option>
+            ))}
+          </select>
+        </div>
+
                 </div>
 
                 <button

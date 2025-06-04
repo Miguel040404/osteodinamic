@@ -61,7 +61,6 @@ export async function eliminarHorario(prevState, formData) {
   }
 }
 // ---------------EDITAR HORARIO ------------------
-
 export async function editarHorario(prevState, formData) {
   const session = await auth();
   if (!session?.user || session.user.role !== 'ADMIN') return { error: 'No autorizado' };
@@ -78,13 +77,15 @@ export async function editarHorario(prevState, formData) {
     const nuevosValores = {
       dia: formData.get('dia') || horarioOriginal.dia,
       hora: formData.get('hora') || horarioOriginal.hora,
-      tipo: horarioOriginal.tipo // Mantener el tipo original
+      tipo: horarioOriginal.tipo, // Mantener el tipo original
+      sala: formData.get('sala') || horarioOriginal.sala // Nuevo campo
     };
 
     // Verificar si hay cambios
     const mismosValores =
       nuevosValores.dia === horarioOriginal.dia &&
-      nuevosValores.hora === horarioOriginal.hora;
+      nuevosValores.hora === horarioOriginal.hora &&
+      nuevosValores.sala === horarioOriginal.sala; // Incluir sala en la comparación
 
     if (mismosValores) return { error: 'No se realizaron cambios' };
 
@@ -95,6 +96,7 @@ export async function editarHorario(prevState, formData) {
           { dia: nuevosValores.dia },
           { hora: nuevosValores.hora },
           { tipo: nuevosValores.tipo },
+          { sala: nuevosValores.sala }, // Incluir sala
           { NOT: { id: horarioOriginal.id } }
         ]
       }
@@ -128,7 +130,6 @@ export async function editarHorario(prevState, formData) {
 }
 
 // --------------- CREAR HORARIO ------------------
-
 export async function crearHorario(prevState, formData) {
   const session = await auth();
   if (!session?.user || session.user.role !== 'ADMIN') {
@@ -144,7 +145,8 @@ export async function crearHorario(prevState, formData) {
   const rawData = {
     dia: getValue('dia'),
     hora: getValue('hora'),
-    tipo: getValue('tipo')
+    tipo: getValue('tipo'),
+    sala: getValue('sala') || 'Sala 1' // Nuevo campo con valor por defecto
   };
 
   // Validación completa
@@ -159,7 +161,8 @@ export async function crearHorario(prevState, formData) {
         AND: [
           { dia: rawData.dia },
           { hora: rawData.hora },
-          { tipo: rawData.tipo }
+          { tipo: rawData.tipo },
+          { sala: rawData.sala } // Incluir sala
         ]
       }
     });
