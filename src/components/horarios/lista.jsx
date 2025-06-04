@@ -29,7 +29,7 @@ const getDiaNombre = (dia) => {
   return dias[dia.toUpperCase()] || dia;
 };
 
-// Función para ordenar horarios por día y hora
+// Función para ordenar horarios por día, hora y sala
 const ordenarHorarios = (horarios) => {
   const diasOrden = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'];
   
@@ -43,7 +43,12 @@ const ordenarHorarios = (horarios) => {
     // Si es el mismo día, ordenar por hora
     const horaA = parseInt(a.hora.replace(':', ''));
     const horaB = parseInt(b.hora.replace(':', ''));
-    return horaA - horaB;
+    if (horaA !== horaB) return horaA - horaB;
+    
+    // Si misma hora, ordenar por sala (numéricamente)
+    const salaNumA = parseInt(a.sala.split(' ')[1]);
+    const salaNumB = parseInt(b.sala.split(' ')[1]);
+    return salaNumA - salaNumB;
   });
 };
 
@@ -200,9 +205,9 @@ export default async function ListaHorarios({ tipo }) {
                           </div>
 
                           {/* Botones de acción */}
-                          <div className="mt-6 flex flex-col sm:flex-row justify-between items-start gap-4">
+<div className="w-full sm:w-auto flex flex-col sm:flex-row sm:ml-auto sm:justify-end gap-3">
                             {esAdmin && horario.reservas.length > 0 && (
-                              <details className="group w-full">
+                              <details className="group w-full sm:flex-1">
                                 <summary className="flex items-center gap-2 cursor-pointer text-indigo-600 hover:text-indigo-800 font-medium text-sm list-none">
                                   <span>Ver usuarios ({horario.reservas.length})</span>
                                   <ChevronDown className="w-4 h-4 group-open:hidden" />
@@ -244,9 +249,9 @@ export default async function ListaHorarios({ tipo }) {
                               </details>
                             )}
                             
-                            <div className="w-full sm:w-auto">
+                            <div className="w-full sm:w-auto flex flex-col sm:flex-row gap-3">
                               {esAdmin ? (
-                                <div className="flex flex-row gap-3 w-full">
+                                <>
                                   <EditarHorarioModal horario={horario}>
                                     <button className="flex items-center justify-center gap-2 bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 px-4 py-2 rounded-lg transition-colors font-medium w-full sm:w-auto">
                                       <Pencil className="w-4 h-4" />
@@ -260,7 +265,7 @@ export default async function ListaHorarios({ tipo }) {
                                       <span>Eliminar</span>
                                     </button>
                                   </EliminarHorarioModal>
-                                </div>
+                                </>
                               ) : (
                                 <form 
                                   action={(yaApuntado ? cancelarReserva : apuntarseAHorario).bind(null, horario.id, tipo)}
@@ -294,7 +299,9 @@ export default async function ListaHorarios({ tipo }) {
                                 </form>
                               )}
                             </div>
+
                           </div>
+
                         </div>
                       );
                     })
@@ -313,7 +320,6 @@ export default async function ListaHorarios({ tipo }) {
     </div>
   );
 }
-
 
 // import { CrearHorarioModal, EditarHorarioModal, EliminarHorarioModal } from "@/components/HorarioModals";
 // import { apuntarseAHorario, cancelarReserva, cancelarReservaAdmin } from "@/lib/actions";
