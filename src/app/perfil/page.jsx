@@ -73,7 +73,7 @@ async function PerfilData() {
         <section className="max-w-3xl mx-auto bg-white rounded-2xl p-6 sm:p-10 mb-10">
           <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6">
             <img
-              src={user.image || '/images/avatar-80.png'}
+              src={user?.image || '/images/avatar-80.png'}
               alt="Imagen de usuario"
               className="w-36 h-36 rounded-full object-cover border-4 border-blue-100"
             />

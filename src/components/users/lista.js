@@ -2,10 +2,11 @@ import { TrashIcon, PencilIcon, PlusIcon } from "lucide-react";
 import { auth } from "@/auth";
 import Modal from '@/components/modal';
 import UserVer from '@/components/users/ver';
-import UserModificar from '@/components/users/modificar';
+
 import UserEliminar from '@/components/users/eliminar';
 import { getUsers } from "@/lib/data";
 import RegisterForm from "../auth/register-form";
+import UserModificar from "../auth/edit-form";
 
 async function Users() {
   const session = await auth();

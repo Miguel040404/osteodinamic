@@ -9,7 +9,10 @@ export default function UserModificar({ user, sessionUser }) {
   const [state, action, pending] = useActionState(editUser, {});
   const [showPassword, setShowPassword] = useState(false);
   const [avatarOpen, setAvatarOpen] = useState(false);
-  const [selectedAvatar, setSelectedAvatar] = useState(user.image || '/images/avatar-80.png');
+
+  console.log(user, 'user');
+
+  const [selectedAvatar, setSelectedAvatar] = useState(user?.image || '/images/avatar-80.png');
   
   // Estado para las sesiones pagadas
   const [paidSessions, setPaidSessions] = useState(user.paidSessions || []);
