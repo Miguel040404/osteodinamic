@@ -135,7 +135,15 @@ function AdminView({ reservas }) {
 
         return (
           <div key={tipo} className="mb-10">
-            <h2 className="text-2xl font-bold text-sky-700 mb-6 pb-2 border-b">{tipo}</h2>
+            <h2 className="text-2xl font-bold text-sky-700 mb-6 pb-2 border-b">
+  {tipo === 'Pilates' 
+    ? 'Pilates terapéutico' 
+    : tipo === 'Rehabilitacion_funcional' 
+      ? 'Rehabilitación funcional' 
+      : tipo === 'Entrenamiento_personal' 
+        ? 'Salud activa personal' 
+        : tipo}
+</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
               {horariosOrdenados.map((grupo) => (
                 <div
@@ -150,6 +158,8 @@ function AdminView({ reservas }) {
                         </span>
                         <span className="text-slate-400">|</span>
                         <span className="font-semibold text-slate-700">{grupo.horario.hora}</span>
+                        <span className="text-slate-400">|</span>
+                        <span className="font-semibold text-slate-700">{grupo.horario.sala}</span>
                       </div>
                     </div>
                     <div className="bg-sky-100 text-sky-800 rounded-full px-3 py-1 text-sm font-medium border">
@@ -214,16 +224,24 @@ function UserView({ reservas }) {
                     <span className="font-bold">{reserva.horario.dia}</span>
                     <span className="mx-2 text-slate-400">•</span>
                     <span className="font-medium">{reserva.horario.hora}</span>
+                    <span className="mx-2 text-slate-400">•</span>
+                    <span className="font-medium">{reserva.horario.sala}</span>
                   </div>
-                  <div
-                    className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
-                      reserva.horario.tipo === "Entrenamiento"
-                        ? "bg-sky-100 text-sky-800"
-                        : "bg-indigo-100 text-indigo-800"
-                    }`}
-                  >
-                    {reserva.horario.tipo}
-                  </div>
+                 <div
+  className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
+    reserva.horario.tipo === "Entrenamiento"
+      ? "bg-sky-100 text-sky-800"
+      : "bg-indigo-100 text-indigo-800"
+  }`}
+>
+  {reserva.horario.tipo === "Pilates" 
+    ? "Pilates terapéutico" 
+    : reserva.horario.tipo === "Rehabilitacion_funcional" 
+      ? "Rehabilitación funcional" 
+      : reserva.horario.tipo === "Entrenamiento_personal" 
+        ? "Salud activa personal" 
+        : reserva.horario.tipo}
+</div>
                 </div>
                 <div className="text-sm text-slate-600">
                   Fecha: {getProximaFecha(reserva.horario.dia, reserva.horario.hora)}

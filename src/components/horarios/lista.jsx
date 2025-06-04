@@ -78,8 +78,11 @@ export default async function ListaHorarios({ tipo }) {
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
         <div>
           <h1 className="text-2xl md:text-3xl font-bold text-gray-900 capitalize">
-            {tipo.replace(/_/g, ' ')}
-          </h1>
+  {tipo === 'Pilates' ? 'Pilates terapéutico' : 
+   tipo === 'Rehabilitacion_funcional' ? 'Rehabilitación funcional' : 
+   tipo === 'Entrenamiento_personal' ? 'Salud activa personal' : 
+   tipo.replace(/_/g, ' ')}
+</h1>
           <p className="text-gray-600 mt-2">
             {horarios.length} horario{horarios.length !== 1 ? 's' : ''} disponible{horarios.length !== 1 ? 's' : ''}
           </p>
@@ -184,12 +187,15 @@ export default async function ListaHorarios({ tipo }) {
                                 
                                 <div className="mt-3 flex flex-wrap gap-2">
                                   <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${
-                                    tipo === 'Entrenamiento' 
-                                      ? 'bg-blue-100 text-blue-800 border border-blue-200' 
-                                      : 'bg-purple-100 text-purple-800 border border-purple-200'
-                                  }`}>
-                                    {tipo.replace(/_/g, ' ')}
-                                  </span>
+  tipo === 'Entrenamiento' 
+    ? 'bg-blue-100 text-blue-800 border border-blue-200' 
+    : 'bg-purple-100 text-purple-800 border border-purple-200'
+}`}>
+  {tipo === 'Pilates' ? 'Pilates terapéutico' : 
+   tipo === 'Rehabilitacion_funcional' ? 'Rehabilitación funcional' : 
+   tipo === 'Entrenamiento_personal' ? 'Salud activa personal' : 
+   tipo.replace(/_/g, ' ')}
+</span>
                                   
                                   {/* Nuevo badge para sala */}
                                   <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${

@@ -173,41 +173,113 @@ export default function UserModificar({ user , sessionUser  }) {
           
           {/* Sección para sesiones pagadas - SOLO ADMINISTRADORES */}
           {sessionUser?.role === 'ADMIN' && (
-            <div className="mt-4">
-              <label className="block text-sm font-medium text-gray-700 mb-3">Sesiones pagadas</label>
-              <div className="flex flex-wrap gap-4">
-                <label className="flex items-center gap-2">
-                  <input 
-                    type="checkbox"
-                    name="paidSessions"
-                    value="Pilates"
-                    checked={pilatesChecked}
-                    onChange={() => setPilatesChecked(!pilatesChecked)}
-                  />
-                  <span>Pilates</span>
-                </label>
-                <label className="flex items-center gap-2">
-                  <input 
-                    type="checkbox"
-                    name="paidSessions"
-                    value="Rehabilitacion_funcional"
-                    checked={rehabilitacionChecked}
-                    onChange={() => setRehabilitacionChecked(!rehabilitacionChecked)}
-                  />
-                  <span>Rehabilitación Funcional</span>
-                </label>
-                <label className="flex items-center gap-2">
-                  <input 
-                    type="checkbox"
-                    name="paidSessions"
-                    value="Entrenamiento_personal"
-                    checked={entrenamientoChecked}
-                    onChange={() => setEntrenamientoChecked(!entrenamientoChecked)}
-                  />
-                  <span>Entrenamiento Personal</span>
-                </label>
-              </div>
-            </div>
+        <div className="mt-4">
+  <label className="block text-sm font-medium text-gray-700 mb-3">Sesiones pagadas</label>
+  <div className="space-y-3">
+    {/* Tarjeta Pilates - ROJO */}
+    <div 
+      className={`relative p-4 rounded-lg border-2 cursor-pointer transition-all duration-200 ${
+        pilatesChecked 
+          ? "border-red-500 bg-red-50 shadow-sm" 
+          : "border-gray-200 hover:border-gray-300"
+      }`}
+      onClick={() => setPilatesChecked(!pilatesChecked)}
+    >
+      <div className="flex items-start">
+        <div className="flex items-center h-5">
+          <input 
+            type="checkbox"
+            name="paidSessions"
+            value="Pilates"
+            checked={pilatesChecked}
+            onChange={() => setPilatesChecked(!pilatesChecked)}
+            className="h-4 w-4 text-red-600 focus:ring-red-500"
+          />
+        </div>
+        <div className="ml-3 text-sm">
+          <span className="font-medium text-gray-900">Pilates terapéutico</span>
+          <p className="mt-1 text-gray-500">Sesiones de fortalecimiento y rehabilitación</p>
+        </div>
+      </div>
+      {pilatesChecked && (
+        <div className="absolute top-2 right-2 text-red-600">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+          </svg>
+        </div>
+      )}
+    </div>
+
+    {/* Tarjeta Rehabilitación - VERDE */}
+    <div 
+      className={`relative p-4 rounded-lg border-2 cursor-pointer transition-all duration-200 ${
+        rehabilitacionChecked 
+          ? "border-green-500 bg-green-50 shadow-sm" 
+          : "border-gray-200 hover:border-gray-300"
+      }`}
+      onClick={() => setRehabilitacionChecked(!rehabilitacionChecked)}
+    >
+      <div className="flex items-start">
+        <div className="flex items-center h-5">
+          <input 
+            type="checkbox"
+            name="paidSessions"
+            value="Rehabilitacion_funcional"
+            checked={rehabilitacionChecked}
+            onChange={() => setRehabilitacionChecked(!rehabilitacionChecked)}
+            className="h-4 w-4 text-green-600 focus:ring-green-500"
+          />
+        </div>
+        <div className="ml-3 text-sm">
+          <span className="font-medium text-gray-900">Rehabilitación Funcional</span>
+          <p className="mt-1 text-gray-500">Recuperación de movilidad y funcionalidad</p>
+        </div>
+      </div>
+      {rehabilitacionChecked && (
+        <div className="absolute top-2 right-2 text-green-600">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+          </svg>
+        </div>
+      )}
+    </div>
+
+    {/* Tarjeta Entrenamiento - AZUL */}
+    <div 
+      className={`relative p-4 rounded-lg border-2 cursor-pointer transition-all duration-200 ${
+        entrenamientoChecked 
+          ? "border-blue-500 bg-blue-50 shadow-sm" 
+          : "border-gray-200 hover:border-gray-300"
+      }`}
+      onClick={() => setEntrenamientoChecked(!entrenamientoChecked)}
+    >
+      <div className="flex items-start">
+        <div className="flex items-center h-5">
+          <input 
+            type="checkbox"
+            name="paidSessions"
+            value="Entrenamiento_personal"
+            checked={entrenamientoChecked}
+            onChange={() => setEntrenamientoChecked(!entrenamientoChecked)}
+            className="h-4 w-4 text-blue-600 focus:ring-blue-500"
+          />
+        </div>
+        <div className="ml-3 text-sm">
+          <span className="font-medium text-gray-900">Salud activa personal</span>
+          <p className="mt-1 text-gray-500">Entrenamiento personalizado para tu bienestar</p>
+        </div>
+      </div>
+      {entrenamientoChecked && (
+        <div className="absolute top-2 right-2 text-blue-600">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+          </svg>
+        </div>
+      )}
+    </div>
+  </div>
+</div>
+
           )}
 
           {sessionUser?.role === 'ADMIN' && sessionUser?.id !== user?.id && (
