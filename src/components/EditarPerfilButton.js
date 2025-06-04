@@ -1,8 +1,9 @@
 'use client'
 
 import Modal from '@/components/modal'
-import UserModificar from '@/components/users/modificar'
+
 import { Pencil } from 'lucide-react'
+import UserModificar from './auth/edit-form'
 
 export default function EditarPerfilButton({ user }) {
   return (
