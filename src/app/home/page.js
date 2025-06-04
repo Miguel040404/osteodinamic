@@ -74,7 +74,7 @@ async function HomeContent() {
               <div className="absolute inset-0 bg-gradient-to-t from-red-900 to-red-600 opacity-80 transition-opacity duration-300 group-hover:opacity-70" />
 
               <div className="absolute inset-0 flex flex-col justify-end p-6 text-white">
-                <h2 className="text-2xl font-bold mb-2">Pilates</h2>
+                <h2 className="text-2xl font-bold mb-2">Pilates Terapéutico</h2>
                 <div className="flex justify-between items-center">
                   <span className="bg-red-500 bg-opacity-70 px-3 py-1 rounded-full text-sm">
                     {classCounts.pilates} clases disponibles
@@ -136,7 +136,7 @@ async function HomeContent() {
 
               <div className="absolute inset-0 bg-gradient-to-t from-blue-900 to-blue-600 opacity-80 transition-opacity duration-300 group-hover:opacity-70" />
               <div className="absolute inset-0 flex flex-col justify-end p-6 text-white">
-                <h2 className="text-2xl font-bold mb-2">Entrenamiento Personal</h2>
+                <h2 className="text-2xl font-bold mb-2">Salud Activa Personal</h2>
                 <div className="flex justify-between items-center">
                   <span className="bg-blue-500 bg-opacity-70 px-3 py-1 rounded-full text-sm">
                     {classCounts.entrenamiento_personal} clases disponibles
@@ -161,22 +161,22 @@ async function HomeContent() {
               <div className="bg-indigo-100 rounded-full w-16 h-16 flex items-center justify-center mb-3">
                 <span className="text-indigo-600 text-2xl font-bold">1</span>
               </div>
-              <h3 className="!text-gray-700 font-semibold mb-2">Elige tu clase</h3>
-              <p className="text-gray-600 text-sm">Selecciona entre nuestras diversas opciones de clases disponibles</p>
+              <h3 className="!text-gray-700 font-semibold mb-2">Accede a tu servicio contratado</h3>
+              <p className="text-gray-600 text-sm">Pilates Terapéutico, Rehabilitación Funcional o Salud Activa Personal.</p>
             </div>
             <div className="flex flex-col items-center text-center p-4">
               <div className="bg-indigo-100 rounded-full w-16 h-16 flex items-center justify-center mb-3">
                 <span className="text-indigo-600 text-2xl font-bold">2</span>
               </div>
-              <h3 className="!text-gray-700 font-semibold mb-2">Reserva tu horario</h3>
-              <p className="text-gray-600 text-sm">Selecciona el día y hora que mejor se adapte a tu agenda</p>
+              <h3 className="!text-gray-700 font-semibold mb-2">¿No puedes asistir?</h3>
+              <p className="text-gray-600 text-sm">Cancela tu clase con antelación y reserva según la disponibilidad.</p>
             </div>
             <div className="flex flex-col items-center text-center p-4">
               <div className="bg-indigo-100 rounded-full w-16 h-16 flex items-center justify-center mb-3">
                 <span className="text-indigo-600 text-2xl font-bold">3</span>
               </div>
               <h3 className="!text-gray-700 font-semibold mb-2">Disfruta tu clase</h3>
-              <p className="text-gray-600 text-sm">Asiste a tu clase y mejora tu bienestar con nuestros expertos</p>
+              <p className="text-gray-600 text-sm">Aprovecha tu clase y mejora tu bienestar con nosotros.</p>
             </div>
           </div>
         </div>
