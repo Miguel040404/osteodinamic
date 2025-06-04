@@ -20,6 +20,7 @@ const LoadingSpinner = () => (
   </div>
 );
 
+
 export default function RootPage() {
   const { data: session, status } = useSession();
   const router = useRouter();
