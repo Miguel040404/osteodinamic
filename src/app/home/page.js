@@ -4,6 +4,8 @@ import Link from "next/link";
 import { getClassCounts } from "@/lib/actions";
 import Image from "next/image";
 import { Suspense } from "react"; // Importamos Suspense
+import { auth } from "@/auth";
+import { redirect } from "next/navigation";
 
 // Componente para el spinner de carga
 const LoadingSpinner = () => (
@@ -35,6 +37,13 @@ function MainContent() {
 async function HomeContent() {
   // Fetch class counts from database
   const classCounts = await getClassCounts();
+    const session = await auth()
+  
+    if (!session) {
+      return (
+       redirect('/auth/login')
+      )
+    }
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-gray-50 to-indigo-50">

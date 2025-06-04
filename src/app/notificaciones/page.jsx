@@ -28,7 +28,7 @@ const LoadingSpinner = () => (
 // Componente para el contenido de notificaciones
 async function NotificacionesContent() {
   const session = await auth()
-  if (!session?.user) redirect('/login')
+  if (!session) redirect('/auth/login')
 
   const notificaciones = await prisma.notification.findMany({
     orderBy: { createdAt: 'desc' },

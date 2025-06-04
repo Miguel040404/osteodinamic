@@ -9,7 +9,7 @@ import { eliminarNorma } from '@/lib/actions'
 
 export default async function NormasPage() {
   const session = await auth()
-  if (!session?.user) redirect('/login')
+  if (!session) redirect('/auth/login')
 
   const normas = await prisma.norma.findMany({
     orderBy: { creadaEn: 'desc' },
