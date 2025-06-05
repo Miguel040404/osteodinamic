@@ -3,7 +3,7 @@
 export default function Header() {
 
   return (
-    <header className='bg-[#e8d7c3] text-white p-4 shadow-lg w-full flex justify-between items-center'>
+    <header className='bg-[#e8d7c3] text-white p-2 shadow-lg w-full flex justify-between items-center'>
 
       <div className="flex items-center">
         <a href="/home" className="flex items-center hover:opacity-90 transition-opacity">
