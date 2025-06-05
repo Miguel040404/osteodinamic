@@ -6,7 +6,6 @@ import EditarPerfilButton from "@/components/EditarPerfilButton"
 import { BellRing, BookOpenCheck } from "lucide-react"
 import { auth } from "@/auth"
 import Users from "@/components/users/lista"
-import { getUserById } from "@/lib/data"
 import { Suspense } from "react"
 import prisma from "@/lib/prisma" // Asegúrate de importar prisma
 

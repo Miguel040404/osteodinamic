@@ -37,17 +37,17 @@ async function HomeContent() {
   const classCounts = await getClassCounts();
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-b from-gray-50 to-indigo-50">
+    <div className="min-h-screen flex flex-col bg-gradient-to-b bg-[#F2F1E8]">
       <Header />
 
       {/* Main Content */}
       <main className="flex-grow container mx-auto px-4 py-8 max-w-4xl">
         <div className="flex justify-between items-center mb-8">
           <div>
-            <p className="text-gray-600 mt-2">Descubre nuestras clases disponibles</p>
+            <p className="text-[#4d4037] mt-2">Descubre nuestras clases disponibles</p>
           </div>
           <Link href="/notificaciones">
-            <button className="flex items-center bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-xl transition-colors shadow-md hover:shadow-lg">
+            <button className="flex items-center bg-[#4d4037] text-[#f9faf5] px-4 py-2 rounded-xl transition-colors shadow-md hover:shadow-lg">
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
               </svg>
@@ -71,12 +71,12 @@ async function HomeContent() {
                 />
               </div>
 
-              <div className="absolute inset-0 bg-gradient-to-t from-red-900 to-red-600 opacity-80 transition-opacity duration-300 group-hover:opacity-70" />
+              <div className="absolute inset-0 bg-gradient-to-t bg-[#e4b4a0] opacity-80 transition-opacity duration-300 group-hover:opacity-70" />
 
               <div className="absolute inset-0 flex flex-col justify-end p-6 text-white">
                 <h2 className="text-2xl font-bold mb-2">Pilates Terapéutico</h2>
                 <div className="flex justify-between items-center">
-                  <span className="bg-red-500 bg-opacity-70 px-3 py-1 rounded-full text-sm">
+                  <span className="bg-[#e39d7f] bg-opacity-70 px-3 py-1 rounded-full text-sm">
                     {classCounts.pilates} clases disponibles
                   </span>
                   <div className="flex items-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -103,11 +103,11 @@ async function HomeContent() {
                 />
               </div>
 
-              <div className="absolute inset-0 bg-gradient-to-t from-green-900 to-green-600 opacity-80 transition-opacity duration-300 group-hover:opacity-70" />
+              <div className="absolute inset-0 bg-gradient-to-t bg-[#b9b59c] opacity-80 transition-opacity duration-300 group-hover:opacity-70" />
               <div className="absolute inset-0 flex flex-col justify-end p-6 text-white">
                 <h2 className="text-2xl font-bold mb-2">Rehabilitación Funcional</h2>
                 <div className="flex justify-between items-center">
-                  <span className="bg-green-500 bg-opacity-70 px-3 py-1 rounded-full text-sm">
+                  <span className="bg-[#898473] bg-opacity-70 px-3 py-1 rounded-full text-sm">
                     {classCounts.rehabilitacion_funcional} clases disponibles
                   </span>
                   <div className="flex items-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -134,11 +134,11 @@ async function HomeContent() {
                 />
               </div>
 
-              <div className="absolute inset-0 bg-gradient-to-t from-blue-900 to-blue-600 opacity-80 transition-opacity duration-300 group-hover:opacity-70" />
+              <div className="absolute inset-0 bg-gradient-to-t bg-[#a57551] opacity-80 transition-opacity duration-300 group-hover:opacity-70" />
               <div className="absolute inset-0 flex flex-col justify-end p-6 text-white">
                 <h2 className="text-2xl font-bold mb-2">Salud Activa Personal</h2>
                 <div className="flex justify-between items-center">
-                  <span className="bg-blue-500 bg-opacity-70 px-3 py-1 rounded-full text-sm">
+                  <span className="bg-[#c3895d] bg-opacity-70 px-3 py-1 rounded-full text-sm">
                     {classCounts.entrenamiento_personal} clases disponibles
                   </span>
                   <div className="flex items-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -158,22 +158,22 @@ async function HomeContent() {
           <h2 className="text-2xl font-bold text-gray-800 mb-4">¿Cómo funciona?</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="flex flex-col items-center text-center p-4">
-              <div className="bg-indigo-100 rounded-full w-16 h-16 flex items-center justify-center mb-3">
-                <span className="text-indigo-600 text-2xl font-bold">1</span>
+              <div className="bg-[#e4b4a0c2] rounded-full w-16 h-16 flex items-center justify-center mb-3">
+                <span className="text-[#4d4037] text-2xl font-bold">1</span>
               </div>
               <h3 className="!text-gray-700 font-semibold mb-2">Accede a tu servicio contratado</h3>
               <p className="text-gray-600 text-sm">Pilates Terapéutico, Rehabilitación Funcional o Salud Activa Personal.</p>
             </div>
             <div className="flex flex-col items-center text-center p-4">
-              <div className="bg-indigo-100 rounded-full w-16 h-16 flex items-center justify-center mb-3">
-                <span className="text-indigo-600 text-2xl font-bold">2</span>
+              <div className="bg-[#e4b4a0c2] rounded-full w-16 h-16 flex items-center justify-center mb-3">
+                <span className="text-[#4d4037] text-2xl font-bold">2</span>
               </div>
-              <h3 className="!text-gray-700 font-semibold mb-2">¿No puedes asistir?</h3>
+              <h3 className="!text-[gray-700] font-semibold mb-2">¿No puedes asistir?</h3>
               <p className="text-gray-600 text-sm">Cancela tu clase con antelación y reserva según la disponibilidad.</p>
             </div>
             <div className="flex flex-col items-center text-center p-4">
-              <div className="bg-indigo-100 rounded-full w-16 h-16 flex items-center justify-center mb-3">
-                <span className="text-indigo-600 text-2xl font-bold">3</span>
+              <div className="bg-[#e4b4a0c2] rounded-full w-16 h-16 flex items-center justify-center mb-3">
+                <span className="text-[#4d4037] text-2xl font-bold">3</span>
               </div>
               <h3 className="!text-gray-700 font-semibold mb-2">Disfruta tu clase</h3>
               <p className="text-gray-600 text-sm">Aprovecha tu clase y mejora tu bienestar con nosotros.</p>

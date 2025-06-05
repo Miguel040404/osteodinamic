@@ -61,7 +61,7 @@ const LoadingSpinner = () => (
 
 export default function AgendaPage() {
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-br from-sky-50 to-sky-100 text-slate-800">
+    <div className="min-h-screen flex flex-col bg-gradient-to-br bg-[#F2F1E8] text-slate-800">
       <main className="flex-1 container mx-auto px-4 py-8 md:py-12 max-w-6xl">
         <Suspense fallback={<LoadingSpinner />}>
           <AgendaContentWrapper />
