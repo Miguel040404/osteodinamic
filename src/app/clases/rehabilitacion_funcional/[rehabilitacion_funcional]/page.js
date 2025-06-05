@@ -24,8 +24,12 @@ const LoadingSpinner = () => (
 export default async function ClasePage() {
   const session = await auth();
   
-  if (!session?.user) {
-    redirect('/login');
+
+
+  if (!session) {
+    return (
+     redirect('/auth/login')
+    )
   }
 
   // Verificar acceso (admins siempre tienen acceso)

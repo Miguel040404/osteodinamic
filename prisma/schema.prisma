@@ -29,7 +29,7 @@ model User {
   accounts      Account[]
   reservas      Reserva[]
   sessions      Session[]
-  notifications Notification[]
+  notifications Notification[] @relation("UserViewed")
   normas        Norma[]
   paidSessions  PaidSession[]  // Nueva relación para sesiones pagadas
 }
@@ -111,11 +111,10 @@ model Notification {
   id          String   @id @default(cuid())
   title       String
   message     String
-  viewed      Boolean  @default(false)
   createdAt   DateTime @default(now())
   createdBy   String
 
-  creator     User     @relation(fields: [createdBy], references: [id], onDelete: Cascade)
+  viewed       User[]     @relation("UserViewed")
 }
 
 model Norma {

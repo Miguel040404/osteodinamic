@@ -1,12 +1,13 @@
 import Link from 'next/link'
-import { PlusIcon, PencilIcon, TrashIcon, BellIcon, ClockIcon, UserIcon } from 'lucide-react'
+import { PlusIcon, PencilIcon, TrashIcon, BellIcon, ClockIcon, UserIcon, EyeIcon } from 'lucide-react'
 import { auth } from '@/auth'
 import prisma from '@/lib/prisma'
 
 import Footer from '@/components/footer'
 import { redirect } from 'next/navigation'
 import { Suspense } from 'react'
-import { eliminarNotificacion } from '@/lib/actions'
+import { eliminarNotificacion, marcarNotificacionLeida } from '@/lib/actions'
+import NotificationButton from './notification-button'
 
 // Componente para el spinner de carga
 const LoadingSpinner = () => (
@@ -28,11 +29,15 @@ const LoadingSpinner = () => (
 // Componente para el contenido de notificaciones
 async function NotificacionesContent() {
   const session = await auth()
-  if (!session?.user) redirect('/login')
+  if (!session) redirect('/auth/login')
 
   const notificaciones = await prisma.notification.findMany({
     orderBy: { createdAt: 'desc' },
+    include: { viewed: true }
   })
+
+
+  console.log(notificaciones)
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-indigo-50">
@@ -94,6 +99,10 @@ async function NotificacionesContent() {
                         </div>
                       </div>
                     </div>
+
+
+<NotificationButton n={n} session={session} />
+                    
                     
                     {session.user.role === 'ADMIN' && (
                       <div className="flex flex-col gap-3 min-w-[120px]">

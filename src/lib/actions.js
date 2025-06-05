@@ -911,6 +911,47 @@ export async function eliminarNotificacion(formData) {
   redirect('/notificaciones')
 }
 
+export async function marcarNotificacionLeida(prevState, formData) {
+  const session = await auth();
+  const notificationId = formData.get('id');
+
+  console.log("ID desde la función marcar:", notificationId);
+
+  // Primero, busca la notificación para ver quiénes la han visto
+  const notification = await prisma.notification.findUnique({
+    where: { id: notificationId },
+    include: { viewed: true } // Incluye los usuarios que han visto la notificación
+  });
+
+  // Verifica si el usuario ya ha visto la notificación
+  const hasViewed = notification.viewed.some(user => user.id === session.user.id);
+
+  if (hasViewed) {
+    // Si el usuario ya ha visto la notificación, desconéctalo
+    await prisma.notification.update({
+      where: { id: notificationId },
+      data: {
+        viewed: {
+          disconnect: { id: session.user.id }
+        }
+      }
+    });
+  } else {
+    // Si el usuario no ha visto la notificación, conéctalo
+    await prisma.notification.update({
+      where: { id: notificationId },
+      data: {
+        viewed: {
+          connect: { id: session.user.id }
+        }
+      }
+    });
+  }
+
+  // Revalida la ruta para reflejar los cambios
+  revalidatePath('/notificaciones');
+}
+
 export async function crearNorma(formData) {
   const now = Date.now()
   if (now - lastExecutionNorma < 2000) return // Bloqueo de 2 segundos

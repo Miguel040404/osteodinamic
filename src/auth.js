@@ -31,13 +31,25 @@ export const options = {
             session.user.email = user?.email
             session.user.image = user?.image
             session.user.role = user?.role
-        
+
             return session
         },
         async jwt({ token }) {
-            if (!token.sub) return token;
+
+            if (!token) return token;
+
+            if (!token?.sub) return token;
+
+
 
             const user = await getUserById(token.sub)
+
+
+            if (!user) {
+                console.log("Usuario inactivo");
+                return "/auth/login";
+            }
+
             if (!user) return token;
 
             token.role = user?.role

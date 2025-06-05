@@ -13,10 +13,25 @@ export async function getUsers() {
 
 export async function getUserById(id) {
     const user = await prisma.user.findUnique({
-        where: { id },
-        select: { id: true, name: true, email: true, role: true, image: true, active: true, address: true, phone: true, role: true },   
+        where: { id }
     });
     return user
+}
+
+export async function getNotViewedNotificationsCountByUserId(userId) {
+    const count = await prisma.notification.count({
+        where: {
+            NOT: {
+                viewed: {
+                    some: {
+                        id: userId // Filtra las notificaciones que han sido vistas por este usuario
+                    }
+                }
+            }
+        }
+    });
+
+    return count;
 }
 
 export async function getUserByPhone(phone) {

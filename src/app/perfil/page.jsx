@@ -8,6 +8,7 @@ import { auth } from "@/auth"
 import Users from "@/components/users/lista"
 import { Suspense } from "react"
 import prisma from "@/lib/prisma" // Asegúrate de importar prisma
+import { redirect } from "next/navigation"
 
 // Componente para el spinner de carga
 const LoadingSpinner = () => (
@@ -39,16 +40,9 @@ function PerfilContent() {
 async function PerfilData() {
   const session = await auth()
 
-  if (!session?.user) {
+  if (!session) {
     return (
-      <div className="min-h-screen flex flex-col">
-        <main className="flex-1 container mx-auto px-4 py-12">
-          <p className="text-center text-red-500 text-lg font-semibold">
-            No estás autenticado.
-          </p>
-        </main>
-        <Footer />
-      </div>
+     redirect('/auth/login')
     )
   }
 

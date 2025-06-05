@@ -7,6 +7,7 @@ import {
 } from "@/lib/actions";
 import { auth } from "@/auth";
 import { Suspense } from "react";
+import { redirect } from "next/navigation";
 
 const ordenDias = {
   Lunes: 1,
@@ -77,6 +78,12 @@ export default function AgendaPage() {
 
 async function AgendaContentWrapper() {
   const session = await auth();
+  
+    if (!session) {
+      return (
+       redirect('/auth/login')
+      )
+    }
   const userId = session?.user?.id;
   const esAdmin = session?.user?.role === "ADMIN";
 
