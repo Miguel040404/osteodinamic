@@ -3,17 +3,14 @@ import { apuntarseAHorario, cancelarReserva, cancelarReservaAdmin } from "@/lib/
 import { auth } from "@/auth";
 import { getHorariosConReservasPorTipo } from "@/lib/data";
 import {
-  Calendar,
   Clock,
-  Users,
   XCircle,
   Pencil,
   Trash2,
   Plus,
   CalendarDays,
   ChevronDown,
-  ChevronUp,
-  User
+  Users
 } from "lucide-react";
 
 
@@ -73,7 +70,7 @@ export default async function ListaHorarios({ tipo }) {
   const dias = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'];
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8">
+    <div className="max-w-4xl mx-auto py-2">
       {/* Encabezado - Hacer componente */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
         <div>
@@ -83,9 +80,6 @@ export default async function ListaHorarios({ tipo }) {
                 tipo === 'Entrenamiento_personal' ? 'Salud activa personal' :
                   tipo.replace(/_/g, ' ')}
           </h1>
-          {/* <p className="text-gray-600 mt-2">
-            {horarios.length} horario{horarios.length !== 1 ? 's' : ''} disponible{horarios.length !== 1 ? 's' : ''}
-          </p> */}
         </div>
 
         {esAdmin && (
@@ -105,9 +99,7 @@ export default async function ListaHorarios({ tipo }) {
                 <div className="flex items-center justify-between">
                   <div>
                     <h2 className="text-xl font-semibold text-[#3d332c] flex items-center gap-3">
-                      {/* <Calendar className="w-6 h-6 text-[#3d332c]" /> */}
                       {dia}
-                      
                     </h2>
                   </div>
 
@@ -129,24 +121,25 @@ export default async function ListaHorarios({ tipo }) {
 
                     return (
                       <div key={horario.id} className="p-6">
-                        <div className="flex justify-between items-start gap-6">
+                        <div className="flex justify-between items-start">
                           {/* IZQUIERDA: Reloj y sala debajo */}
-                          <div className="flex flex-col items-start">
-                            <div className="bg-gray-100 p-3 rounded-lg border border-gray-200 text-center">
-                              <Clock className="mx-auto w-6 h-6 text-gray-700" />
-                              <div className="text-sm font-semibold text-gray-900 mt-1">
-                                {horario.hora}
-                              </div>
-                            </div>
-
+                          <div className="flex flex-row-reverse gap-4 sm:gap-6">
                             <span
-                              className={`inline-flex items-center px-3 py-1 mt-3 rounded-full text-xs font-medium ${horario.sala === 'Sala 1'
-                                ? 'bg-amber-100 text-amber-800 border border-amber-200'
-                                : 'bg-teal-100 text-teal-800 border border-teal-200'
+                              className={`inline-flex items-center px-5 py-1 h-8 rounded-full  text-xs font-medium ${horario.sala === 'Sala 1'
+                                ? 'bg-amber-100 text-amber-800 border border-amber-500'
+                                : 'bg-teal-200 text-teal-800 border border-teal-500'
                                 }`}
                             >
                               {horario.sala}
                             </span>
+                            <div className="flex flex-col items-start">
+                              <div className="bg-gray-100 p-3 rounded-lg border border-gray-200 text-center">
+                                <Clock className="mx-auto w-6 h-6 text-gray-700" />
+                                <div className="text-sm font-semibold text-gray-900 mt-1">
+                                  {horario.hora}
+                                </div>
+                              </div>
+                            </div>
                           </div>
 
                           {/* DERECHA: Plazas y barra */}
@@ -178,99 +171,117 @@ export default async function ListaHorarios({ tipo }) {
                           </div>
                         </div>
 
-
                         {/* Botones de acción */}
-                        <div className="w-full sm:w-auto flex flex-col sm:flex-row sm:ml-auto sm:justify-end gap-3 mt-4">
-                          {esAdmin && horario.reservas.length > 0 && (
-                            <details className="group w-full sm:flex-1">
-                              <summary className="flex items-center gap-2 cursor-pointer text-indigo-600 hover:text-indigo-800 font-medium text-sm list-none">
-                                <span>Ver usuarios ({horario.reservas.length})</span>
-                                <ChevronDown className="w-4 h-4 group-open:hidden" />
-                                <ChevronUp className="w-4 h-4 hidden group-open:block" />
-                              </summary>
+                        <div className="w-full sm:w-auto flex flex-col sm:flex-row sm:ml-auto sm:justify-end gap-3 mt-5">
+                          <div className="w-full flex justify-between items-center flex-wrap gap-3">
 
-                              <div className="mt-4 bg-gray-50 p-5 rounded-lg border border-gray-200">
-                                <h4 className="text-sm font-medium text-gray-700 mb-4 flex items-center gap-2">
-                                  <User className="w-4 h-4" />
-                                  <span>Usuarios apuntados:</span>
-                                </h4>
+                            <div className="w-full flex flex-col-reverse sm:flex-row sm:items-start sm:justify-between gap-4">
+                              <div className="w-full flex flex-col-reverse md:flex-col gap-4">
+                                {/* Botones en escritorio encima */}
+                                <div className="hidden md:flex justify-end gap-3">
+                                  {esAdmin ? (
+                                    <>
+                                      <EditarHorarioModal horario={horario}>
+                                        <button className="flex items-center justify-center gap-2 bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 px-4 py-2 rounded-lg transition-colors font-medium w-auto">
+                                          <Pencil className="w-4 h-4" />
+                                          <span>Editar</span>
+                                        </button>
+                                      </EditarHorarioModal>
 
-                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                                  {horario.reservas.map((r, idx) => (
-                                    <div
-                                      key={idx}
-                                      className="flex items-center justify-between bg-white p-4 rounded-lg border border-gray-200 shadow-sm"
+                                      <EliminarHorarioModal horarioId={horario.id}>
+                                        <button className="flex items-center justify-center gap-2 bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 px-4 py-2 rounded-lg transition-colors font-medium w-auto">
+                                          <Trash2 className="w-4 h-4" />
+                                          <span>Eliminar</span>
+                                        </button>
+                                      </EliminarHorarioModal>
+                                    </>
+                                  ) : (
+                                    <form
+                                      action={(yaApuntado ? cancelarReserva : apuntarseAHorario).bind(null, horario.id, tipo)}
+                                      className=""
                                     >
-                                      <div className="flex items-center gap-3">
-                                        <span className="font-medium text-gray-800 truncate max-w-[180px]">
-                                          {r.user?.name || "Usuario anónimo"}
+                                      <button
+                                        type="submit"
+                                        className={`flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-medium transition-colors ${yaApuntado
+                                          ? 'bg-red-100 text-red-700 hover:bg-red-200 border border-red-200'
+                                          : lleno
+                                            ? 'bg-gray-100 text-gray-500 cursor-not-allowed border border-gray-200'
+                                            : 'bg-indigo-100 text-indigo-700 hover:bg-indigo-200 border border-indigo-200'
+                                          }`}
+                                        disabled={lleno || (!yaApuntado && lleno)}
+                                      >
+                                        {yaApuntado ? (
+                                          <>
+                                            <XCircle className="w-5 h-5" />
+                                            <span>Cancelar reserva</span>
+                                          </>
+                                        ) : lleno ? (
+                                          <span>Lleno</span>
+                                        ) : (
+                                          <>
+                                            <Plus className="w-5 h-5" />
+                                            <span>Reservar ahora</span>
+                                          </>
+                                        )}
+                                      </button>
+                                    </form>
+                                  )}
+                                </div>
+
+                                {/* Desplegable usuarios (visible en móvil y en escritorio con margen arriba) */}
+                                {esAdmin && horario.reservas.length > 0 && (
+                                  <details className="group w-full md:mt-4">
+                                    <summary className="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 transition-colors list-none">
+                                      <div className="flex items-center gap-2">
+                                        <Users className="w-4 h-4 text-[#4d4037]" />
+                                        <span className="font-medium text-[#4d4037] group-open:text-[#4d4037]">
+                                          Ver usuarios apuntados ({horario.reservas.length})
                                         </span>
                                       </div>
+                                      <div className="transform transition-transform group-open:rotate-180">
+                                        <ChevronDown className="w-4 h-4 text-gray-500" />
+                                      </div>
+                                    </summary>
 
-                                      <form action={cancelarReservaAdmin.bind(null, horario.id, tipo, r.userId)}>
-                                        <button
-                                          type="submit"
-                                          className="text-red-500 hover:text-red-700 p-1 rounded-full hover:bg-red-50 transition-colors"
-                                          title="Eliminar reserva"
-                                        >
-                                          <XCircle className="w-5 h-5" />
-                                        </button>
-                                      </form>
+                                    <div className="mt-2 bg-white p-3 rounded-lg border border-gray-200 shadow-sm max-h-[400px] overflow-y-auto">
+                                      <table className="w-full table-auto border-collapse text-sm text-left">
+                                        <thead>
+                                          <tr className="bg-[#a57551ae] text-indigo-700">
+                                            <th className="text-[#4d4037] px-3 py-2 border-b border-indigo-200">Usuario</th>
+                                            <th className="text-[#4d4037] px-3 py-2 border-b border-indigo-200 text-center">Acción</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                          {horario.reservas.map((r, idx) => (
+                                            <tr key={idx} className="odd:bg-[#faf8f5] even:bg-white">
+                                              <td className="flex items-center gap-3 px-3 py-2 max-w-xs truncate">
+                                                <span className="font-medium text-gray-800 truncate">
+                                                  {r.user?.name || "Usuario anónimo"}
+                                                </span>
+                                              </td>
+                                              <td className="px-3 py-2 text-center">
+                                                <form
+                                                  action={cancelarReservaAdmin.bind(null, horario.id, tipo, r.userId)}
+                                                  className="inline-block"
+                                                >
+                                                  <button
+                                                    type="submit"
+                                                    className="text-red-500 hover:text-red-700 p-1 rounded-full hover:bg-red-50 transition-colors"
+                                                    title="Eliminar reserva"
+                                                  >
+                                                    <XCircle className="w-5 h-5" />
+                                                  </button>
+                                                </form>
+                                              </td>
+                                            </tr>
+                                          ))}
+                                        </tbody>
+                                      </table>
                                     </div>
-                                  ))}
-                                </div>
+                                  </details>
+                                )}
                               </div>
-                            </details>
-                          )}
-
-                          <div className="w-full sm:w-auto flex sm:flex-row gap-3">
-                            {esAdmin ? (
-                              <>
-                                <EditarHorarioModal horario={horario}>
-                                  <button className="flex items-center justify-center gap-2 bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 px-4 py-2 rounded-lg transition-colors font-medium w-full sm:w-auto">
-                                    <Pencil className="w-4 h-4" />
-                                    <span>Editar</span>
-                                  </button>
-                                </EditarHorarioModal>
-
-                                <EliminarHorarioModal horarioId={horario.id}>
-                                  <button className="flex items-center justify-center gap-2 bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 px-4 py-2 rounded-lg transition-colors font-medium w-full sm:w-auto">
-                                    <Trash2 className="w-4 h-4" />
-                                    <span>Eliminar</span>
-                                  </button>
-                                </EliminarHorarioModal>
-                              </>
-                            ) : (
-                              <form
-                                action={(yaApuntado ? cancelarReserva : apuntarseAHorario).bind(null, horario.id, tipo)}
-                                className="w-full"
-                              >
-                                <button
-                                  type="submit"
-                                  className={`w-full flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-medium transition-colors ${yaApuntado
-                                    ? 'bg-red-100 text-red-700 hover:bg-red-200 border border-red-200'
-                                    : lleno
-                                      ? 'bg-gray-100 text-gray-500 cursor-not-allowed border border-gray-200'
-                                      : 'bg-indigo-100 text-indigo-700 hover:bg-indigo-200 border border-indigo-200'
-                                    }`}
-                                  disabled={lleno || (!yaApuntado && lleno)}
-                                >
-                                  {yaApuntado ? (
-                                    <>
-                                      <XCircle className="w-5 h-5" />
-                                      <span>Cancelar reserva</span>
-                                    </>
-                                  ) : lleno ? (
-                                    <span>Lleno</span>
-                                  ) : (
-                                    <>
-                                      <Plus className="w-5 h-5" />
-                                      <span>Reservar ahora</span>
-                                    </>
-                                  )}
-                                </button>
-                              </form>
-                            )}
+                            </div>
                           </div>
                         </div>
                       </div>
