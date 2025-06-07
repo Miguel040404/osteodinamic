@@ -10,7 +10,7 @@ export default function EditarPerfilButton({ user }) {
     <Modal 
     title="Editar perfil"
       openElement={
-        <button className="flex items-center gap-1 text-sm font-medium px-3 py-1.5 bg-teal-100 text-teal-800 rounded-md hover:bg-teal-200 hover: transition-all duration-200">
+        <button className="flex items-center gap-1 text-sm font-medium px-3 py-1.5 bg-[#4d4037] text-[#f5deb3] rounded-md hover:bg-[#614033] hover: transition-all duration-200 cursor-pointer">
           <Pencil className="h-4 w-4" />
           Editar perfil
         </button>
