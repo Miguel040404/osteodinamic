@@ -50,7 +50,7 @@ export function CrearHorarioModal({ tipo }) {
             ref={modalRef}
             title="Crear nuevo horario"
             openElement={
-                <button className="flex items-center gap-2 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white px-4 py-2.5 rounded-lg shadow-md transition-all transform hover:scale-105">
+                <button className="flex items-center gap-2 bg-[#4d4037] text-[#eaddce] px-4 py-2.5 rounded-lg shadow-md transition-all transform hover:scale-105">
                     <PlusIcon />
                     <span>Nuevo Horario</span>
                 </button>
