@@ -77,7 +77,7 @@ export default function UserModificar({ user, sessionUser }) {
             <button
               type="button"
               onClick={() => setAvatarOpen(!avatarOpen)}
-              className="w-full flex items-center justify-between p-3 bg-gray-50 border border-gray-300 rounded-lg shadow-sm hover:bg-gray-100 transition-colors"
+              className="cursor-pointer w-full flex items-center justify-between p-3 bg-gray-50 border border-gray-300 rounded-lg shadow-sm hover:bg-gray-100 transition-colors"
             >
               <div className="flex items-center gap-3">
                 <img 
@@ -99,7 +99,7 @@ export default function UserModificar({ user, sessionUser }) {
                       key={index}
                       type="button"
                       onClick={() => handleAvatarChange(avatar)}
-                      className={`p-1 rounded-full hover:bg-indigo-50 transition-colors ${
+                      className={`cursor-pointer p-1 rounded-full hover:bg-indigo-50 transition-colors ${
                         selectedAvatar === avatar ? 'ring-2 ring-indigo-500' : ''
                       }`}
                     >
@@ -174,7 +174,7 @@ export default function UserModificar({ user, sessionUser }) {
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-gray-600"
+              className="cursor-pointer absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-gray-600"
               aria-label={showPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
             >
               {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
@@ -198,7 +198,7 @@ export default function UserModificar({ user, sessionUser }) {
                       key={session}
                       type="button"
                       onClick={() => handleSessionChange(session)}
-                      className={`px-4 py-2 rounded-full transition-all ${
+                      className={`cursor-pointer px-4 py-2 rounded-full transition-all ${
                         isActive 
                           ? 'bg-indigo-600 text-white shadow-md' 
                           : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
@@ -254,7 +254,7 @@ export default function UserModificar({ user, sessionUser }) {
         <button
           type="submit"
           disabled={pending}
-          className="w-full mt-8 py-3 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg shadow-md transition-all transform hover:scale-[1.02] disabled:opacity-70 disabled:cursor-not-allowed"
+          className="cursor-pointer w-full mt-8 py-3 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg shadow-md transition-all transform hover:scale-[1.02] disabled:opacity-70 disabled:cursor-not-allowed"
         >
           {pending ? (
             <div className="flex items-center justify-center">

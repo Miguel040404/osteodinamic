@@ -15,7 +15,7 @@ function NotificationButton({ n, session }) {
       <button
         disabled={isRead}
         type="submit"
-        className={`flex items-center justify-center gap-2 border w-full px-4 py-2 rounded-lg transition-colors duration-300
+        className={`cursor-pointer flex items-center justify-center gap-2 border w-full px-4 py-2 rounded-lg transition-colors duration-300
           ${isRead
             ? 'bg-[#b9b59c] border-[#b9b59c] cursor-not-allowed'
             : 'bg-[#a57551] border-[#a57551] hover:bg-[#8d6245]'}`}

@@ -122,7 +122,7 @@ function AdminView({ reservas }) {
   const tiposOrdenados = Object.keys(gruposPorTipo).sort();
 
   return (
-    <div className="bg-white rounded-xl shadow-lg p-6">
+    <div className="bg-[#f9eee1] rounded-xl shadow-lg p-6">
       {tiposOrdenados.map((tipo) => {
         const horariosAgrupados = gruposPorTipo[tipo].reduce((acc, reserva) => {
           const key = `${reserva.horario.dia}-${reserva.horario.hora}`;
@@ -142,7 +142,7 @@ function AdminView({ reservas }) {
 
         return (
           <div key={tipo} className="mb-10">
-            <h2 className="text-2xl font-bold text-[#4d4037] mb-6 pb-2 border-b">
+            <h2 className="text-2xl font-bold text-[#4d4037] mb-6 pb-2 border-b border-[#d8c4ae]">
               {tipo === 'Pilates'
                 ? 'Pilates terapéutico'
                 : tipo === 'Rehabilitacion_funcional'
@@ -151,30 +151,31 @@ function AdminView({ reservas }) {
                     ? 'Salud activa personal'
                     : tipo}
             </h2>
+
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {horariosOrdenados.map((grupo) => (
                 <div
                   key={`${grupo.horario.dia}-${grupo.horario.hora}`}
-                  className="border rounded-xl p-5 bg-white shadow hover:shadow-md"
+                  className="border border-[#d8c4ae] rounded-xl p-5 bg-[#fffaf5] shadow hover:shadow-md transition"
                 >
                   <div className="flex justify-between items-start mb-4">
                     <div className="space-y-1">
                       <div className="text-[#4d4037] font-bold text-lg">
                         {grupo.horario.dia}
                       </div>
-                      <div className="text-gray-600 text-sm">
+                      <div className="text-[#6c5f57] text-sm">
                         <span className="font-semibold">Próxima fecha:</span>{" "}
                         {getProximaFecha(grupo.horario.dia, grupo.horario.hora)}
                       </div>
-                      <div className="text-gray-600 text-sm">
+                      <div className="text-[#6c5f57] text-sm">
                         <span className="font-semibold">Hora:</span> {grupo.horario.hora}
                       </div>
-                      <div className="text-gray-600 text-sm">
+                      <div className="text-[#6c5f57] text-sm">
                         <span className="font-semibold">Sala:</span> {grupo.horario.sala}
                       </div>
                     </div>
 
-                    <div className="bg-[#e8d7c3] text-[#3d332c] rounded-full px-3 py-1 text-sm font-medium border whitespace-nowrap">
+                    <div className="bg-[#eaddce] text-[#3d332c] rounded-full px-3 py-1 text-sm font-medium border border-[#b8a28a] whitespace-nowrap">
                       {grupo.usuarios.length}{" "}
                       {grupo.usuarios.length === 1 ? "participante" : "participantes"}
                     </div>
@@ -184,9 +185,9 @@ function AdminView({ reservas }) {
                     {grupo.usuarios.map((usuario) => (
                       <li
                         key={usuario.id}
-                        className="flex justify-between items-center bg-[#e6b3a280] rounded-lg px-3 py-2 border"
+                        className="flex justify-between items-center bg-[#f3e5d8] rounded-lg px-3 py-2 border border-[#d6c1a8]"
                       >
-                        <span className="font-medium">{usuario.name}</span>
+                        <span className="font-medium text-[#3d332c]">{usuario.name}</span>
                         <form
                           action={cancelarReservaAdmin.bind(
                             null,
@@ -197,7 +198,7 @@ function AdminView({ reservas }) {
                         >
                           <button
                             type="submit"
-                            className="text-rose-500 hover:text-rose-700 text-sm font-bold cursor-pointer"
+                            className="text-rose-600 hover:text-rose-700 text-sm font-semibold cursor-pointer"
                           >
                             Cancelar
                           </button>
@@ -208,13 +209,13 @@ function AdminView({ reservas }) {
                 </div>
               ))}
             </div>
-
           </div>
         );
       })}
     </div>
   );
 }
+
 
 function UserView({ reservas }) {
   const reservasOrdenadas = [...reservas].sort((a, b) => {
@@ -225,15 +226,16 @@ function UserView({ reservas }) {
   });
 
   return (
-    <div className="bg-white rounded-xl shadow-lg p-6">
+    <div className="bg-[#fdf8f4] rounded-xl shadow-lg p-6">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-xl font-bold text-sky-800">Mis reservas</h2>
-        <div className="text-sm font-medium px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full">
+        <h2 className="text-xl font-bold text-[#4d4037]">Mis reservas</h2>
+        <div className="text-sm font-medium px-3 py-1 bg-[#f4e3c9] text-[#5b3a29] rounded-full border border-[#dfc7aa]">
           {reservas.length} {reservas.length === 1 ? "reserva" : "reservas"}
         </div>
       </div>
+
       {reservas.length === 0 ? (
-        <div className="text-center py-12 text-slate-500">
+        <div className="text-center py-12 text-[#7b6e66]">
           <h3 className="text-xl font-medium">No tienes sesiones reservadas</h3>
           <p>Reserva tu primera sesión para empezar tu entrenamiento.</p>
         </div>
@@ -242,36 +244,38 @@ function UserView({ reservas }) {
           {reservasOrdenadas.map((reserva) => (
             <div
               key={reserva.id}
-              className={`flex flex-col md:flex-row justify-between items-start md:items-center p-5 rounded-xl border ${reserva.horario.tipo === "Entrenamiento"
-                  ? "border-sky-200 bg-sky-50"
-                  : "border-indigo-200 bg-indigo-50"
-                }`}
+              className={`flex flex-col md:flex-row justify-between items-start md:items-center p-5 rounded-xl border ${
+                reserva.horario.tipo === "Entrenamiento"
+                  ? "border-[#dbc7b0] bg-[#f4ebe3]"
+                  : "border-[#c7b1a1] bg-[#f3e6dc]"
+              }`}
             >
               <div className="flex-1 mb-4 md:mb-0">
                 <div className="flex flex-wrap items-center gap-3 mb-3">
-                  <div className="flex items-center">
+                  <div className="flex items-center text-[#5b3a29]">
                     <span className="font-bold">{reserva.horario.dia}</span>
-                    <span className="mx-2 text-slate-400">•</span>
+                    <span className="mx-2 text-[#a89989]">•</span>
                     <span className="font-medium">{reserva.horario.hora}</span>
-                    <span className="mx-2 text-slate-400">•</span>
+                    <span className="mx-2 text-[#a89989]">•</span>
                     <span className="font-medium">{reserva.horario.sala}</span>
                   </div>
                   <div
-                    className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${reserva.horario.tipo === "Entrenamiento"
-                        ? "bg-sky-100 text-sky-800"
-                        : "bg-indigo-100 text-indigo-800"
-                      }`}
+                    className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
+                      reserva.horario.tipo === "Entrenamiento"
+                        ? "bg-[#e9d5c1] text-[#5b3a29]"
+                        : "bg-[#dcc1ac] text-[#4d4037]"
+                    }`}
                   >
                     {reserva.horario.tipo === "Pilates"
                       ? "Pilates terapéutico"
                       : reserva.horario.tipo === "Rehabilitacion_funcional"
-                        ? "Rehabilitación funcional"
-                        : reserva.horario.tipo === "Entrenamiento_personal"
-                          ? "Salud activa personal"
-                          : reserva.horario.tipo}
+                      ? "Rehabilitación funcional"
+                      : reserva.horario.tipo === "Entrenamiento_personal"
+                      ? "Salud activa personal"
+                      : reserva.horario.tipo}
                   </div>
                 </div>
-                <div className="text-sm text-[slate-600]">
+                <div className="text-sm text-[#7b6e66]">
                   Fecha: {getProximaFecha(reserva.horario.dia, reserva.horario.hora)}
                 </div>
               </div>
@@ -281,7 +285,7 @@ function UserView({ reservas }) {
               >
                 <button
                   type="submit"
-                  className="px-4 py-2 text-sm bg-rose-50 text-rose-600 border border-rose-200 rounded-lg hover:bg-rose-100 transition"
+                  className="px-4 py-2 text-sm bg-[#fae5e0] text-[#a23b2e] border border-[#e2b4ac] rounded-lg hover:bg-[#f2d4ce] transition cursor-pointer"
                 >
                   Cancelar reserva
                 </button>

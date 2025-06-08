@@ -50,7 +50,7 @@ export function CrearHorarioModal({ tipo }) {
             ref={modalRef}
             title="Crear nuevo horario"
             openElement={
-                <button className="flex items-center gap-2 bg-[#4d4037] text-[#eaddce] px-4 py-2.5 rounded-lg shadow-md transition-all transform hover:scale-105 cursor-pointer">
+                <button className="flex items-center gap-2 bg-[#6B4F3B] text-[#FAF3EB] px-4 py-2.5 rounded-lg shadow-md transition-all transform hover:scale-105 cursor-pointer">
                     <PlusIcon />
                     <span>Nuevo Horario</span>
                 </button>
@@ -59,31 +59,29 @@ export function CrearHorarioModal({ tipo }) {
             <form ref={formRef} action={formAction} className="space-y-6">
                 <div className="space-y-4">
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                            Día de la semana
+                        <label className="block text-sm font-medium text-[#4B3A2B] mb-1">
+                            Día de la semana:
                         </label>
                         <select
                             name="dia"
-                            className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-colors"
+                            className="w-full px-4 py-2.5 border border-[#A38D79] bg-[#F9F4EF] text-[#4B3A2B] rounded-lg focus:ring-2 focus:ring-[#BFA88F] focus:border-transparent transition-colors"
                             required
                             defaultValue=""
                         >
                             <option value="" disabled>Selecciona un día</option>
-                            <option value="Lunes">Lunes</option>
-                            <option value="Martes">Martes</option>
-                            <option value="Miércoles">Miércoles</option>
-                            <option value="Jueves">Jueves</option>
-                            <option value="Viernes">Viernes</option>
+                            {['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'].map(d => (
+                                <option key={d} value={d}>{d}</option>
+                            ))}
                         </select>
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                            Hora
+                        <label className="block text-sm font-medium text-[#4B3A2B] mb-1">
+                            Hora de la sesión:
                         </label>
                         <select
                             name="hora"
-                            className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-colors"
+                            className="w-full px-4 py-2.5 border border-[#A38D79] bg-[#F9F4EF] text-[#4B3A2B] rounded-lg focus:ring-2 focus:ring-[#BFA88F] focus:border-transparent transition-colors"
                             required
                             defaultValue=""
                         >
@@ -100,12 +98,12 @@ export function CrearHorarioModal({ tipo }) {
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                            Sala
+                        <label className="block text-sm font-medium text-[#4B3A2B] mb-1">
+                            Sala de la sesión:
                         </label>
                         <select
                             name="sala"
-                            className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-colors"
+                            className="w-full px-4 py-2.5 border border-[#A38D79] bg-[#F9F4EF] text-[#4B3A2B] rounded-lg focus:ring-2 focus:ring-[#BFA88F] focus:border-transparent transition-colors"
                             required
                             defaultValue=""
                         >
@@ -114,7 +112,6 @@ export function CrearHorarioModal({ tipo }) {
                             <option value="Sala 2">Sala 2</option>
                         </select>
                     </div>
-
                 </div>
 
                 <input type="hidden" name="tipo" value={tipo} />
@@ -123,10 +120,11 @@ export function CrearHorarioModal({ tipo }) {
                     <button
                         type="submit"
                         disabled={isPending}
-                        className={`w-full flex justify-center items-center py-3 px-4 rounded-lg font-medium text-white shadow-md transition-all ${isPending
-                            ? 'bg-emerald-400 cursor-not-allowed'
-                            : 'bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700'
-                            }`}
+                        className={`cursor-pointer w-full flex justify-center items-center py-3 px-4 rounded-lg font-medium shadow-md transition-all transform ${
+                            isPending
+                                ? 'bg-[#BFA88F] text-[#FAF3EB] cursor-not-allowed'
+                                : 'bg-[#6B4F3B] text-[#FAF3EB] hover:scale-105'
+                        }`}
                     >
                         {isPending ? (
                             <>
@@ -147,26 +145,29 @@ export function CrearHorarioModal({ tipo }) {
     )
 }
 
+
 export function EditarHorarioModal({ horario }) {
-    const modalRef = useRef()
-    const formRef = useRef()
-    const [state, formAction, isPending] = useActionState(editarHorario, null)
+    const modalRef = useRef();
+    const formRef = useRef();
+    const [state, formAction, isPending] = useActionState(editarHorario, null);
 
     useEffect(() => {
         if (state?.success) {
-            modalRef.current?.closeModal()
-            formRef.current?.reset()
-            toast.success('Horario modificado exitosamente!')
+            modalRef.current?.closeModal();
+            formRef.current?.reset();
+            toast.success('Horario modificado exitosamente!');
         }
-    }, [state])
+    }, [state]);
 
     return (
         <Modal
             ref={modalRef}
             title="Editar horario"
             openElement={
-                <button className="flex items-center gap-1 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white px-3 py-1.5 rounded-lg shadow-md cursor-pointer">
-                    <PencilIcon />
+                <button className="flex items-center gap-1 bg-[#6B4F3B] hover:bg-[#5A4030] text-white px-3 py-1.5 rounded-lg shadow-md cursor-pointer">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                    </svg>
                     <span>Editar</span>
                 </button>
             }
@@ -174,15 +175,15 @@ export function EditarHorarioModal({ horario }) {
             <form ref={formRef} action={formAction} className="space-y-6">
                 <input type="hidden" name="horarioId" value={horario.id} />
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-4">
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                            Día
+                        <label className="block text-sm font-medium text-[#4B3A2B] mb-1">
+                            Día de la semana:
                         </label>
                         <select
                             name="dia"
                             defaultValue={horario.dia}
-                            className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+                            className="w-full px-4 py-2.5 border border-[#A38D79] bg-[#F9F4EF] text-[#4B3A2B] rounded-lg focus:ring-2 focus:ring-[#BFA88F] focus:border-transparent transition-colors"
                             required
                         >
                             {['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'].map(d => (
@@ -192,13 +193,13 @@ export function EditarHorarioModal({ horario }) {
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                            Hora
+                        <label className="block text-sm font-medium text-[#4B3A2B] mb-1">
+                            Hora de la sesión:
                         </label>
                         <select
                             name="hora"
                             defaultValue={horario.hora}
-                            className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+                            className="w-full px-4 py-2.5 border border-[#A38D79] bg-[#F9F4EF] text-[#4B3A2B] rounded-lg focus:ring-2 focus:ring-[#BFA88F] focus:border-transparent transition-colors"
                             required
                         >
                             {["08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00"].map(h => (
@@ -208,13 +209,13 @@ export function EditarHorarioModal({ horario }) {
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                            Sala
+                        <label className="block text-sm font-medium text-[#4B3A2B] mb-1">
+                            Sala de la sesión:
                         </label>
                         <select
                             name="sala"
                             defaultValue={horario.sala}
-                            className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+                            className="w-full px-4 py-2.5 border border-[#A38D79] bg-[#F9F4EF] text-[#4B3A2B] rounded-lg focus:ring-2 focus:ring-[#BFA88F] focus:border-transparent transition-colors"
                             required
                         >
                             {['Sala 1', 'Sala 2'].map(s => (
@@ -222,20 +223,23 @@ export function EditarHorarioModal({ horario }) {
                             ))}
                         </select>
                     </div>
-
                 </div>
 
                 <button
                     type="submit"
                     disabled={isPending}
-                    className={`w-full flex justify-center items-center py-2.5 px-4 rounded-lg font-medium text-white shadow-md transition-all ${isPending
-                        ? 'bg-blue-400 cursor-not-allowed'
-                        : 'bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700'
-                        }`}
+                    className={`cursor-pointer w-full flex justify-center items-center py-2.5 px-4 rounded-lg font-medium text-white shadow-md transition-all ${
+                        isPending
+                            ? 'bg-[#C4B2A2] cursor-not-allowed'
+                            : 'bg-[#6B4F3B] hover:bg-[#5A4030]'
+                    }`}
                 >
                     {isPending ? (
                         <>
-                            <Spinner />
+                            <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
                             Guardando...
                         </>
                     ) : 'Guardar Cambios'}
@@ -248,7 +252,7 @@ export function EditarHorarioModal({ horario }) {
                 )}
             </form>
         </Modal>
-    )
+    );
 }
 
 export function EliminarHorarioModal({ horarioId }) {
@@ -296,7 +300,7 @@ export function EliminarHorarioModal({ horarioId }) {
                     <button
                         type="button"
                         onClick={() => modalRef.current?.closeModal()}
-                        className="px-4 py-2.5 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors cursor-pointer"
+                        className="px-4 py-2.5 bg-amber-950 text-white border hover:bg-amber-800 hover:text-white rounded-lg transition-colors cursor-pointer"
                     >
                         Cancelar
                     </button>
