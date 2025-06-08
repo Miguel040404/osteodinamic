@@ -50,7 +50,7 @@ export function CrearHorarioModal({ tipo }) {
             ref={modalRef}
             title="Crear nuevo horario"
             openElement={
-                <button className="flex items-center gap-2 bg-[#4d4037] text-[#eaddce] px-4 py-2.5 rounded-lg shadow-md transition-all transform hover:scale-105">
+                <button className="flex items-center gap-2 bg-[#4d4037] text-[#eaddce] px-4 py-2.5 rounded-lg shadow-md transition-all transform hover:scale-105 cursor-pointer">
                     <PlusIcon />
                     <span>Nuevo Horario</span>
                 </button>
@@ -99,22 +99,22 @@ export function CrearHorarioModal({ tipo }) {
                         </select>
                     </div>
 
- <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Sala
-            </label>
-            <select
-              name="sala"
-              className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-colors"
-              required
-              defaultValue=""
-            >
-              <option value="" disabled>Selecciona una sala</option>
-              <option value="Sala 1">Sala 1</option>
-              <option value="Sala 2">Sala 2</option>
-            </select>
-          </div>
-                    
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                            Sala
+                        </label>
+                        <select
+                            name="sala"
+                            className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-colors"
+                            required
+                            defaultValue=""
+                        >
+                            <option value="" disabled>Selecciona una sala</option>
+                            <option value="Sala 1">Sala 1</option>
+                            <option value="Sala 2">Sala 2</option>
+                        </select>
+                    </div>
+
                 </div>
 
                 <input type="hidden" name="tipo" value={tipo} />
@@ -165,7 +165,7 @@ export function EditarHorarioModal({ horario }) {
             ref={modalRef}
             title="Editar horario"
             openElement={
-                <button className="flex items-center gap-1 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white px-3 py-1.5 rounded-lg shadow-md">
+                <button className="flex items-center gap-1 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white px-3 py-1.5 rounded-lg shadow-md cursor-pointer">
                     <PencilIcon />
                     <span>Editar</span>
                 </button>
@@ -207,21 +207,21 @@ export function EditarHorarioModal({ horario }) {
                         </select>
                     </div>
 
- <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Sala
-          </label>
-          <select
-            name="sala"
-            defaultValue={horario.sala}
-            className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
-            required
-          >
-            {['Sala 1', 'Sala 2'].map(s => (
-              <option key={s} value={s}>{s}</option>
-            ))}
-          </select>
-        </div>
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                            Sala
+                        </label>
+                        <select
+                            name="sala"
+                            defaultValue={horario.sala}
+                            className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+                            required
+                        >
+                            {['Sala 1', 'Sala 2'].map(s => (
+                                <option key={s} value={s}>{s}</option>
+                            ))}
+                        </select>
+                    </div>
 
                 </div>
 
@@ -251,8 +251,6 @@ export function EditarHorarioModal({ horario }) {
     )
 }
 
-//se queda pillado
-
 export function EliminarHorarioModal({ horarioId }) {
     const router = useRouter();
     const modalRef = useRef();
@@ -260,25 +258,25 @@ export function EliminarHorarioModal({ horarioId }) {
     const [state, formAction, isPending] = useActionState(eliminarHorario, null);
 
     // En EditarHorarioModal
-   useEffect(() => {
-    if (state?.success) {
-        modalRef.current?.closeModal();
-        formRef.current?.reset();
-        toast.success('Horario eliminado correctamente');
+    useEffect(() => {
+        if (state?.success) {
+            modalRef.current?.closeModal();
+            formRef.current?.reset();
+            toast.success('Horario eliminado correctamente');
 
-        // Preferible si estás usando App Router con SSR o ISR
-        setTimeout(() => {
-            router.refresh(); // en lugar de window.location.reload()
-        }, 300);
-    }
-}, [state]);
+            // Preferible si estás usando App Router con SSR o ISR
+            setTimeout(() => {
+                router.refresh(); // en lugar de window.location.reload()
+            }, 300);
+        }
+    }, [state]);
 
     return (
         <Modal
             ref={modalRef}
             title="Eliminar horario"
             openElement={
-                <button className="flex items-center gap-1 bg-gradient-to-r from-red-500 to-rose-600 hover:from-red-600 hover:to-rose-700 text-white px-3 py-1.5 rounded-lg shadow-md">
+                <button className="flex items-center gap-1 bg-gradient-to-r from-red-500 to-rose-600 hover:from-red-600 hover:to-rose-700 text-white px-3 py-1.5 rounded-lg shadow-md cursor-pointer">
                     <TrashIcon className="h-5 w-5" />
                     <span>Eliminar</span>
                 </button>
@@ -287,10 +285,7 @@ export function EliminarHorarioModal({ horarioId }) {
             <form ref={formRef} action={formAction} className="space-y-6">
                 <input type="hidden" name="horarioId" value={horarioId} />
 
-                <div className="text-center py-4">
-                    <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100 mb-3">
-                        <TrashIcon className="h-6 w-6 text-red-600" />
-                    </div>
+                <div className="text-center py-4 *:">
                     <h3 className="text-lg font-medium text-gray-900 mb-1">¿Eliminar horario?</h3>
                     <p className="text-gray-500">
                         Esta acción es permanente y no se puede deshacer.
@@ -301,16 +296,16 @@ export function EliminarHorarioModal({ horarioId }) {
                     <button
                         type="button"
                         onClick={() => modalRef.current?.closeModal()}
-                        className="px-4 py-2.5 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+                        className="px-4 py-2.5 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors cursor-pointer"
                     >
                         Cancelar
                     </button>
                     <button
                         type="submit"
                         disabled={isPending}
-                        className={`px-4 py-2.5 rounded-lg text-white shadow-md transition-all ${isPending
-                                ? 'bg-red-400 cursor-not-allowed'
-                                : 'bg-gradient-to-r from-red-500 to-rose-600 hover:from-red-600 hover:to-rose-700'
+                        className={`px-4 py-2.5 rounded-lg text-white shadow-md transition-all cursor-pointer ${isPending
+                            ? 'bg-red-400 cursor-not-allowed'
+                            : 'bg-gradient-to-r from-red-500 to-rose-600 hover:from-red-600 hover:to-rose-700'
                             }`}
                     >
                         {isPending ? (

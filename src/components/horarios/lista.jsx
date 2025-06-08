@@ -5,8 +5,6 @@ import { getHorariosConReservasPorTipo } from "@/lib/data";
 import {
   Clock,
   XCircle,
-  Pencil,
-  Trash2,
   Plus,
   CalendarDays,
   ChevronDown,
@@ -74,7 +72,7 @@ export default async function ListaHorarios({ tipo }) {
       {/* Encabezado - Hacer componente */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
         <div>
-          <h1 className="text-2xl md:text-3xl font-bold text-gray-900 capitalize">
+          <h1 className="text-2xl md:text-3xl font-bold text-[#4d4037] capitalize">
             {tipo === 'Pilates' ? 'Pilates terapéutico' :
               tipo === 'Rehabilitacion_funcional' ? 'Rehabilitación funcional' :
                 tipo === 'Entrenamiento_personal' ? 'Salud activa personal' :
@@ -181,19 +179,10 @@ export default async function ListaHorarios({ tipo }) {
                                 <div className="flex justify-end gap-4">
                                   {esAdmin ? (
                                     <>
-                                      <EditarHorarioModal horario={horario}>
-                                        <button className="flex items-center justify-center gap-2 bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 px-4 py-2 rounded-lg transition-colors font-medium w-auto">
-                                          <Pencil className="w-4 h-4" />
-                                          <span>Editar</span>
-                                        </button>
-                                      </EditarHorarioModal>
-
-                                      <EliminarHorarioModal horarioId={horario.id}>
-                                        <button className="flex items-center justify-center gap-2 bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 px-4 py-2 rounded-lg transition-colors font-medium w-auto">
-                                          <Trash2 className="w-4 h-4" />
-                                          <span>Eliminar</span>
-                                        </button>
-                                      </EliminarHorarioModal>
+                                      <EditarHorarioModal horario={horario} />
+                                        
+                                      <EliminarHorarioModal horarioId={horario.id} />
+                                        
                                     </>
                                   ) : (
                                     <form
@@ -269,7 +258,7 @@ export default async function ListaHorarios({ tipo }) {
                                                     className="text-red-500 hover:text-red-700 p-1 rounded-full hover:bg-red-50 transition-colors"
                                                     title="Eliminar reserva"
                                                   >
-                                                    <XCircle className="w-5 h-5" />
+                                                    <XCircle className="w-5 h-5 cursor-pointer" />
                                                   </button>
                                                 </form>
                                               </td>
