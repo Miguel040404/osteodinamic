@@ -178,7 +178,7 @@ export default async function ListaHorarios({ tipo }) {
                             <div className="w-full flex flex-col-reverse sm:flex-row sm:items-start sm:justify-between gap-4">
                               <div className="w-full flex flex-col-reverse md:flex-col gap-4">
                                 {/* Botones en escritorio encima */}
-                                <div className="hidden md:flex justify-end gap-3">
+                                <div className="flex justify-end gap-4">
                                   {esAdmin ? (
                                     <>
                                       <EditarHorarioModal horario={horario}>
