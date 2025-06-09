@@ -34,22 +34,22 @@ export default async function ClasePage() {
 
   return (
     <div className="min-h-screen flex flex-col bg-[#f9faf5]">
-      <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 flex items-center justify-center">
         {hasAccess ? (
           <Suspense fallback={<LoadingSpinner />}>
             <ListaHorarios tipo="Pilates" />
           </Suspense>
         ) : (
           <div className="text-center py-12">
-            <h2 className="text-2xl font-bold text-gray-800 mb-4">
-              Sesión no disponible
+             <h2 className="text-2xl font-bold text-gray-800 mb-4">
+              Parece que esta sesión no esta habilitada en tu cuentas en este momento.
             </h2>
             <p className="text-lg text-gray-600 mb-8">
-              No tienes acceso a los horarios de Pilates porque no has pagado esta sesión.
+              Si necesitas más información o ayuda, no dudes en contactarnos.
             </p>
             <a
               href="/home"
-              className="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-lg transition"
+              className="bg-[#a57551] hover:bg-[#78493c] text-white font-medium py-2 px-4 rounded-lg transition"
             >
              Volver a la página principal
             </a>

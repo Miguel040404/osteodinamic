@@ -265,8 +265,7 @@ export async function apuntarseAHorario(horarioId, tipo) {
   // Revalida la ruta correspondiente al tipo
   revalidatePath(`/clases/${tipo}`);
 }
-
-
+// ------------------------ CANCELAR RESERVA --------------------------------
 export async function cancelarReserva(horarioId, tipo) {
   const session = await auth();
   if (!session) throw new Error("No autenticado");
@@ -367,14 +366,27 @@ export async function editUser(prevState, formData) {
   const jefeId = 'cmaf8dd9v0002vhiwojgid5lp';
   const isJefe = id === jefeId;
 
-  // No permitir cambiar rol del jefe
-  if (isJefe && role && role !== editor.role) {
-    return { error: 'No se puede cambiar el rol del jefe.' };
-  }
+  // No permitir cambiar datos del jefe
+if (isJefe && role && role !== editor.role) {
+  return { error: 'No se puede cambiar el rol del jefe.' };
+}
 
-  if (isJefe && password) {
-    return { error: 'No se puede cambiar la contraseña del jefe.' };
-  }
+if (isJefe && password) {
+  return { error: 'No se puede editar datos personales del jefe.' };
+}
+
+if (isJefe && phone && phone !== editor.phone) {
+  return { error: 'No se puede editar datos personales del jefe.' };
+}
+
+if (isJefe && address && address !== editor.address) {
+  return { error: 'No se puede editar datos personales del jefe.' };
+}
+
+if (isJefe && name && name !== editor.name) {
+  return { error: 'No se puede editar datos personales del jefe.' };
+}
+
 
   try {
     // Actualizar datos; **no** incluir password si es el jefe
