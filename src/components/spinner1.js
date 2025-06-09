@@ -1,7 +1,7 @@
 'use client'
+
 import { useState } from "react";
 import PulseLoader from "react-spinners/PulseLoader";
-
 
 const styles = {
     display: "block",

@@ -1,5 +1,6 @@
 "use client"
-import { newUser, newuser } from '@/lib/actions'
+
+import { newUser } from '@/lib/actions'
 import { useActionState, useEffect, useId } from 'react'
 import { PlusIcon, RefreshCwIcon } from 'lucide-react';
 import { toast } from 'sonner';
@@ -9,7 +10,6 @@ export default function UserInsertar() {
     const formId = useId()
     const [state, action, pending] = useActionState(newUser, {})
 
-
     useEffect(() => {
         if (state?.success) {
             toast.success(state.success)
@@ -18,7 +18,6 @@ export default function UserInsertar() {
         if (state?.error) toast.error(state.error)
 
     }, [formId, state])
-
 
     return (
         <form id={formId} action={action} className="w-full flex flex-col px-4">
@@ -54,9 +53,6 @@ export default function UserInsertar() {
                 </CheckRadio>
             </div>
 
-
-
-
             <div className='flex flex-col md:flex-row md:gap-10'>
                 <div className='w-full md:w-2/3 flex flex-col gap-2'>
 
@@ -73,8 +69,6 @@ export default function UserInsertar() {
                             className="w-full md:w-3/4 px-3 py-2 rounded-lg focus:outline-none focus:border-blue-400 bg-gray-100"
                         />
                     </div>
-
-
                 </div>
             </div>
         </form>

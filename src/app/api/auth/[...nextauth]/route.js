@@ -17,18 +17,7 @@ export const authOptions = {
         if (!/^\d{9}$/.test(credentials.phone)) {
           throw new Error('InvalidPhoneFormat');
         }
-
-        // // Ejemplo con Prisma (debes implementar tu propia lógica)
-        // const user = await prisma.user.findUnique({
-        //   where: { phone: credentials.phone }
-        // });
-
-        // // Verificar usuario y contraseña (usa bcrypt.compare en producción)
-        // if (!user || user.password !== credentials.password) {
-        //   throw new Error('CredentialsSignin');
-        // }
-
-        // return { id: user.id, phone: user.phone };
+        
         try {
           const user = await prisma.user.findUnique({
             where: { phone: credentials.phone }
@@ -56,20 +45,6 @@ export const authOptions = {
     strategy: "jwt",
     maxAge: 30 * 24 * 60 * 60, // 30 días
   },
-  // cookies: {
-  //   sessionToken: {
-  //     name: `__Secure-next-auth.session-token`,
-  //     options: {
-  //       httpOnly: true,
-  //       sameSite: "lax",
-  //       path: "/",
-  //       secure: true, // Siempre true en producción
-  //       domain: process.env.NODE_ENV === 'production' 
-  //         ? '.tu-dominio.vercel.app' 
-  //         : undefined
-  //     }
-  //   }
-  // },
   cookies: {
     sessionToken: {
       name: `__Secure-next-auth.session-token`,
@@ -98,19 +73,3 @@ export const authOptions = {
 };
 
 export const { handlers, auth, signIn, signOut } = NextAuth(authOptions);
-
-
-
-// export const authOptions = {
-//   providers: [
-//     GitHubProvider({
-//       clientId: process.env.GITHUB_ID,
-//       clientSecret: process.env.GITHUB_SECRET,
-//     }),
-//     // puedes añadir más aquí
-//   ],
-//   // más opciones
-// }
-
-// const handler = NextAuth(authOptions)
-// export { handler as GET, handler as POST }

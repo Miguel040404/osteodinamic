@@ -1,4 +1,3 @@
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { NextResponse } from "next/server";
 import { getUserById } from "@/lib/data";
 import { auth } from "@/auth";

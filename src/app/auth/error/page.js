@@ -13,7 +13,6 @@ async function page({ searchParams }) {
       <h1>Error</h1>
       {error && <h3>{errors.get(error)}</h3>}
     </>
-
   )
 }
 

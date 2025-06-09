@@ -1,5 +1,3 @@
-import { UserIcon } from "lucide-react";
-
 function UserVer({ user }) {
   return (
     // <div className="p-6 rounded-lg bg-white shadow-md max-w-md mx-auto">
@@ -24,7 +22,6 @@ function UserVer({ user }) {
           </p>
         </div>
       </div>
-    // </div>
   );
 }
 

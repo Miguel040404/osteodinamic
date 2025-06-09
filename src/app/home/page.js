@@ -6,7 +6,7 @@ import Image from "next/image";
 import { Suspense } from "react"; // Importamos Suspense
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
-import {  getNotViewedNotificationsCountByUserId, getUserById } from "@/lib/data";
+import {  getNotViewedNotificationsCountByUserId } from "@/lib/data";
 
 // Componente para el spinner de carga
 const LoadingSpinner = () => (
@@ -66,9 +66,7 @@ async function HomeContent() {
               Notificaciones ({notificaciones})
             </button>
           </Link>
-          
         </div>
-
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {/* Pilates Card */}

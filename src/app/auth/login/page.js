@@ -23,66 +23,16 @@ async function page({ searchParams }) {
 
   return (
     <>
-     <div>
-  {error && (
-    <div className="mb-4 text-red-600 font-medium">
-      {errors.get(error)}
-    </div>
-  )}
-  
- {/* <h1 className="!text-gray-700 text-3xl md:text-2xl font-bold text-center -mb-6 md:-mb-3">Iniciar sesión</h1> */}
-
-  <LoginForm />
-
-</div>
-
+      <div>
+        {error && (
+          <div className="mb-4 text-red-600 font-medium">
+            {errors.get(error)}
+          </div>
+        )}
+        <LoginForm />
+      </div>
     </>
   )
 }
 
 export default page
-
-
-// import LoginForm from '@/components/auth/login-form';
-// import Link from 'next/link';
-
-// const errorMessages = {
-//   'Formato de teléfono inválido': 'El teléfono debe tener 9 dígitos',
-//   'Usuario no registrado': 'Número no registrado',
-//   'Contraseña incorrecta': 'Contraseña incorrecta',
-//   'Default': 'Error al iniciar sesión'
-// };
-
-// export default function Page({ searchParams }) {
-//   const error = searchParams.error;
-//   const callbackUrl = searchParams.callbackUrl || '/home';
-
-//   return (
-//     <div className="min-h-screen flex items-center justify-center p-4">
-//       <div className="w-full max-w-md bg-white p-8 rounded-xl shadow-lg">
-//         <div className="text-center mb-8">
-//           <h1 className="text-3xl font-bold text-gray-900 mb-2">Bienvenido</h1>
-//           <p className="text-gray-600">Inicia sesión en tu cuenta</p>
-//         </div>
-
-//         {error && (
-//           <div className="mb-6 p-3 bg-red-50 text-red-700 rounded-lg text-center">
-//             {errorMessages[error] || errorMessages.Default}
-//           </div>
-//         )}
-
-//         <LoginForm />
-
-//         {/* <div className="mt-6 text-center text-sm">
-//           <span className="text-gray-600">¿Primera vez aquí? </span>
-//           <Link
-//             href={`/auth/register?callbackUrl=${encodeURIComponent(callbackUrl)}`}
-//             className="text-blue-600 hover:underline font-medium"
-//           >
-//             Crear cuenta
-//           </Link>
-//         </div> */}
-//       </div>
-//     </div>
-//   );
-// }

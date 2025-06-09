@@ -208,7 +208,6 @@ function AdminView({ reservas }) {
                 </div>
               ))}
             </div>
-
           </div>
         );
       })}

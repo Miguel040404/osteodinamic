@@ -11,7 +11,6 @@ import {
   Users
 } from "lucide-react";
 
-
 // Función para obtener el nombre del día en español
 const getDiaNombre = (dia) => {
   const dias = {
