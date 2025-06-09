@@ -124,7 +124,7 @@ export default async function ListaHorarios({ tipo }) {
                             <span
                               className={`inline-flex items-center px-5 py-1 h-8 rounded-full  text-xs font-medium ${horario.sala === 'Sala 1'
                                 ? 'bg-amber-100 text-amber-800 border border-amber-500'
-                                : 'bg-teal-200 text-teal-800 border border-teal-500'
+                                : 'bg-[#fac156] text-[#913b02] border border-[#823400]'
                                 }`}
                             >
                               {horario.sala}
