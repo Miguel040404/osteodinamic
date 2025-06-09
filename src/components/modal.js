@@ -88,7 +88,7 @@ const Modal = forwardRef(({ openElement, children, title }, ref) => {
 
                 <button
                   onClick={closeModal}
-                  className="text-gray-400 hover:text-gray-600 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded-full p-1"
+                  className="cursor-pointer text-gray-400 hover:text-gray-600 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[#4d4037e2] rounded-full p-1"
                   aria-label="Cerrar modal"
                 >
                   <svg

@@ -56,7 +56,7 @@ export default async function EditarNotificacionPage({ params }) {
           <div className="pt-4">
             <button
               type="submit"
-              className="w-full flex items-center justify-center gap-2 bg-[#a57551] hover:bg-[#8f5e40] text-white px-4 py-3 rounded-lg font-medium transition-colors shadow-sm hover:shadow-md"
+              className="cursor-pointer w-full flex items-center justify-center gap-2 bg-[#a57551] hover:bg-[#8f5e40] text-white px-4 py-3 rounded-lg font-medium transition-colors shadow-sm hover:shadow-md"
             >
               Guardar cambios
             </button>

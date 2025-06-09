@@ -23,7 +23,7 @@ export default function UserInsertar() {
         <form id={formId} action={action} className="w-full flex flex-col px-4">
 
             <button type="submit" disabled={pending}
-                className='self-end mb-4 font-bold bg-green-600 text-white px-4 py-2 rounded-md mt-4 hover:bg-green-700 hover:text-gray-100 disabled:bg-zinc-400'
+                className='cursor-pointer self-end mb-4 font-bold bg-green-600 text-white px-4 py-2 rounded-md mt-4 hover:bg-green-700 hover:text-gray-100 disabled:bg-zinc-400'
             >
                 {pending
                     ? <div><RefreshCwIcon className='inline animate-spin' /> Guardando...</div>

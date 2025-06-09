@@ -51,7 +51,7 @@ async function NotificacionesContent() {
 
           {session.user.role === 'ADMIN' && (
             <Link href="/notifications">
-              <button className="flex items-center gap-2 bg-[#a57551] hover:bg-[#8f5e40] text-white px-4 py-2.5 rounded-lg transition-colors shadow-sm hover:shadow-md">
+              <button className="cursor-pointer flex items-center gap-2 bg-[#a57551] hover:bg-[#8f5e40] text-white px-4 py-2.5 rounded-lg transition-colors shadow-sm hover:shadow-md">
                 <PlusIcon className="w-5 h-5" />
                 <span>Nueva Notificación</span>
               </button>
@@ -100,7 +100,7 @@ async function NotificacionesContent() {
                     {session.user.role === 'ADMIN' && (
                       <div className="flex flex-col gap-3 min-w-[120px]">
                         <Link href={`/notifications/${n.id}/editar`}>
-                        <button className="flex items-center gap-2 bg-white border border-[#b9b59c] text-[#4d4037] hover:bg-[#f3ece3] w-full px-3 py-2 rounded-lg transition-colors">
+                        <button className="cursor-pointer flex items-center gap-2 bg-white border border-[#b9b59c] text-[#4d4037] hover:bg-[#f3ece3] w-full px-3 py-2 rounded-lg transition-colors">
                         <PencilIcon className="w-4 h-4" />
                         <span>Editar</span>
                       </button>
@@ -110,7 +110,7 @@ async function NotificacionesContent() {
                           <input type="hidden" name="id" value={n.id} />
                           <button
                             type="submit"
-                            className="flex items-center gap-2 bg-white border border-[#b9b59c] text-red-600 hover:bg-red-50 w-full px-3 py-2 rounded-lg transition-colors"
+                            className="cursor-pointer flex items-center gap-2 bg-white border border-[#b9b59c] text-red-600 hover:bg-red-50 w-full px-3 py-2 rounded-lg transition-colors"
                           >
                             <TrashIcon className="w-4 h-4" />
                             <span>Eliminar</span>

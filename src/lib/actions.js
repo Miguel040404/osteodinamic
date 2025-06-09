@@ -330,24 +330,22 @@ export async function editUser(prevState, formData) {
   const role = formData.get('role');
   const password = formData.get('password');
 
-  // Obtener sesiones pagadas
+  // Obtener sesiones pagadas solo si es ADMIN
   const paidSessions = isEditorAdmin
     ? formData.getAll('paidSessions')
     : [];
 
-  // Validación del nombre
+  // Validaciones...
   const nameRegex = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/;
   if (!nameRegex.test(name)) {
     return { error: 'El nombre solo puede contener letras y espacios' };
   }
-
-  // Validación del teléfono
   const phoneRegex = /^[0-9]{9}$/;
   if (!phoneRegex.test(phone)) {
     return { error: 'El teléfono debe tener exactamente 9 dígitos' };
   }
 
-  // Verificar duplicados
+  // Duplicados
   const existingUser = await prisma.user.findFirst({
     where: {
       OR: [
@@ -356,7 +354,6 @@ export async function editUser(prevState, formData) {
       ]
     }
   });
-
   if (existingUser) {
     if (existingUser.name === name) {
       return { error: 'Este nombre ya está registrado' };
@@ -366,14 +363,21 @@ export async function editUser(prevState, formData) {
     }
   }
 
-  // Verificar si se está editando al jefe
-  const isJefe = id === 'cmaf8dd9v0002vhiwojgid5lp';
+  // Detectar jefe
+  const jefeId = 'cmaf8dd9v0002vhiwojgid5lp';
+  const isJefe = id === jefeId;
+
+  // No permitir cambiar rol del jefe
   if (isJefe && role && role !== editor.role) {
     return { error: 'No se puede cambiar el rol del jefe.' };
   }
 
+  if (isJefe && password) {
+    return { error: 'No se puede cambiar la contraseña del jefe.' };
+  }
+
   try {
-    // Actualizar datos básicos del usuario
+    // Actualizar datos; **no** incluir password si es el jefe
     await prisma.user.update({
       where: { id },
       data: {
@@ -382,19 +386,18 @@ export async function editUser(prevState, formData) {
         email,
         image,
         phone,
-        ...(password && { password: await bcrypt.hash(password, 10) }),
-        ...(isEditorAdmin && role && !isJefe && { role }),
+        // SOLO aplicar hash de password si NO es el jefe
+        ...(!isJefe && password
+          ? { password: await bcrypt.hash(password, 10) }
+          : {}),
+        // Rol solo si es admin y no es jefe
+        ...(isEditorAdmin && role && !isJefe ? { role } : {}),
       },
     });
 
-    // Solo si es admin gestionamos las sesiones pagadas
+    // Gestionar paidSessions solo si es admin
     if (isEditorAdmin) {
-      // Eliminar todas las sesiones existentes
-      await prisma.paidSession.deleteMany({
-        where: { userId: id }
-      });
-
-      // Crear nuevas sesiones si hay seleccionadas
+      await prisma.paidSession.deleteMany({ where: { userId: id } });
       if (paidSessions.length > 0) {
         await prisma.paidSession.createMany({
           data: paidSessions.map(sessionType => ({
@@ -405,6 +408,7 @@ export async function editUser(prevState, formData) {
       }
     }
 
+    // Revalidar rutas
     revalidatePath('/perfil');
     revalidatePath('/users');
     return { success: 'Usuario actualizado correctamente' };
@@ -413,6 +417,7 @@ export async function editUser(prevState, formData) {
     return { error: 'Error al actualizar el usuario' };
   }
 }
+
 
 export async function register(prevState, formData) {
   const session = await auth();
@@ -474,36 +479,49 @@ export async function register(prevState, formData) {
 
 // ------------------------ deleteUser------------------------
 export async function deleteUser(prevState, formData) {
+  const session = await auth();
+  const editor = session?.user;
+  const jefeId = 'cmaf8dd9v0002vhiwojgid5lp';
+  const id = formData.get('id');
+
+  if (!editor) {
+    return { error: 'No autorizado.' };
+  }
+
+  // Solo el jefe puede eliminar
+  if (editor.id !== jefeId) {
+    return { error: 'Solo el jefe puede eliminar usuarios.' };
+  }
+
+  // Evitar que el jefe se elimine a sí mismo
+  if (id === jefeId) {
+    return { error: 'No se puede eliminar al jefe.' };
+  }
+
   try {
-    const id = formData.get('id')
-
-    // Mensaje especial si es el jefe (antes de consultar la base de datos)
-    if (id === 'cmaf8dd9v0002vhiwojgid5lp') {
-      return { error: 'No se puede eliminar al jefe.' }
-    }
-
-    // Obtener el usuario para verificar su rol
     const user = await prisma.user.findUnique({
       where: { id },
-    })
+    });
 
     if (!user) {
-      return { error: 'Usuario no encontrado.' }
+      return { error: 'Usuario no encontrado.' };
     }
 
-    // Evitar eliminación si el rol es ADMIN
-    if (user.role === 'ADMIN') {
-      return { error: 'No se puede eliminar un usuario con rol ADMIN.' }
-    }
+    // Opcional: bloquear eliminación de otros ADMIN
+    // if (user.role === 'ADMIN') {
+    //   return { error: 'No se puede eliminar un usuario con rol ADMIN.' };
+    // }
 
     await prisma.user.delete({
       where: { id },
-    })
+    });
 
-    revalidatePath('/dashboard')
-    return { success: 'Usuario eliminado' }
+    revalidatePath('/dashboard');
+    revalidatePath('/users');
+    return { success: 'Usuario eliminado correctamente.' };
   } catch (error) {
-    return { error: error.message || 'Error al eliminar el usuario' }
+    console.error(error);
+    return { error: 'Error al eliminar el usuario.' };
   }
 }
 

@@ -122,10 +122,11 @@ export default async function ListaHorarios({ tipo }) {
                           {/* IZQUIERDA: Reloj y sala debajo */}
                           <div className="flex flex-row-reverse gap-4 sm:gap-6">
                             <span
-                              className={`inline-flex items-center px-5 py-1 h-8 rounded-full  text-xs font-medium ${horario.sala === 'Sala 1'
-                                ? 'bg-amber-100 text-amber-800 border border-amber-500'
-                                : 'bg-teal-200 text-teal-800 border border-teal-500'
+                              className={`inline-flex items-center px-5 py-1 h-8 rounded-full text-xs font-medium ${horario.sala === 'Sala 1'
+                                  ? 'bg-[#f7dcc8] text-[#5b452c] border border-[#d6bfae]'
+                                  : 'bg-[#a47551] text-[#fefaf6] border border-[#8c5c3d]'
                                 }`}
+
                             >
                               {horario.sala}
                             </span>
@@ -179,9 +180,9 @@ export default async function ListaHorarios({ tipo }) {
                                   {esAdmin ? (
                                     <>
                                       <EditarHorarioModal horario={horario} />
-                                        
+
                                       <EliminarHorarioModal horarioId={horario.id} />
-                                        
+
                                     </>
                                   ) : (
                                     <form

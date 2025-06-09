@@ -66,7 +66,7 @@ export default function CrearNormaPage() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className={`w-full flex items-center justify-center gap-2 px-4 py-3 rounded-lg font-medium transition-colors ${isSubmitting
+              className={`cursor-pointer w-full flex items-center justify-center gap-2 px-4 py-3 rounded-lg font-medium transition-colors ${isSubmitting
                   ? 'bg-[#a57551cc] cursor-not-allowed'
                   : 'bg-[#a57551] hover:bg-[#8d6040] shadow-sm hover:shadow-md'
                 } text-white`}

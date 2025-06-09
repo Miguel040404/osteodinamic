@@ -11,7 +11,6 @@ export default function UserModificar({ user, sessionUser }) {
   const [avatarOpen, setAvatarOpen] = useState(false);
   const [selectedAvatar, setSelectedAvatar] = useState(user?.image || '/images/avatar-80.png');
 
-  // Estado para cada tipo de sesión
   const [pilatesChecked, setPilatesChecked] = useState(false);
   const [rehabilitacionChecked, setRehabilitacionChecked] = useState(false);
   const [entrenamientoChecked, setEntrenamientoChecked] = useState(false);
@@ -20,12 +19,11 @@ export default function UserModificar({ user, sessionUser }) {
     `/images/avatar-${String(index).padStart(2, '0')}.png`
   );
 
-  // Inicializar sesiones cuando el usuario cambia
   useEffect(() => {
     if (user?.paidSessions) {
-      setPilatesChecked(user?.paidSessions.some(ps => ps.sessionType === 'Pilates'));
-      setRehabilitacionChecked(user?.paidSessions.some(ps => ps.sessionType === 'Rehabilitacion_funcional'));
-      setEntrenamientoChecked(user?.paidSessions.some(ps => ps.sessionType === 'Entrenamiento_personal'));
+      setPilatesChecked(user.paidSessions.some(ps => ps.sessionType === 'Pilates'));
+      setRehabilitacionChecked(user.paidSessions.some(ps => ps.sessionType === 'Rehabilitacion_funcional'));
+      setEntrenamientoChecked(user.paidSessions.some(ps => ps.sessionType === 'Entrenamiento_personal'));
     }
   }, [user]);
 
@@ -57,17 +55,16 @@ export default function UserModificar({ user, sessionUser }) {
       <form id={formId} action={action} className="p-6">
         <input type="hidden" name="id" defaultValue={user?.id} />
 
-        {/* Selector de avatar */}
+        {/* Avatar */}
         <div className="mb-8">
           <label className="block text-sm font-medium text-gray-700 mb-2">
             Seleccionar avatar
           </label>
-
           <div className="relative">
             <button
               type="button"
               onClick={() => setAvatarOpen(!avatarOpen)}
-              className="w-full flex items-center justify-between p-3 bg-gray-50 border border-gray-300 rounded-lg shadow-sm hover:bg-gray-100 transition-colors"
+              className="cursor-pointer w-full flex items-center justify-between p-3 bg-gray-50 border border-gray-300 rounded-lg shadow-sm hover:bg-gray-100 transition-colors"
             >
               <div className="flex items-center gap-3">
                 <img
@@ -78,9 +75,7 @@ export default function UserModificar({ user, sessionUser }) {
               </div>
               <ChevronDown className={`w-5 h-5 text-gray-500 transition-transform ${avatarOpen ? 'rotate-180' : ''}`} />
             </button>
-
             <input type="hidden" name="image" value={selectedAvatar} />
-
             {avatarOpen && (
               <div className="absolute z-10 mt-2 w-full max-h-60 overflow-y-auto bg-white border border-gray-300 rounded-lg shadow-lg">
                 <div className="grid grid-cols-5 gap-2 p-3">
@@ -89,8 +84,9 @@ export default function UserModificar({ user, sessionUser }) {
                       key={index}
                       type="button"
                       onClick={() => handleAvatarChange(avatar)}
-                      className={`p-1 rounded-full hover:bg-indigo-50 transition-colors ${selectedAvatar === avatar ? 'ring-2 ring-indigo-500' : ''
-                        }`}
+                      className={`cursor-pointer p-1 rounded-full hover:bg-[#f5ebe0] transition-colors ${
+                        selectedAvatar === avatar ? 'ring-2 ring-[#8B5E3C]' : ''
+                      }`}
                     >
                       <img
                         src={avatar}
@@ -105,179 +101,130 @@ export default function UserModificar({ user, sessionUser }) {
           </div>
         </div>
 
-        {/* Campos del formulario */}
+        {/* Campos */}
         <div className="space-y-5">
-          <div className="relative">
-            <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-              <User className="h-5 w-5 text-gray-400" />
+          {[
+            { icon: <User />, name: 'name', value: user?.name, placeholder: 'Nombre completo' },
+            { icon: <MapPin />, name: 'address', value: user?.address, placeholder: 'Dirección' },
+            { icon: <Phone />, name: 'phone', value: user?.phone, placeholder: 'Teléfono', id: 'phone', type: 'tel', pattern: '[0-9]{9}', maxLength: 9, title: 'Número de 9 dígitos' }
+          ].map((field, i) => (
+            <div className="relative" key={i}>
+              <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                {field.icon}
+              </div>
+              <input
+                type={field.type || 'text'}
+                id={field.id}
+                name={field.name}
+                defaultValue={field.value}
+                placeholder={field.placeholder}
+                pattern={field.pattern}
+                maxLength={field.maxLength}
+                title={field.title}
+                className="w-full pl-10 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#8B5E3C] focus:border-[#8B5E3C]"
+              />
             </div>
-            <input
-              type="text"
-              name="name"
-              defaultValue={user?.name}
-              placeholder="Nombre completo"
-              className="w-full pl-10 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-            />
-          </div>
+          ))}
 
-          <div className="relative">
-            <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-              <MapPin className="h-5 w-5 text-gray-400" />
-            </div>
-            <input
-              type="text"
-              name="address"
-              defaultValue={user?.address}
-              placeholder="Dirección"
-              className="w-full pl-10 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-            />
-          </div>
-
-          <div className="relative">
-            <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-              <Phone className="h-5 w-5 text-gray-400" />
-            </div>
-            <input
-              type="tel"
-              id="phone"
-              name="phone"
-              defaultValue={user?.phone}
-              placeholder="Teléfono"
-              className="w-full pl-10 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-              pattern="[0-9]{9}"
-              maxLength="9"
-              title="Número de 9 dígitos"
-            />
-          </div>
-
+          {/* Password */}
           <div className="relative">
             <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
               <Lock className="h-5 w-5 text-gray-400" />
             </div>
             <input
-              type={showPassword ? "text" : "password"}
+              type={showPassword ? 'text' : 'password'}
               name="password"
               placeholder="Nueva contraseña"
-              className="w-full pl-10 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+              className="w-full pl-10 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#8B5E3C] focus:border-[#8B5E3C]"
             />
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-gray-600"
-              aria-label={showPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
+              className="cursor-pointer absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-gray-600"
+              aria-label={showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}
             >
               {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
             </button>
           </div>
 
-          {/* Sección para sesiones pagadas - SOLO ADMINISTRADORES */}
+          {/* Sesiones */}
           {sessionUser?.role === 'ADMIN' && (
             <div className="mt-4">
               <label className="block text-sm font-medium text-gray-700 mb-3">Sesiones pagadas</label>
               <div className="space-y-3">
-                {/* Tarjeta Pilates - ROJO */}
+                {/* Pilates */}
                 <div
-                  className={`relative p-4 rounded-lg border-2 cursor-pointer transition-all duration-200 ${pilatesChecked
-                      ? "border-red-500 bg-red-50 shadow-sm"
-                      : "border-gray-200 hover:border-gray-300"
-                    }`}
+                  className={`relative p-4 rounded-lg border-2 cursor-pointer transition-all duration-200 ${
+                    pilatesChecked ? 'border-[#A0522D] bg-[#f3e1d5] shadow-sm' : 'border-gray-200 hover:border-gray-300'
+                  }`}
                   onClick={() => setPilatesChecked(!pilatesChecked)}
                 >
                   <div className="flex items-start">
-                    <div className="flex items-center h-5">
-                      <input
-                        type="checkbox"
-                        name="paidSessions"
-                        value="Pilates"
-                        checked={pilatesChecked}
-                        onChange={() => setPilatesChecked(!pilatesChecked)}
-                        className="h-4 w-4 text-red-600 focus:ring-red-500"
-                      />
-                    </div>
+                    <input
+                      type="checkbox"
+                      name="paidSessions"
+                      value="Pilates"
+                      checked={pilatesChecked}
+                      onChange={() => setPilatesChecked(!pilatesChecked)}
+                      className="h-4 w-4 text-[#A0522D] focus:ring-[#A0522D]"
+                    />
                     <div className="ml-3 text-sm">
                       <span className="font-medium text-gray-900">Pilates terapéutico</span>
                       <p className="mt-1 text-gray-500">Sesiones de fortalecimiento y rehabilitación</p>
                     </div>
                   </div>
-                  {pilatesChecked && (
-                    <div className="absolute top-2 right-2 text-red-600">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                      </svg>
-                    </div>
-                  )}
                 </div>
 
-                {/* Tarjeta Rehabilitación - VERDE */}
+                {/* Rehabilitación */}
                 <div
-                  className={`relative p-4 rounded-lg border-2 cursor-pointer transition-all duration-200 ${rehabilitacionChecked
-                      ? "border-green-500 bg-green-50 shadow-sm"
-                      : "border-gray-200 hover:border-gray-300"
-                    }`}
+                  className={`relative p-4 rounded-lg border-2 cursor-pointer transition-all duration-200 ${
+                    rehabilitacionChecked ? 'border-[#8B7355] bg-[#ede5dc] shadow-sm' : 'border-gray-200 hover:border-gray-300'
+                  }`}
                   onClick={() => setRehabilitacionChecked(!rehabilitacionChecked)}
                 >
                   <div className="flex items-start">
-                    <div className="flex items-center h-5">
-                      <input
-                        type="checkbox"
-                        name="paidSessions"
-                        value="Rehabilitacion_funcional"
-                        checked={rehabilitacionChecked}
-                        onChange={() => setRehabilitacionChecked(!rehabilitacionChecked)}
-                        className="h-4 w-4 text-green-600 focus:ring-green-500"
-                      />
-                    </div>
+                    <input
+                      type="checkbox"
+                      name="paidSessions"
+                      value="Rehabilitacion_funcional"
+                      checked={rehabilitacionChecked}
+                      onChange={() => setRehabilitacionChecked(!rehabilitacionChecked)}
+                      className="h-4 w-4 text-[#8B7355] focus:ring-[#8B7355]"
+                    />
                     <div className="ml-3 text-sm">
                       <span className="font-medium text-gray-900">Rehabilitación Funcional</span>
                       <p className="mt-1 text-gray-500">Recuperación de movilidad y funcionalidad</p>
                     </div>
                   </div>
-                  {rehabilitacionChecked && (
-                    <div className="absolute top-2 right-2 text-green-600">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                      </svg>
-                    </div>
-                  )}
                 </div>
 
-                {/* Tarjeta Entrenamiento - AZUL */}
+                {/* Entrenamiento */}
                 <div
-                  className={`relative p-4 rounded-lg border-2 cursor-pointer transition-all duration-200 ${entrenamientoChecked
-                      ? "border-blue-500 bg-blue-50 shadow-sm"
-                      : "border-gray-200 hover:border-gray-300"
-                    }`}
+                  className={`relative p-4 rounded-lg border-2 cursor-pointer transition-all duration-200 ${
+                    entrenamientoChecked ? 'border-[#A67B5B] bg-[#f4e9df] shadow-sm' : 'border-gray-200 hover:border-gray-300'
+                  }`}
                   onClick={() => setEntrenamientoChecked(!entrenamientoChecked)}
                 >
                   <div className="flex items-start">
-                    <div className="flex items-center h-5">
-                      <input
-                        type="checkbox"
-                        name="paidSessions"
-                        value="Entrenamiento_personal"
-                        checked={entrenamientoChecked}
-                        onChange={() => setEntrenamientoChecked(!entrenamientoChecked)}
-                        className="h-4 w-4 text-blue-600 focus:ring-blue-500"
-                      />
-                    </div>
+                    <input
+                      type="checkbox"
+                      name="paidSessions"
+                      value="Entrenamiento_personal"
+                      checked={entrenamientoChecked}
+                      onChange={() => setEntrenamientoChecked(!entrenamientoChecked)}
+                      className="h-4 w-4 text-[#A67B5B] focus:ring-[#A67B5B]"
+                    />
                     <div className="ml-3 text-sm">
                       <span className="font-medium text-gray-900">Salud activa personal</span>
                       <p className="mt-1 text-gray-500">Entrenamiento personalizado para tu bienestar</p>
                     </div>
                   </div>
-                  {entrenamientoChecked && (
-                    <div className="absolute top-2 right-2 text-blue-600">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                      </svg>
-                    </div>
-                  )}
                 </div>
               </div>
             </div>
-
           )}
 
+          {/* Rol */}
           {sessionUser?.role === 'ADMIN' && sessionUser?.id !== user?.id && (
             <div className="relative">
               <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
@@ -286,7 +233,7 @@ export default function UserModificar({ user, sessionUser }) {
               <select
                 name="role"
                 defaultValue={user?.role}
-                className="w-full pl-10 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 appearance-none bg-white"
+                className="w-full pl-10 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#8B5E3C] focus:border-[#8B5E3C] appearance-none bg-white"
               >
                 <option value="USER">Usuario</option>
                 <option value="ADMIN">Administrador</option>
@@ -296,10 +243,11 @@ export default function UserModificar({ user, sessionUser }) {
           )}
         </div>
 
+        {/* Submit */}
         <button
           type="submit"
           disabled={pending}
-          className="w-full mt-8 py-3 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg shadow-md transition-all transform hover:scale-[1.02] disabled:opacity-70 disabled:cursor-not-allowed"
+          className="cursor-pointer w-full mt-8 py-3 px-4 bg-[#8B5E3C] hover:bg-[#7A4E30] text-white font-medium rounded-lg shadow-md transition-all transform hover:scale-[1.02] disabled:opacity-70 disabled:cursor-not-allowed"
         >
           {pending ? (
             <div className="flex items-center justify-center">

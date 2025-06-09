@@ -51,7 +51,7 @@ async function Users() {
           </Modal>
 
           <Modal
-            title={`Eliminar perfil de ${user.name}`}
+            title={`Eliminar perfil de: ${user.name}`}
             openElement={
               <button className="w-8 h-8 grid place-content-center rounded-full bg-red-100 text-red-700 border border-red-400 hover:bg-red-500 hover:text-white transition cursor-pointer">
                 <TrashIcon className="w-4 h-4" />
