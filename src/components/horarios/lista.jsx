@@ -67,7 +67,7 @@ export default async function ListaHorarios({ tipo }) {
   const dias = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'];
 
   return (
-    <div className="max-w-4xl mx-auto py-2">
+   <div className="w-full max-w-4xl mx-auto py-2 px-6">
       {/* Encabezado - Hacer componente */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
         <div>
@@ -122,11 +122,10 @@ export default async function ListaHorarios({ tipo }) {
                           {/* IZQUIERDA: Reloj y sala debajo */}
                           <div className="flex flex-row-reverse gap-4 sm:gap-6">
                             <span
-                              className={`inline-flex items-center px-5 py-1 h-8 rounded-full text-xs font-medium ${horario.sala === 'Sala 1'
-                                  ? 'bg-[#f7dcc8] text-[#5b452c] border border-[#d6bfae]'
-                                  : 'bg-[#a47551] text-[#fefaf6] border border-[#8c5c3d]'
+                              className={`inline-flex items-center px-5 py-1 h-8 rounded-full  text-xs font-medium ${horario.sala === 'Sala 1'
+                                ? 'bg-amber-100 text-amber-800 border border-amber-500'
+                                : 'bg-teal-200 text-teal-800 border border-teal-500'
                                 }`}
-
                             >
                               {horario.sala}
                             </span>
@@ -173,16 +172,16 @@ export default async function ListaHorarios({ tipo }) {
                         <div className="w-full sm:w-auto flex flex-col sm:flex-row sm:ml-auto sm:justify-end gap-3 mt-5">
                           <div className="w-full flex justify-between items-center flex-wrap gap-3">
 
-                            <div className="w-full flex flex-col-reverse sm:flex-row sm:items-start sm:justify-between gap-4">
-                              <div className="w-full flex flex-col-reverse md:flex-col gap-4">
+                            <div className="w-full flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+                              <div className="w-full flex flex-col md:flex-col gap-4">
                                 {/* Botones en escritorio encima */}
                                 <div className="flex justify-end gap-4">
                                   {esAdmin ? (
                                     <>
                                       <EditarHorarioModal horario={horario} />
-
+                                        
                                       <EliminarHorarioModal horarioId={horario.id} />
-
+                                        
                                     </>
                                   ) : (
                                     <form
