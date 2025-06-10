@@ -1,6 +1,5 @@
 import Credentials from "@auth/core/providers/credentials";
 import bcrypt from 'bcryptjs';
-import NextAuth from "next-auth";
 import prisma from "./lib/prisma";
 
 const authConfig = {
@@ -13,19 +12,17 @@ const authConfig = {
       },
       async authorize(credentials) {
         try {
-          // Validar formato de teléfono
           if (!credentials.phone?.match(/^\d{9}$/)) {
             throw new Error('Formato de teléfono inválido');
           }
 
-          // Función única de obtención de usuario
           const user = await prisma.user.findUnique({
             where: { phone: credentials.phone },
             select: {
               id: true,
               name: true,
               phone: true,
-              password: true, // ¡Campo esencial!
+              password: true,
               role: true
             }
           });
@@ -34,12 +31,11 @@ const authConfig = {
             throw new Error('Usuario no registrado');
           }
 
-          // Verificar contraseña
           const isValidPassword = await bcrypt.compare(
             credentials.password,
             user.password
           );
-          
+
           if (!isValidPassword) {
             throw new Error('Contraseña incorrecta');
           }
@@ -59,7 +55,6 @@ const authConfig = {
       },
     }),
   ],
- 
 };
 
 export default authConfig;

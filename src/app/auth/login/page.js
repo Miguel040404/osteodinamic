@@ -1,5 +1,4 @@
 import LoginForm from '@/components/auth/login-form'
-import Link from 'next/link';
 
 // https://next-auth.js.org/configuration/pages#sign-in-page
 const errors = new Map();

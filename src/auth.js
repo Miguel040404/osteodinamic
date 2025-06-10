@@ -4,7 +4,6 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 import { getUserById } from "@/lib/data"
 import authConfig from "@/auth.config"
 
-
 export const options = {
     session: { strategy: 'jwt' },
     adapter: PrismaAdapter(prisma),
@@ -41,9 +40,7 @@ export const options = {
             if (!token?.sub) return token;
 
 
-
             const user = await getUserById(token.sub)
-
 
             if (!user) {
                 console.log("Usuario inactivo");

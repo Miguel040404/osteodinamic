@@ -7,64 +7,57 @@ import { auth, signIn } from "@/auth";
 import { redirect } from 'next/navigation'
 import { Prisma } from "@prisma/client"
 
-// import { signIn } from "next-auth/react"
-
 let lastExecution = 0
 let lastExecutionNorma = 0
-//--------------- ELIMINAR HORARIO ------------------
 
+//-------------------- HORARIOS ---------------------
 export async function eliminarHorario(prevState, formData) {
-  const session = await auth();
-
-  if (session?.user?.role !== 'ADMIN') {
-    return { error: 'No autorizado' };
-  }
-
-  const horarioId = formData.get('horarioId')?.toString();
-  if (!horarioId) {
-    return { error: 'ID de horario no proporcionado' };
-  }
-
   try {
-    // Primero obtenemos el horario para saber su tipo
-    const horario = await prisma.horario.findUnique({
+    const session = await auth();
+    if (!session?.user?.role === 'ADMIN') {
+      throw new Error('No autorizado');
+    }
+
+    const horarioId = formData.get('horarioId')?.toString();
+    if (!horarioId) {
+      throw new Error('ID de horario no proporcionado');
+    }
+
+    const horario = await prisma.horario.delete({
       where: { id: horarioId }
     });
 
     if (!horario) {
-      return { error: 'Horario no encontrado' };
+      throw new Error('Horario no encontrado');
     }
 
-    const tipo = horario.tipo;
+    // Revalidar rutas relevantes
+    await Promise.allSettled([
+      revalidatePath('/clases'),
+      revalidatePath(`/clases/${horario.tipo}`)
+    ]);
 
-    // Luego eliminamos
-    await prisma.horario.delete({
-      where: { id: horarioId }
-    });
-
-    // Revalida ambas rutas importantes
-    revalidatePath('/clases');
-    revalidatePath(`/clases/${tipo}`);
-
-    // Devuelve el tipo para que el cliente sepa a dónde redirigir
     return {
       success: true,
       message: 'Horario eliminado correctamente',
-      tipo: tipo
+      tipo: horario.tipo
     };
 
   } catch (error) {
     console.error('Error eliminando horario:', error);
-    return { error: 'Error al eliminar el horario' };
+    return {
+      error: error.message || 'Error al eliminar el horario'
+    };
   }
 }
-// ---------------EDITAR HORARIO ------------------
+
+// --------------- EDITAR HORARIO ------------------
 export async function editarHorario(prevState, formData) {
   const session = await auth();
   if (!session?.user || session.user.role !== 'ADMIN') return { error: 'No autorizado' };
 
   try {
-    // Obtener valores originales primero
+
     const horarioOriginal = await prisma.horario.findUnique({
       where: { id: formData.get('horarioId') }
     });
@@ -75,15 +68,15 @@ export async function editarHorario(prevState, formData) {
     const nuevosValores = {
       dia: formData.get('dia') || horarioOriginal.dia,
       hora: formData.get('hora') || horarioOriginal.hora,
-      tipo: horarioOriginal.tipo, // Mantener el tipo original
-      sala: formData.get('sala') || horarioOriginal.sala // Nuevo campo
+      tipo: horarioOriginal.tipo,
+      sala: formData.get('sala') || horarioOriginal.sala
     };
 
     // Verificar si hay cambios
     const mismosValores =
       nuevosValores.dia === horarioOriginal.dia &&
       nuevosValores.hora === horarioOriginal.hora &&
-      nuevosValores.sala === horarioOriginal.sala; // Incluir sala en la comparación
+      nuevosValores.sala === horarioOriginal.sala;
 
     if (mismosValores) return { error: 'No se realizaron cambios' };
 
@@ -94,7 +87,7 @@ export async function editarHorario(prevState, formData) {
           { dia: nuevosValores.dia },
           { hora: nuevosValores.hora },
           { tipo: nuevosValores.tipo },
-          { sala: nuevosValores.sala }, // Incluir sala
+          { sala: nuevosValores.sala },
           { NOT: { id: horarioOriginal.id } }
         ]
       }
@@ -102,7 +95,6 @@ export async function editarHorario(prevState, formData) {
 
     if (conflicto) return { error: 'Ya existe un horario con estos valores' };
 
-    // Actualizar
     await prisma.horario.update({
       where: { id: horarioOriginal.id },
       data: nuevosValores
@@ -134,17 +126,18 @@ export async function crearHorario(prevState, formData) {
     return { error: 'No autorizado' };
   }
 
-  // Obtener valores con validación mejorada
+  // Convierte a string, elimina espacios y maneja valores undefined/null
   const getValue = (field) => {
     const value = formData.get(field);
     return value?.toString().trim() || null;
   };
 
+  //Valores por defecto
   const rawData = {
     dia: getValue('dia'),
     hora: getValue('hora'),
     tipo: getValue('tipo'),
-    sala: getValue('sala') || 'Sala 1' // Nuevo campo con valor por defecto
+    sala: getValue('sala') || 'Sala 1'
   };
 
   // Validación completa
@@ -153,7 +146,6 @@ export async function crearHorario(prevState, formData) {
   }
 
   try {
-    // Verificación de existencia
     const existe = await prisma.horario.findFirst({
       where: {
         AND: [
@@ -188,50 +180,7 @@ export async function crearHorario(prevState, formData) {
     return { error: 'Error al crear el horario. Intente nuevamente.' };
   }
 }
-// ---------------OBTENER TODAS LAS RESERVAS------------------
-export async function getTodasReservas() {
-  return await prisma.reserva.findMany({
-    include: {
-      horario: true,
-      user: {
-        select: {
-          id: true,
-          name: true
-        }
-      }
-    }
-  });
-}
 
-export async function cancelarReservaAdmin(horarioId, tipo, userId) {
-  const session = await auth();
-  if (!session?.user?.role === "ADMIN") throw new Error("No autorizado");
-
-  await prisma.reserva.deleteMany({
-    where: { userId, horarioId }
-  });
-
-  revalidatePath("/agenda");
-}
-
-// ------------------------ RESERVAS --------------------------------
-
-export async function getReservasDelUsuario(userId) {
-  return await prisma.reserva.findMany({
-    where: { userId },
-    include: {
-      horario: {
-        include: {
-          _count: {
-            select: { reservas: true } // Incluir conteo de reservas
-          }
-        }
-      }
-    }
-  });
-}
-
-// ------------------------ APUNTARSE A HORARIO --------------------------------
 export async function apuntarseAHorario(horarioId, tipo) {
   const session = await auth();
   if (!session) throw new Error("No autenticado");
@@ -262,10 +211,50 @@ export async function apuntarseAHorario(horarioId, tipo) {
     },
   });
 
-  // Revalida la ruta correspondiente al tipo
   revalidatePath(`/clases/${tipo}`);
 }
-// ------------------------ CANCELAR RESERVA --------------------------------
+
+// ----------------- RESERVAS ------------------
+export async function getTodasReservas() {
+  return await prisma.reserva.findMany({
+    include: {
+      horario: true,
+      user: {
+        select: {
+          id: true,
+          name: true
+        }
+      }
+    }
+  });
+}
+
+export async function cancelarReservaAdmin(horarioId, tipo, userId) {
+  const session = await auth();
+  if (!session?.user?.role === "ADMIN") throw new Error("No autorizado");
+
+  await prisma.reserva.deleteMany({
+    where: { userId, horarioId }
+  });
+
+  revalidatePath("/agenda");
+}
+
+export async function getReservasDelUsuario(userId) {
+  return await prisma.reserva.findMany({
+    where: { userId },
+    include: {
+      horario: {
+        include: {
+          _count: {
+            select: { reservas: true } // Incluir conteo de reservas
+          }
+        }
+      }
+    }
+  });
+}
+
 export async function cancelarReserva(horarioId, tipo) {
   const session = await auth();
   if (!session) throw new Error("No autenticado");
@@ -293,6 +282,7 @@ export async function logout() {
 
 // ------------------------  USERS --------------------------------
 export async function newUser(prevState, formData) {
+
   try {
     const name = formData.get('name');
     const email = formData.get('email');
@@ -307,7 +297,6 @@ export async function newUser(prevState, formData) {
   } catch (error) {
     return { error }
   }
-
 }
 
 
@@ -329,7 +318,7 @@ export async function editUser(prevState, formData) {
   const role = formData.get('role');
   const password = formData.get('password');
 
-  // Obtener sesiones pagadas solo si es ADMIN
+  // Obtener sesiones pagadas solo si es Admin
   const paidSessions = isEditorAdmin
     ? formData.getAll('paidSessions')
     : [];
@@ -344,7 +333,7 @@ export async function editUser(prevState, formData) {
     return { error: 'El teléfono debe tener exactamente 9 dígitos' };
   }
 
-  // Duplicados
+  // Usuarios duplicados
   const existingUser = await prisma.user.findFirst({
     where: {
       OR: [
@@ -353,6 +342,7 @@ export async function editUser(prevState, formData) {
       ]
     }
   });
+
   if (existingUser) {
     if (existingUser.name === name) {
       return { error: 'Este nombre ya está registrado' };
@@ -367,26 +357,25 @@ export async function editUser(prevState, formData) {
   const isJefe = id === jefeId;
 
   // No permitir cambiar datos del jefe
-if (isJefe && role && role !== editor.role) {
-  return { error: 'No se puede cambiar el rol del jefe.' };
-}
+  if (isJefe && role && role !== editor.role) {
+    return { error: 'No se puede cambiar el rol del jefe.' };
+  }
 
-if (isJefe && password) {
-  return { error: 'No se puede editar datos personales del jefe.' };
-}
+  if (isJefe && password) {
+    return { error: 'No se puede editar datos personales del jefe.' };
+  }
 
-if (isJefe && phone && phone !== editor.phone) {
-  return { error: 'No se puede editar datos personales del jefe.' };
-}
+  if (isJefe && phone && phone !== editor.phone) {
+    return { error: 'No se puede editar datos personales del jefe.' };
+  }
 
-if (isJefe && address && address !== editor.address) {
-  return { error: 'No se puede editar datos personales del jefe.' };
-}
+  if (isJefe && address && address !== editor.address) {
+    return { error: 'No se puede editar datos personales del jefe.' };
+  }
 
-if (isJefe && name && name !== editor.name) {
-  return { error: 'No se puede editar datos personales del jefe.' };
-}
-
+  if (isJefe && name && name !== editor.name) {
+    return { error: 'No se puede editar datos personales del jefe.' };
+  }
 
   try {
     // Actualizar datos; **no** incluir password si es el jefe
@@ -430,7 +419,6 @@ if (isJefe && name && name !== editor.name) {
   }
 }
 
-
 export async function register(prevState, formData) {
   const session = await auth();
   const creator = session?.user;
@@ -445,18 +433,15 @@ export async function register(prevState, formData) {
     : [];
 
   try {
-    // Validación del teléfono
     if (!phone.match(/^\d{9}$/)) {
       return { error: 'El teléfono debe tener 9 dígitos' };
     }
 
-    // Validación del nombre
     const nameRegex = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/;
     if (!nameRegex.test(name)) {
       return { error: 'El nombre solo puede contener letras y espacios' };
     }
 
-    // Comprobar si el teléfono ya existe
     const existingUser = await prisma.user.findUnique({
       where: { phone }
     });
@@ -489,7 +474,6 @@ export async function register(prevState, formData) {
   }
 }
 
-// ------------------------ deleteUser------------------------
 export async function deleteUser(prevState, formData) {
   const session = await auth();
   const editor = session?.user;
@@ -500,12 +484,10 @@ export async function deleteUser(prevState, formData) {
     return { error: 'No autorizado.' };
   }
 
-  // Solo el jefe puede eliminar
   if (editor.id !== jefeId) {
     return { error: 'Solo el jefe puede eliminar usuarios.' };
   }
 
-  // Evitar que el jefe se elimine a sí mismo
   if (id === jefeId) {
     return { error: 'No se puede eliminar al jefe.' };
   }
@@ -518,11 +500,6 @@ export async function deleteUser(prevState, formData) {
     if (!user) {
       return { error: 'Usuario no encontrado.' };
     }
-
-    // Opcional: bloquear eliminación de otros ADMIN
-    // if (user.role === 'ADMIN') {
-    //   return { error: 'No se puede eliminar un usuario con rol ADMIN.' };
-    // }
 
     await prisma.user.delete({
       where: { id },
@@ -577,46 +554,9 @@ export async function authenticate(prevState, formData) {
   }
 }
 
-// clases contadas
-export async function getClassCounts() {
-  try {
-    // Obtener todos los horarios con el conteo de sus reservas
-    const horariosConReservas = await prisma.horario.findMany({
-      include: {
-        _count: {
-          select: { reservas: true }
-        }
-      }
-    });
 
-    // Filtrar solo los horarios que tienen menos de 6 reservas
-    const horariosDisponibles = horariosConReservas.filter(
-      horario => horario._count.reservas < 6
-    );
 
-    // Agrupar manualmente por tipo
-    const counts = horariosDisponibles.reduce((acc, horario) => {
-      const tipo = horario.tipo.toLowerCase();
-      acc[tipo] = (acc[tipo] || 0) + 1;
-      return acc;
-    }, {});
-
-    // Asegurar que todos los tipos tengan un valor
-    return {
-      pilates: counts.pilates || 0,
-      rehabilitacion_funcional: counts.rehabilitacion_funcional || 0,
-      entrenamiento_personal: counts.entrenamiento_personal || 0
-    };
-  } catch (error) {
-    console.error("Error fetching class counts:", error);
-    return {
-      pilates: 0,
-      rehabilitacion_funcional: 0,
-      entrenamiento_personal: 0
-    };
-  }
-}
-
+// ------------------------ NOTIFICACIONES ------------------------
 export async function crearNotificacion(formData) {
   const now = Date.now()
   if (now - lastExecution < 2000) return // Bloquear por 2 segundos
@@ -643,7 +583,6 @@ export async function crearNotificacion(formData) {
   redirect('/notificaciones')
 }
 
-// Editar notificación
 export async function editarNotificacion(id, formData) {
   const session = await auth()
   if (!session?.user || session.user.role !== 'ADMIN') throw new Error('No autorizado')
@@ -659,7 +598,6 @@ export async function editarNotificacion(id, formData) {
   redirect('/notificaciones')
 }
 
-// Eliminar notificación
 export async function eliminarNotificacion(formData) {
   const session = await auth()
   if (!session?.user || session.user.role !== 'ADMIN') throw new Error('No autorizado')
@@ -676,10 +614,10 @@ export async function marcarNotificacionLeida(prevState, formData) {
 
   console.log("ID desde la función marcar:", notificationId);
 
-  // Primero, busca la notificación para ver quiénes la han visto
+  // Se busca la notificación para ver quiénes la han visto
   const notification = await prisma.notification.findUnique({
     where: { id: notificationId },
-    include: { viewed: true } // Incluye los usuarios que han visto la notificación
+    include: { viewed: true }
   });
 
   // Verifica si el usuario ya ha visto la notificación
@@ -707,10 +645,10 @@ export async function marcarNotificacionLeida(prevState, formData) {
     });
   }
 
-  // Revalida la ruta para reflejar los cambios
   revalidatePath('/notificaciones');
 }
 
+// ------------------------ NORMAS ------------------------
 export async function crearNorma(formData) {
   const now = Date.now()
   if (now - lastExecutionNorma < 2000) return // Bloqueo de 2 segundos
@@ -768,7 +706,6 @@ export async function editarNorma(id, formData) {
       autorId: session.user.id,
     },
   })
-
   redirect('/normas')
 }
 
@@ -784,15 +721,4 @@ export async function eliminarNorma(formData) {
   await prisma.norma.delete({ where: { id } })
 
   redirect('/normas')
-}
-
-// lib/actions.js
-export async function getUnviewedNotifications(userId) {
-  const notifications = await prisma.notification.findMany({
-    where: {
-      viewed: false,
-      createdBy: userId,
-    },
-  });
-  return notifications;
 }

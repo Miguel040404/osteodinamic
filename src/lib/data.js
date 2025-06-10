@@ -2,7 +2,6 @@
 
 import prisma from "@/lib/prisma"
 
-
 // ----------------------------  USERS ---------------------------
 export async function getUsers() {
     const users = await prisma.user.findMany({
@@ -34,24 +33,6 @@ export async function getNotViewedNotificationsCountByUserId(userId) {
     return count;
 }
 
-export async function getUserByPhone(phone) {
-  try {
-    return await prisma.user.findUnique({
-      where: { phone: phone.toString() },
-      select: {
-        id: true,
-        name: true,
-        phone: true,
-        password: true,
-        role: true
-      }
-    });
-  } catch (error) {
-    console.error('Error fetching user:', error);
-    return null;
-  }
-}
-
 export async function createUser(userData) {
   try {
     return await prisma.user.create({
@@ -63,33 +44,46 @@ export async function createUser(userData) {
   }
 }
 
-// ---------------------   SESIONES   -----------------------
-
-export async function getAllSessions() {
-    return await prisma.session.findMany({
-        include: {
-            user: true, // Si quieres mostrar información del usuario también
-        },
-        orderBy: {
-            expires: 'desc',
-        },
+// Clases contadas
+export async function getClassCounts() {
+  try {
+    // Obtener todos los horarios con el conteo de sus reservas
+    const horariosConReservas = await prisma.horario.findMany({
+      include: {
+        _count: {
+          select: { reservas: true }
+        }
+      }
     });
+
+    const horariosDisponibles = horariosConReservas.filter(
+      horario => horario._count.reservas < 6
+    );
+
+    // Recuento de horarios disponibles por tipo
+    const counts = horariosDisponibles.reduce((acc, horario) => {
+      const tipo = horario.tipo.toLowerCase();
+      acc[tipo] = (acc[tipo] || 0) + 1;
+      return acc;
+    }, {});
+
+    // Asegurar que todos los tipos tengan un valor
+    return {
+      pilates: counts.pilates || 0,
+      rehabilitacion_funcional: counts.rehabilitacion_funcional || 0,
+      entrenamiento_personal: counts.entrenamiento_personal || 0
+    };
+  } catch (error) {
+    console.error("Error fetching class counts:", error);
+    return {
+      pilates: 0,
+      rehabilitacion_funcional: 0,
+      entrenamiento_personal: 0
+    };
+  }
 }
 
 // ---------------------   HORARIOS -----------------------
-
-// export async function getHorariosConReservasPorTipo(tipo) {
-//     const horarios = await prisma.Horario.findMany({
-//         where: { tipo },
-//         include: { reservas: true },
-//         orderBy: [{ hora: 'asc' }],
-//     });
-
-//     console.log('Horarios:', horarios);
-
-//     return horarios;
-// }
-
 export async function getHorariosConReservasPorTipo(tipo) {
   return await prisma.horario.findMany({
     where: { tipo },

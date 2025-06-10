@@ -10,7 +10,6 @@ function page() {
  if (session) {
   redirect('/home')
  }
-
 }
 
 export default page;
