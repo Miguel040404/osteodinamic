@@ -5,6 +5,7 @@ import { redirect } from 'next/navigation';
 import ListaHorarios from '@/components/horarios/HorarioList';
 import { LoadingSpinner } from '@/components/LoadingSpinner';
 import { auth } from '@/auth';
+import Footer from '@/components/footer';
 
 
 export default async function ClasePage() {
@@ -21,6 +22,7 @@ export default async function ClasePage() {
           <ListaHorarios tipo="Entrenamiento_personal" />
         </Suspense>
       </main>
+      <Footer />
     </div>
   );
 }
