@@ -2,7 +2,7 @@ import { Suspense } from 'react';
 import { auth } from '@/auth';
 import { redirect } from 'next/navigation';
 import prisma from "@/lib/prisma";
-import Footer from '@/components/footer';
+import Footer from '@/components/Footer';
 import { PerfilCard } from '@/components/perfil/PerfilCard';
 import { UsersList } from '@/components/perfil/UsersList';
 import { LoadingSpinner } from '@/components/LoadingSpinner';

@@ -2,7 +2,7 @@
 
 import { signIn } from 'next-auth/react';
 import { toast } from 'sonner';
-import Spinner1 from '@/components/spinner1';
+import Spinner1 from '@/components/Spinner1';
 import { useState } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { Lock, Phone, Eye, EyeOff } from 'lucide-react';

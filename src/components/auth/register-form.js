@@ -2,7 +2,7 @@
 
 import { useActionState, useEffect } from 'react';
 import { register } from '@/lib/actions';
-import Spinner1 from '@/components/spinner1';
+import Spinner1 from '@/components/Spinner1';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 
