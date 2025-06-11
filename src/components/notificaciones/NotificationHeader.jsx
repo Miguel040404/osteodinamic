@@ -14,7 +14,7 @@ export const NotificacionesHeader = ({ notificaciones, session }) => (
     </div>
 
     {session.user.role === 'ADMIN' && (
-      <Link href="/notifications">
+      <Link href="/crearNotificacionesAdmin">
         <button className="cursor-pointer flex items-center gap-2 bg-[#a57551] hover:bg-[#8f5e40] text-white px-4 py-2.5 rounded-lg transition-colors shadow-sm hover:shadow-md">
           <PlusIcon className="w-5 h-5" />
           <span>Nueva Notificación</span>

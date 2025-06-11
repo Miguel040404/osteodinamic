@@ -26,7 +26,7 @@ export const NotificacionItem = ({ notificacion, session }) => (
                 <NotificationButton n={notificacion} session={session} />
                 {session.user.role === 'ADMIN' && (
                     <div className="flex flex-col gap-3 min-w-[120px]">
-                        <Link href={`/notifications/${notificacion.id}/editar`}>
+                        <Link href={`/crearNotificacionesAdmin/${notificacion.id}/editar`}>
                             <button className="cursor-pointer flex items-center gap-2 bg-white border border-[#b9b59c] text-[#4d4037] hover:bg-[#f3ece3] w-full px-3 py-2 rounded-lg transition-colors">
                                 <PencilIcon className="w-4 h-4" />
                                 <span>Editar</span>
