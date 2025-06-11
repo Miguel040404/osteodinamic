@@ -3,7 +3,7 @@ export const LoadingSpinner = () => (
     <div className="text-center">
       <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-[#a57551] mx-auto"></div>
       <p className="mt-4 text-lg text-[#4d4037] flex justify-center">
-        Cargando 
+        Cargando
         <span className="flex">
           <span className="animate-bounce">.</span>
           <span className="animate-bounce" style={{ animationDelay: '0.2s' }}>.</span>

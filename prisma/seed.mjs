@@ -67,12 +67,10 @@ const load = async () => {
     await resetDatabase()
 
     await prisma.user.createMany({ data: usuarios })
-    console.log('Usuarios insertados')
 
     for (const horario of horarios) {
       await prisma.horario.create({ data: horario })
     }
-    console.log('Horarios insertados')
   } catch (error) {
     console.error('Error al insertar datos:', error)
   } finally {

@@ -5,6 +5,7 @@ import { useActionState, useEffect, useId, useState } from 'react'
 import { RefreshCwIcon, Eye, EyeOff, ChevronDown, User, MapPin, Phone, Lock, Crown } from 'lucide-react'
 import { toast } from 'sonner'
 
+
 export default function UserModificar({ user, sessionUser }) {
   const formId = useId();
   const [state, action, pending] = useActionState(editUser, {});
@@ -12,16 +13,14 @@ export default function UserModificar({ user, sessionUser }) {
   const [avatarOpen, setAvatarOpen] = useState(false);
 
   const [selectedAvatar, setSelectedAvatar] = useState(user?.image || '/images/avatar-80.png');
-  
+
   // Estado para las sesiones pagadas
   const [paidSessions, setPaidSessions] = useState(user.paidSessions || []);
 
-  console.log(user, 'paidSessions');
-  
-  const avatares = [...Array(80)].map((_, index) => 
+  const avatares = [...Array(80)].map((_, index) =>
     `/images/avatar-${String(index).padStart(2, '0')}.png`
   );
-  
+
   // Inicializar sesiones cuando el usuario cambia
   useEffect(() => {
     // Extraemos los sessionType de las paidSessions del usuario
@@ -34,9 +33,8 @@ export default function UserModificar({ user, sessionUser }) {
     setAvatarOpen(false);
   };
 
-  // Función para manejar cambios en las sesiones
   const handleSessionChange = (sessionType) => {
-    setPaidSessions(prev => 
+    setPaidSessions(prev =>
       prev.includes(sessionType)
         ? prev.filter(s => s !== sessionType)
         : [...prev, sessionType]
@@ -65,13 +63,13 @@ export default function UserModificar({ user, sessionUser }) {
     <div className="max-w-md mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
       <form id={formId} action={action} className="p-6">
         <input type="hidden" name="id" defaultValue={user.id} />
-        
+
         {/* Selector de avatar */}
         <div className="mb-8">
           <label className="block text-sm font-medium text-gray-700 mb-2">
             Seleccionar avatar
           </label>
-          
+
           <div className="relative">
             <button
               type="button"
@@ -79,17 +77,17 @@ export default function UserModificar({ user, sessionUser }) {
               className="cursor-pointer w-full flex items-center justify-between p-3 bg-gray-50 border border-gray-300 rounded-lg shadow-sm hover:bg-gray-100 transition-colors"
             >
               <div className="flex items-center gap-3">
-                <img 
-                  src={selectedAvatar} 
-                  alt="Avatar seleccionado" 
+                <img
+                  src={selectedAvatar}
+                  alt="Avatar seleccionado"
                   className="w-12 h-12 rounded-full object-cover"
                 />
               </div>
               <ChevronDown className={`w-5 h-5 text-gray-500 transition-transform ${avatarOpen ? 'rotate-180' : ''}`} />
             </button>
-            
+
             <input type="hidden" name="image" value={selectedAvatar} />
-            
+
             {avatarOpen && (
               <div className="absolute z-10 mt-2 w-full max-h-60 overflow-y-auto bg-white border border-gray-300 rounded-lg shadow-lg">
                 <div className="grid grid-cols-5 gap-2 p-3">
@@ -98,13 +96,12 @@ export default function UserModificar({ user, sessionUser }) {
                       key={index}
                       type="button"
                       onClick={() => handleAvatarChange(avatar)}
-                      className={`cursor-pointer p-1 rounded-full hover:bg-indigo-50 transition-colors ${
-                        selectedAvatar === avatar ? 'ring-2 ring-indigo-500' : ''
-                      }`}
+                      className={`cursor-pointer p-1 rounded-full hover:bg-indigo-50 transition-colors ${selectedAvatar === avatar ? 'ring-2 ring-indigo-500' : ''
+                        }`}
                     >
-                      <img 
-                        src={avatar} 
-                        alt={`Avatar ${index}`} 
+                      <img
+                        src={avatar}
+                        alt={`Avatar ${index}`}
                         className="w-10 h-10 rounded-full object-cover"
                       />
                     </button>
@@ -114,7 +111,7 @@ export default function UserModificar({ user, sessionUser }) {
             )}
           </div>
         </div>
-        
+
         {/* Campos del formulario */}
         <div className="space-y-5">
           <div className="relative">
@@ -129,7 +126,7 @@ export default function UserModificar({ user, sessionUser }) {
               className="w-full pl-10 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
             />
           </div>
-          
+
           <div className="relative">
             <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
               <MapPin className="h-5 w-5 text-gray-400" />
@@ -142,7 +139,7 @@ export default function UserModificar({ user, sessionUser }) {
               className="w-full pl-10 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
             />
           </div>
-          
+
           <div className="relative">
             <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
               <Phone className="h-5 w-5 text-gray-400" />
@@ -159,7 +156,7 @@ export default function UserModificar({ user, sessionUser }) {
               title="Número de 9 dígitos"
             />
           </div>
-          
+
           <div className="relative">
             <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
               <Lock className="h-5 w-5 text-gray-400" />
@@ -179,7 +176,7 @@ export default function UserModificar({ user, sessionUser }) {
               {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
             </button>
           </div>
-          
+
           {/* Sección para sesiones pagadas - SOLO ADMINISTRADORES - CON BOTONES TOGGLE */}
           {sessionUser?.role === 'ADMIN' && (
             <div className="mt-4">
@@ -188,20 +185,19 @@ export default function UserModificar({ user, sessionUser }) {
                 {['Pilates', 'Rehabilitacion_funcional', 'Entrenamiento_personal'].map((session) => {
                   const isActive = paidSessions.includes(session);
                   let displayName = session;
-                  
+
                   if (session === 'Rehabilitacion_funcional') displayName = 'Rehabilitación';
                   if (session === 'Entrenamiento_personal') displayName = 'Entrenamiento';
-                  
+
                   return (
                     <button
                       key={session}
                       type="button"
                       onClick={() => handleSessionChange(session)}
-                      className={`cursor-pointer px-4 py-2 rounded-full transition-all ${
-                        isActive 
-                          ? 'bg-indigo-600 text-white shadow-md' 
+                      className={`cursor-pointer px-4 py-2 rounded-full transition-all ${isActive
+                          ? 'bg-indigo-600 text-white shadow-md'
                           : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                      }`}
+                        }`}
                     >
                       <div className="flex items-center gap-2">
                         {isActive ? (
@@ -218,14 +214,14 @@ export default function UserModificar({ user, sessionUser }) {
                     </button>
                   );
                 })}
-                
+
                 {/* Inputs ocultos para enviar las sesiones seleccionadas */}
                 {paidSessions.map(session => (
-                  <input 
-                    key={session} 
-                    type="hidden" 
-                    name="paidSessions" 
-                    value={session} 
+                  <input
+                    key={session}
+                    type="hidden"
+                    name="paidSessions"
+                    value={session}
                   />
                 ))}
               </div>
@@ -249,7 +245,7 @@ export default function UserModificar({ user, sessionUser }) {
             </div>
           )}
         </div>
-        
+
         <button
           type="submit"
           disabled={pending}

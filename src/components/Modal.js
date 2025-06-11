@@ -31,6 +31,7 @@ const Modal = forwardRef(({ openElement, children, title }, ref) => {
     }
   }, [isOpen])
 
+  // Permite acceder desde fuera a las funciones closeModal y openModal
   useImperativeHandle(ref, () => ({
     closeModal: closeModal,
     openModal: openModal,

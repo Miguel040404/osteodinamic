@@ -7,6 +7,7 @@ import { NotificacionesHeader } from '@/components/notificaciones/NotificationHe
 import { NotificacionesList } from '@/components/notificaciones/NotificationList';
 import { LoadingSpinner } from '@/components/LoadingSpinner';
 
+
 async function NotificacionesContent() {
   const session = await auth();
   if (!session) redirect('/auth/login');

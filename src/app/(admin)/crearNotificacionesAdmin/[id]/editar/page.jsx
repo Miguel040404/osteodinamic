@@ -5,6 +5,7 @@ import { BackButton } from '@/components/BackButton'
 import { NotificationForm } from '@/components/notificaciones/NotificationForm'
 import { PageHeader } from '@/components/notificaciones/NotificationPageHeader'
 
+
 export default async function EditarNotificacionPage({ params }) {
   const notificacion = await prisma.notification.findUnique({
     where: { id: params.id },
@@ -21,11 +22,11 @@ export default async function EditarNotificacionPage({ params }) {
         <div className="mb-8">
           <BackButton href="/notificaciones">Volver a notificaciones</BackButton>
           <PageHeader
-            title="Editar notificación" 
+            title="Editar notificación"
             icon={<Bell className="w-8 h-8 text-[#a57551]" />}
           />
         </div>
-        
+
         <NotificationForm
           action={action}
           defaultValues={{

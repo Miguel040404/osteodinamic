@@ -612,8 +612,6 @@ export async function marcarNotificacionLeida(prevState, formData) {
   const session = await auth();
   const notificationId = formData.get('id');
 
-  console.log("ID desde la función marcar:", notificationId);
-
   // Se busca la notificación para ver quiénes la han visto
   const notification = await prisma.notification.findUnique({
     where: { id: notificationId },

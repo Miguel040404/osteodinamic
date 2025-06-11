@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useActionState, useEffect, useId } from "react";
 import { toast } from "sonner";
 
+
 function UserEliminar({ user }) {
   const formId = useId();
   const [state, action, pending] = useActionState(deleteUser, {});
@@ -61,8 +62,6 @@ function UserEliminar({ user }) {
           )}
         </button>
       </form>
-
-     
     </div>
   );
 }

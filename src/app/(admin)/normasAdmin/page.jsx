@@ -7,6 +7,7 @@ import { SubmitButton } from '@/components/SubmitButton'
 import { BackButton } from '@/components/BackButton'
 import NormasPageHeader from '@/components/normas/NormasPageHeader'
 
+
 export default function CrearNormaPage() {
   const [isSubmitting, setIsSubmitting] = useState(false)
 

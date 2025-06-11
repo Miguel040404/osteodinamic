@@ -1,6 +1,7 @@
 function UserVer({ user }) {
   const paidSessions = Array.isArray(user.paidSessions) ? user.paidSessions : [];
 
+
   return (
     <div className="p-6 rounded-2xl bg-[#fdfaf6] border border-[#e4d6c3] shadow-lg w-full max-w-4xl mx-auto">
       <div className="grid grid-cols-1 md:grid-cols-[150px_auto] gap-6 items-center">

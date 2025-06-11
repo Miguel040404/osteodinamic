@@ -6,6 +6,7 @@ import { HomeLayout } from '@/components/home/HomeLayout';
 import { HomeContent } from '@/components/home/HomeContent';
 import { LoadingSpinner } from '@/components/LoadingSpinner';
 
+
 async function HomePage() {
   const session = await auth();
   if (!session) return redirect('/auth/login');
@@ -17,9 +18,9 @@ async function HomePage() {
 
   return (
     <HomeLayout>
-      <HomeContent 
-        classCounts={classCounts} 
-        notificationCount={notifications} 
+      <HomeContent
+        classCounts={classCounts}
+        notificationCount={notifications}
       />
     </HomeLayout>
   );

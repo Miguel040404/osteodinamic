@@ -1,4 +1,4 @@
-import { CrearHorarioModal } from "../HorarioModals";
+import { CrearHorarioModal } from "./HorarioModals";
 
 
 export const HorarioHeader = ({ tipo, esAdmin }) => (

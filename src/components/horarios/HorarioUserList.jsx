@@ -1,6 +1,7 @@
 import { Users, ChevronDown, XCircle } from 'lucide-react';
 import { cancelarReservaAdmin } from "@/lib/actions";
 
+
 export const HorarioUsersList = ({ horario, tipo }) => (
   <details className="group w-full md:mt-4">
     <summary className="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 transition-colors list-none">

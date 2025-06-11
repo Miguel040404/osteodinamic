@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
 import { AgendaContent } from "@/components/agenda/AgendaContent";
 
+
 export default function AgendaPage() {
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br bg-[#F2F1E8] text-slate-800">

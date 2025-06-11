@@ -8,6 +8,7 @@ import { UsersList } from '@/components/perfil/UsersList';
 import { LoadingSpinner } from '@/components/LoadingSpinner';
 import { PerfilActions } from '@/components/perfil/PerfilActions';
 
+
 async function PerfilData() {
   const session = await auth();
 

@@ -1,12 +1,12 @@
 'use client'
 
 import { useActionState, useEffect, useRef, useState } from 'react'
-import Modal from './Modal'
+import Modal from '../Modal'
 import { crearHorario, editarHorario, eliminarHorario } from '@/lib/actions'
 import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'; // Importa useRouter
 
-// Icons for better visual cues
+
 const PlusIcon = () => (
     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
         <path fillRule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clipRule="evenodd" />
@@ -63,8 +63,8 @@ export function CrearHorarioModal({ tipo }) {
                             defaultValue=""
                         >
                             <option value="" disabled>Selecciona un día</option>
-                            {['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'].map(d => (
-                                <option key={d} value={d}>{d}</option>
+                            {['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'].map(dia => (
+                                <option key={dia} value={dia}>{dia}</option>
                             ))}
                         </select>
                     </div>

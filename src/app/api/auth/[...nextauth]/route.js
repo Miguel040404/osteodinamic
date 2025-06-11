@@ -4,6 +4,7 @@ import prisma from "@/lib/prisma";
 import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 
+
 export const authOptions = {
   providers: [
     CredentialsProvider({
@@ -17,7 +18,7 @@ export const authOptions = {
         if (!/^\d{9}$/.test(credentials.phone)) {
           throw new Error('InvalidPhoneFormat');
         }
-        
+
         try {
           const user = await prisma.user.findUnique({
             where: { phone: credentials.phone }

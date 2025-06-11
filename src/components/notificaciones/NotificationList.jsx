@@ -1,6 +1,7 @@
 import { BellIcon } from 'lucide-react';
 import { NotificacionItem } from './NotificationItem';
 
+
 export const NotificacionesList = ({ notificaciones, session }) => (
   <div className="space-y-6">
     {notificaciones.length === 0 ? (

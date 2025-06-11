@@ -3,14 +3,15 @@ import { getUserById } from "@/lib/data";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 
+
 export async function GET(req, { params }) {
   const session = await auth();
-  
-    if (!session) {
-      return (
-       redirect('/auth/login')
-      )
-    }
+
+  if (!session) {
+    return (
+      redirect('/auth/login')
+    )
+  }
 
   if (!session || session.user.role !== "admin") {
     return NextResponse.json({ error: "No autorizado" }, { status: 403 });

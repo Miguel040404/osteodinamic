@@ -8,6 +8,7 @@ import { NormasHeader } from '@/components/normas/NormasHeader';
 import { NormasList } from '@/components/normas/NormasList';
 import { LoadingSpinner } from '@/components/LoadingSpinner';
 
+
 async function NormasContent() {
   const session = await auth();
   if (!session) redirect('/auth/login');

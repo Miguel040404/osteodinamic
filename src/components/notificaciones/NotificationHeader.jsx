@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { PlusIcon, BellIcon } from 'lucide-react';
 
+
 export const NotificacionesHeader = ({ notificaciones, session }) => (
   <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
     <div>

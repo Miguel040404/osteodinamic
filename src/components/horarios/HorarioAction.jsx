@@ -1,6 +1,6 @@
 import { XCircle, Plus } from 'lucide-react';
 import { apuntarseAHorario, cancelarReserva } from "@/lib/actions";
-import { EditarHorarioModal, EliminarHorarioModal } from '../HorarioModals';
+import { EditarHorarioModal, EliminarHorarioModal } from './HorarioModals';
 
 
 export const HorarioActions = ({ horario, esAdmin, tipo, yaApuntado, lleno }) => (
@@ -18,13 +18,12 @@ export const HorarioActions = ({ horario, esAdmin, tipo, yaApuntado, lleno }) =>
               <form action={(yaApuntado ? cancelarReserva : apuntarseAHorario).bind(null, horario.id, tipo)}>
                 <button
                   type="submit"
-                  className={`flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-medium transition-colors ${
-                    yaApuntado
+                  className={`flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-medium transition-colors ${yaApuntado
                       ? 'bg-red-100 text-red-700 hover:bg-red-200 border border-red-200'
                       : lleno
                         ? 'bg-gray-100 text-gray-500 cursor-not-allowed border border-gray-200'
                         : 'bg-indigo-100 text-indigo-700 hover:bg-indigo-200 border border-indigo-200'
-                  }`}
+                    }`}
                   disabled={lleno || (!yaApuntado && lleno)}
                 >
                   {yaApuntado ? (

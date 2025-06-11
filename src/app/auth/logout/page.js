@@ -3,6 +3,7 @@ import { redirect } from "next/navigation"
 import { auth } from "@/auth"
 import { Lock } from "lucide-react"
 
+
 async function page() {
   const sesion = await auth()
 

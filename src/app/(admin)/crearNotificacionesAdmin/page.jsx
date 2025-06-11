@@ -7,6 +7,7 @@ import { NotificationForm } from '@/components/notificaciones/NotificationForm'
 import { BackButton } from '@/components/BackButton'
 import { PageHeader } from '@/components/notificaciones/NotificationPageHeader'
 
+
 export default function CrearNotificacionPage() {
   const [isSubmitting, setIsSubmitting] = useState(false)
 
@@ -23,14 +24,14 @@ export default function CrearNotificacionPage() {
         <div className="mb-8">
           <BackButton href="/notificaciones">Volver a notificaciones</BackButton>
           <PageHeader
-            title="Crear nueva notificación" 
+            title="Crear nueva notificación"
             icon={<BellPlus className="w-8 h-8 text-[#a57551]" />}
           />
         </div>
-        
-        <NotificationForm 
-          onSubmit={handleSubmit} 
-          isSubmitting={isSubmitting} 
+
+        <NotificationForm
+          onSubmit={handleSubmit}
+          isSubmitting={isSubmitting}
         />
       </div>
     </div>

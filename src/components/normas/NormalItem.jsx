@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { PencilIcon, TrashIcon, BookText, ClockIcon } from 'lucide-react';
 
+
 export const NormaItem = ({ norma, session, onDelete }) => (
     <div className="bg-[#f5e19106] border border-[#b9b59c] rounded-xl shadow-sm hover:shadow-md transition">
         <div className="p-6">
@@ -20,6 +21,7 @@ export const NormaItem = ({ norma, session, onDelete }) => (
                         </div>
                     </div>
                 </div>
+                
                 {session.user.role === 'ADMIN' && (
                     <div className="flex flex-col gap-3 min-w-[120px]">
                         <Link href={`/normasAdmin/${norma.id}/editar`}>

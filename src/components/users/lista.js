@@ -7,6 +7,7 @@ import { getUsers } from "@/lib/data";
 import RegisterForm from "../auth/register-form";
 import UserModificar from "../auth/edit-form";
 
+
 async function Users() {
   const session = await auth();
   const users = await getUsers();

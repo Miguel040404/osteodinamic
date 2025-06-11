@@ -22,7 +22,6 @@ export const options = {
     },
     callbacks: {
         async session({ session, token }) {
-            // console.log(session, user);
             session.user.id = token?.sub;     // Para incluir ID de usuario
             session.user.role = token?.role
             const user = await getUserById(token.sub)
@@ -43,7 +42,6 @@ export const options = {
             const user = await getUserById(token.sub)
 
             if (!user) {
-                console.log("Usuario inactivo");
                 return "/auth/login";
             }
 

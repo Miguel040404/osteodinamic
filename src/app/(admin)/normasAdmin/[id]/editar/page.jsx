@@ -30,13 +30,13 @@ export default async function EditarNormaPage({ params }) {
         <div className="mb-8">
           <BackButton href="/normas">Volver a normas</BackButton>
           <NormasPageHeader
-            title="Editar norma" 
+            title="Editar norma"
             icon={<Book className="w-8 h-8 text-[#a57551]" />}
           />
         </div>
-        
+
         <NormForm
-          action={action} 
+          action={action}
           defaultValues={norma}
           isEditing
         />

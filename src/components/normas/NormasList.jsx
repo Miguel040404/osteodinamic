@@ -1,6 +1,6 @@
-
 import { BookText } from 'lucide-react';
 import { NormaItem } from './NormalItem';
+
 
 export const NormasList = ({ normas, session, onDelete }) => (
     <div className="space-y-6">
