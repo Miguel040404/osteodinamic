@@ -1,7 +1,7 @@
 import { Suspense } from 'react';
 import { auth } from '@/auth';
 import prisma from '@/lib/prisma';
-import Footer from '@/components/footer';
+import Footer from '@/components/Footer';
 import { redirect } from 'next/navigation';
 import { eliminarNorma } from '@/lib/actions';
 import { NormasHeader } from '@/components/normas/NormasHeader';

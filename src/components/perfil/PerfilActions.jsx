@@ -1,7 +1,7 @@
 
 import { BellRing, BookOpenCheck } from 'lucide-react';
 import LogoutButton from '../LogoutButton';
-import PerfilLink from '../perfil-link';
+import PerfilLink from '../Perfil-link';
 
 export const PerfilActions = () => (
   <section className="max-w-3xl mx-auto mb-10 grid gap-4">

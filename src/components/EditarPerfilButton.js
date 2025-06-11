@@ -1,6 +1,6 @@
 'use client'
 
-import Modal from '@/components/modal'
+import Modal from '@/components/Modal'
 
 import { Pencil } from 'lucide-react'
 import UserModificar from './auth/edit-form'

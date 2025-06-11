@@ -3,7 +3,7 @@ import { getReservasDelUsuario, getTodasReservas, cancelarReserva, cancelarReser
 import { auth } from "@/auth";
 import { Suspense } from "react";
 import { redirect } from "next/navigation";
-import Footer from "@/components/footer";
+import Footer from "@/components/Footer";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
 import { AgendaContent } from "@/components/agenda/AgendaContent";
 

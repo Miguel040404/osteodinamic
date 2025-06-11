@@ -1,5 +1,5 @@
-import Footer from "../footer";
-import Header from "../header";
+import Footer from "../Footer";
+import Header from "../Header";
 
 export const HomeLayout = ({ children }) => (
   <div className="min-h-screen flex flex-col bg-gradient-to-b bg-[#F2F1E8]">

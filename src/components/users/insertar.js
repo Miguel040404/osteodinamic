@@ -4,7 +4,8 @@ import { newUser } from '@/lib/actions'
 import { useActionState, useEffect, useId } from 'react'
 import { PlusIcon, RefreshCwIcon } from 'lucide-react';
 import { toast } from 'sonner';
-import CheckRadio from '../check-radio';
+import CheckRadio from '../Check-radio';
+
 
 export default function UserInsertar() {
     const formId = useId()

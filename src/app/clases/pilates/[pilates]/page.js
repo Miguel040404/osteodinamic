@@ -5,7 +5,7 @@ import { redirect } from 'next/navigation';
 import ListaHorarios from '@/components/horarios/HorarioList';
 import { LoadingSpinner } from '@/components/LoadingSpinner';
 import { auth } from '@/auth';
-import Footer from '@/components/footer';
+import Footer from '@/components/Footer';
 
 
 export default async function ClasePage() {

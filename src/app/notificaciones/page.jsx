@@ -1,8 +1,7 @@
 import { Suspense } from 'react';
 import { auth } from '@/auth';
 import { redirect } from 'next/navigation';
-
-import Footer from '@/components/footer';
+import Footer from '@/components/Footer';
 import prisma from '@/lib/prisma';
 import { NotificacionesHeader } from '@/components/notificaciones/NotificationHeader';
 import { NotificacionesList } from '@/components/notificaciones/NotificationList';
@@ -19,7 +18,7 @@ async function NotificacionesContent() {
 
   return (
     <div className="min-h-screen bg-[#f9faf5]">
-      <div className="max-w-4xl mx-auto py-10 px-4">
+      <div className="max-w-4xl mx-auto py-12 px-4">
         <NotificacionesHeader notificaciones={notificaciones} session={session} />
         <NotificacionesList notificaciones={notificaciones} session={session} />
         <div className="mt-12">

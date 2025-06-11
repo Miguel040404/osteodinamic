@@ -1,7 +1,7 @@
 'use client'
 
 import { useActionState, useEffect, useRef, useState } from 'react'
-import Modal from './modal'
+import Modal from './Modal'
 import { crearHorario, editarHorario, eliminarHorario } from '@/lib/actions'
 import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'; // Importa useRouter
