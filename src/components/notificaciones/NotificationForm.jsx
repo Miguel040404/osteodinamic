@@ -1,8 +1,6 @@
-// components/notifications/NotificationForm.jsx
 'use client'
 
 import { SubmitButton2 } from "../SubmitButton2"
-
 
 
 export const NotificationForm = ({ 

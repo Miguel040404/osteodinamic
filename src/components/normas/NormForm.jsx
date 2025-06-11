@@ -1,4 +1,3 @@
-// components/norms/NormForm.jsx
 'use client'
 
 import { FormField } from "./FormField"

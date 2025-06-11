@@ -6,7 +6,6 @@ import NormasPageHeader from '@/components/normas/NormasPageHeader'
 import { NormForm } from '@/components/normas/NormForm'
 
 
-
 export default async function EditarNormaPage({ params }) {
   const norma = await prisma.norma.findUnique({
     where: { id: params.id },

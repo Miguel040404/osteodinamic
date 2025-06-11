@@ -1,4 +1,3 @@
-
 import { BellIcon } from 'lucide-react';
 import { NotificacionItem } from './NotificationItem';
 

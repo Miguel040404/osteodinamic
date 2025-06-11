@@ -1,9 +1,7 @@
 import prisma from '@/lib/prisma'
 import { editarNotificacion } from '@/lib/actions'
 import { Bell } from 'lucide-react'
-
 import { BackButton } from '@/components/BackButton'
-
 import { NotificationForm } from '@/components/notificaciones/NotificationForm'
 import { PageHeader } from '@/components/notificaciones/NotificationPageHeader'
 

@@ -3,7 +3,6 @@
 import { crearNotificacion } from '@/lib/actions'
 import { BellPlus } from 'lucide-react'
 import { useState } from 'react'
-
 import { NotificationForm } from '@/components/notificaciones/NotificationForm'
 import { BackButton } from '@/components/BackButton'
 import { PageHeader } from '@/components/notificaciones/NotificationPageHeader'

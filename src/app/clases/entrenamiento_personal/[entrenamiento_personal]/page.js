@@ -1,7 +1,5 @@
 import { Suspense } from 'react';
-
 import { redirect } from 'next/navigation';
-
 import ListaHorarios from '@/components/horarios/HorarioList';
 import { LoadingSpinner } from '@/components/LoadingSpinner';
 import { auth } from '@/auth';

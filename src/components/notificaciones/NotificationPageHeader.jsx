@@ -1,4 +1,3 @@
-
 export const PageHeader = ({ title, icon, iconBgClass = "bg-[#e8d7c3]" }) => (
   <div className="flex items-center gap-3">
     <div className={`${iconBgClass} p-3 rounded-lg`}>
