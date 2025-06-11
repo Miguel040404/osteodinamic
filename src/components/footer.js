@@ -11,7 +11,7 @@ export default function Footer() {
         <nav className="flex justify-around items-center px-3 py-2 sm:py-3 border-t bg-[#e8d7c3]">
           <MenuLink
             label="Sesiones"
-            href="/home"
+            href="/home" 
             icon={<Users className="h-5 w-5 sm:h-6 sm:w-6 text-[#c5b6a5]" />}
           />
           <MenuLink
