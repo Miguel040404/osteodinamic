@@ -19,7 +19,7 @@ export const ClassesGrid = ({ classCounts }) => (
       badgeColor="bg-[#898473]"
     />
     <ClassCard 
-      href="/clases/entrenamiento_personal/entrenamiento_personal" 
+      href="/clases/entrenamiento_personal/entrenamiento_personal"
       imageSrc="/images/entrenamiento.jpg" 
       title="Salud Activa Personal" 
       count={classCounts.entrenamiento_personal} 

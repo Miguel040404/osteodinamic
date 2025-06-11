@@ -2,6 +2,7 @@ import Credentials from "@auth/core/providers/credentials";
 import bcrypt from 'bcryptjs';
 import prisma from "./lib/prisma";
 
+
 const authConfig = {
   providers: [
     Credentials({

@@ -7,6 +7,7 @@ import { auth, signIn } from "@/auth";
 import { redirect } from 'next/navigation'
 import { Prisma } from "@prisma/client"
 
+
 let lastExecution = 0
 let lastExecutionNorma = 0
 

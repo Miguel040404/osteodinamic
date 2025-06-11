@@ -2,6 +2,7 @@
 
 import prisma from "@/lib/prisma"
 
+
 // ----------------------------  USERS ---------------------------
 export async function getUsers() {
     const users = await prisma.user.findMany({

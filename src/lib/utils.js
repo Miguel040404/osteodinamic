@@ -6,12 +6,12 @@ export const ordenDias = {
   Viernes: 5,
 };
 
-export const diasSemana = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes"];
+export const diasSemana = ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes"];
 
 export function getProximaFecha(dia, hora) {
   const hoy = new Date();
-  const diaActual = hoy.getDay(); // 0 (Domingo) - 6 (Sábado)
-  const diaObjetivo = diasSemana.indexOf(dia) + 1; // Lunes = 1
+  const diaActual = hoy.getDay();
+  const diaObjetivo = diasSemana.indexOf(dia) + 1;
 
   let diferenciaDias = diaObjetivo - diaActual;
   if (diferenciaDias < 0 || (diferenciaDias === 0 && horaPasada(hora))) {
