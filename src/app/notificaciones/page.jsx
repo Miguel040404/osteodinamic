@@ -1,7 +1,7 @@
 import { Suspense } from 'react';
 import { auth } from '@/auth';
 import { redirect } from 'next/navigation';
-import Footer from '@/components/Footer';
+import Footer from '@/components/footer';
 import prisma from '@/lib/prisma';
 import { NotificacionesHeader } from '@/components/notificaciones/NotificationHeader';
 import { NotificacionesList } from '@/components/notificaciones/NotificationList';
