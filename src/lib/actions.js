@@ -181,39 +181,6 @@ export async function crearHorario(prevState, formData) {
   }
 }
 
-// export async function apuntarseAHorario(horarioId, tipo) {
-//   const session = await auth();
-//   if (!session) throw new Error("No autenticado");
-
-//   const userId = session.user.id;
-
-//   const yaReservado = await prisma.reserva.findFirst({
-//     where: { userId, horarioId },
-//   });
-
-//   if (yaReservado) {
-//     throw new Error("Ya estás apuntado a este horario.");
-//   }
-
-//   const total = await prisma.reserva.count({
-//     where: { horarioId },
-//   });
-
-//   if (total >= 6) {
-//     throw new Error("Este horario ya está completo.");
-//   }
-
-//   await prisma.reserva.create({
-//     data: {
-//       userId,
-//       horarioId,
-//       fechaReal: new Date(),
-//     },
-//   });
-
-//   revalidatePath(`/clases/${tipo}`);
-// }
-
 export async function apuntarseAHorario(prevState, formData) {
 
   const tipo = formData.get('tipo')?.toString();
@@ -327,22 +294,6 @@ export async function cancelarReservaForm(prevState, formData) {
     const tipo = formData.get('tipo')?.toString();
   const horarioId = formData.get('horarioId')?.toString();
    
-  const session = await auth();
-  if (!session) throw new Error("No autenticado");
-
-  const userId = session.user.id;
-
-  await prisma.reserva.deleteMany({
-    where: {
-      userId,
-      horarioId,
-    },
-  });
-
-  revalidatePath(`/clases/${tipo}`);
-}
-
-export async function cancelarReserva(horarioId, tipo) {
   const session = await auth();
   if (!session) throw new Error("No autenticado");
 

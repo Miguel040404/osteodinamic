@@ -1,6 +1,6 @@
 import { ordenDias } from "@/lib/utils";
 import { UserReservationItem } from "./UserReservationItem";
-import { cancelarReserva } from "@/lib/actions";
+import { cancelarReservaForm } from "@/lib/actions";
 
 export const UserView = ({ reservas }) => {
   const reservasOrdenadas = [...reservas].sort((a, b) => {
@@ -26,7 +26,7 @@ export const UserView = ({ reservas }) => {
       ) : (
         <div className="space-y-4">
           {reservasOrdenadas.map((reserva) => (
-            <UserReservationItem key={reserva.id} reserva={reserva} onCancel={cancelarReserva.bind(null, reserva.horarioId, reserva.horario.tipo)} />
+            <UserReservationItem key={reserva.id} reserva={reserva} onCancel={cancelarReservaForm} />
           ))}
         </div>
       )}
