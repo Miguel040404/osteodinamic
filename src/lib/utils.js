@@ -6,7 +6,7 @@ export const ordenDias = {
   Viernes: 5,
 };
 
-export const diasSemana = ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes"];
+export const diasSemana = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes"];
 
 export function getProximaFecha(dia, hora) {
   const hoy = new Date();
@@ -27,7 +27,7 @@ export function getProximaFecha(dia, hora) {
   });
 }
 
-function horaPasada(hora) {
+export function horaPasada(hora) {
   const [h, m] = hora.split(":").map(Number);
   const ahora = new Date();
   return ahora.getHours() > h || (ahora.getHours() === h && ahora.getMinutes() > m);
