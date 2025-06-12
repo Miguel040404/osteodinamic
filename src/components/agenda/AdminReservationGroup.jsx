@@ -23,6 +23,7 @@ export const AdminReservationGroup = ({ grupo, onCancel }) => (
 
 
   
+  
   <div key={`${grupo.horario.dia}-${grupo.horario.hora}`} className="border border-[#d8c4ae] rounded-xl p-5 bg-[#fffaf5] shadow hover:shadow-md transition">
     <div className="flex justify-between items-start mb-4">
       <div className="space-y-1">
