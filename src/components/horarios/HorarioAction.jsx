@@ -76,7 +76,7 @@ export const HorarioActions = ({
                   <button
                     type="submit"
                     disabled={pendingApuntarse || pendingNoApuntarse || deshabilitado}
-                    className={`flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-medium transition-all ${estilos} ${
+                    className={`cursor-pointer flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-medium transition-all ${estilos} ${
                       pendingApuntarse || pendingNoApuntarse|| deshabilitado ? "opacity-80" : "hover:scale-[1.02]"
                     }`}
                   >
