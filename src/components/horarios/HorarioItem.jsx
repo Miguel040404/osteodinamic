@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { Clock } from 'lucide-react';
 import { HorarioActions } from './HorarioAction';
@@ -23,15 +23,15 @@ export const HorarioItem = ({
   // Nuevo estado para mostrar mensaje de error
   const [error, setError] = useState(null);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError(null);
-    try {
-      await apuntarseAHorario(horario.id, tipo);
-    } catch (err) {
-      setError(err.message);
-    }
-  };
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   setError(null);
+  //   try {
+  //     await apuntarseAHorario(horario.id, tipo);
+  //   } catch (err) {
+  //     setError(err.message);
+  //   }
+  // };
 
   return (
     <div className={`p-6 ${bloqueado && !yaApuntado ? 'bg-amber-50 border-l-4 border-amber-500' : ''}`}>
@@ -85,13 +85,14 @@ export const HorarioItem = ({
       )}
       
       <HorarioActions
+      key={horario.id+2}
         horario={horario}
         esAdmin={esAdmin}
         tipo={tipo}
         yaApuntado={yaApuntado}
         lleno={lleno}
         bloqueado={bloqueado} // Nuevo prop
-        onSubmit={handleSubmit} // Manejo de submit
+        // onSubmit={handleSubmit} // Manejo de submit
       />
       
       {esAdmin && horario.reservas.length > 0 && (

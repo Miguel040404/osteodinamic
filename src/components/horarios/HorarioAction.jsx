@@ -1,8 +1,9 @@
 "use client";
 
-import { XCircle, Plus } from "lucide-react";
+import { XCircle, Plus, LoaderCircle } from "lucide-react";
 import { apuntarseAHorario, cancelarReserva } from "@/lib/actions";
 import { EditarHorarioModal, EliminarHorarioModal } from "./HorarioModals";
+import { useActionState } from "react";
 
 export const HorarioActions = ({
   horario,
@@ -12,6 +13,9 @@ export const HorarioActions = ({
   lleno,
   bloqueado,
 }) => {
+
+    const [stateApuntarse, actionApuntarse, pendingApuntarse] = useActionState(apuntarseAHorario, {});
+    const [stateNoApuntarse, actionNoApuntarse, pendingNoApuntarse] = useActionState(cancelarReserva, {});
   const estado = yaApuntado
     ? "apuntado"
     : lleno
@@ -63,18 +67,20 @@ export const HorarioActions = ({
                 </>
               ) : (
                 <form
-                  action={(
-                    yaApuntado ? cancelarReserva : apuntarseAHorario
-                  ).bind(null, horario.id, tipo)}
+                  action={
+                    yaApuntado ? actionNoApuntarse : actionApuntarse
+                  }
                 >
+                  <input type="hidden" name="tipo" value={tipo}  />
+                  <input type="hidden" name="horarioId" value={horario.id}  />
                   <button
                     type="submit"
-                    disabled={deshabilitado}
+                    disabled={pendingApuntarse || pendingNoApuntarse || deshabilitado}
                     className={`flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-medium transition-all ${estilos} ${
-                      deshabilitado ? "opacity-80" : "hover:scale-[1.02]"
+                      pendingApuntarse || pendingNoApuntarse|| deshabilitado ? "opacity-80" : "hover:scale-[1.02]"
                     }`}
                   >
-                    {icono}
+                  { pendingApuntarse || pendingNoApuntarse ?  <LoaderCircle className="w-5 h-5 animate-spin" /> :icono }
                     <span>{texto}</span>
                   </button>
                 </form>

@@ -214,7 +214,11 @@ export async function crearHorario(prevState, formData) {
 //   revalidatePath(`/clases/${tipo}`);
 // }
 
-export async function apuntarseAHorario(horarioId, tipo) {
+export async function apuntarseAHorario(prevState, formData) {
+
+  const tipo = formData.get('tipo')?.toString();
+  const horarioId = formData.get('horarioId')?.toString();
+
   const session = await auth();
   if (!session) throw new Error("No autenticado");
 
@@ -318,7 +322,11 @@ export async function getReservasDelUsuario(userId) {
   });
 }
 
-export async function cancelarReserva(horarioId, tipo) {
+export async function cancelarReserva(prevState, formData) {
+
+    const tipo = formData.get('tipo')?.toString();
+  const horarioId = formData.get('horarioId')?.toString();
+   
   const session = await auth();
   if (!session) throw new Error("No autenticado");
 
