@@ -66,8 +66,6 @@ const getDiaNombre = (dia) => {
   };
   return dias[dia.toUpperCase()] || dia;
 };
-
-// import { CalendarDays } from "lucide-react";
 // import { HorarioItem } from "./HorarioItem";
 
 

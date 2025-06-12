@@ -93,7 +93,7 @@ export const HorarioActions = ({
   );
 };
 
-// import { XCircle, Plus } from 'lucide-react';
+
 // import { apuntarseAHorario, cancelarReserva } from "@/lib/actions";
 // import { EditarHorarioModal, EliminarHorarioModal } from './HorarioModals';
 
