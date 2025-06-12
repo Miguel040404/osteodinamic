@@ -7,7 +7,6 @@ import { auth, signIn } from "@/auth";
 import { redirect } from 'next/navigation'
 import { Prisma } from "@prisma/client"
 
-
 let lastExecution = 0
 let lastExecutionNorma = 0
 
@@ -182,28 +181,91 @@ export async function crearHorario(prevState, formData) {
   }
 }
 
+// export async function apuntarseAHorario(horarioId, tipo) {
+//   const session = await auth();
+//   if (!session) throw new Error("No autenticado");
+
+//   const userId = session.user.id;
+
+//   const yaReservado = await prisma.reserva.findFirst({
+//     where: { userId, horarioId },
+//   });
+
+//   if (yaReservado) {
+//     throw new Error("Ya estás apuntado a este horario.");
+//   }
+
+//   const total = await prisma.reserva.count({
+//     where: { horarioId },
+//   });
+
+//   if (total >= 6) {
+//     throw new Error("Este horario ya está completo.");
+//   }
+
+//   await prisma.reserva.create({
+//     data: {
+//       userId,
+//       horarioId,
+//       fechaReal: new Date(),
+//     },
+//   });
+
+//   revalidatePath(`/clases/${tipo}`);
+// }
+
 export async function apuntarseAHorario(horarioId, tipo) {
   const session = await auth();
   if (!session) throw new Error("No autenticado");
 
   const userId = session.user.id;
 
+  // Obtener detalles del horario seleccionado
+  const horarioTarget = await prisma.horario.findUnique({
+    where: { id: horarioId },
+  });
+
+  if (!horarioTarget) {
+    throw new Error("Horario no encontrado");
+  }
+
+  // Verificar si ya tiene reserva en la MISMA HORA Y DÍA (cualquier sala)
+  const reservaSolapada = await prisma.reserva.findFirst({
+    where: {
+      userId,
+      horario: {
+        dia: horarioTarget.dia,
+        hora: horarioTarget.hora
+      }
+    },
+    include: { horario: true }
+  });
+
+  if (reservaSolapada) {
+    throw new Error(
+      `Ya estás apuntado a ${reservaSolapada.horario.sala} a esta misma hora`
+    );
+  }
+
+  // Verificar si ya está apuntado a este horario específico
   const yaReservado = await prisma.reserva.findFirst({
     where: { userId, horarioId },
   });
 
   if (yaReservado) {
-    throw new Error("Ya estás apuntado a este horario.");
+    throw new Error("Ya estás apuntado a este horario");
   }
 
+  // Verificar capacidad máxima
   const total = await prisma.reserva.count({
     where: { horarioId },
   });
 
   if (total >= 6) {
-    throw new Error("Este horario ya está completo.");
+    throw new Error("Este horario ya está completo");
   }
 
+  // Crear la reserva
   await prisma.reserva.create({
     data: {
       userId,

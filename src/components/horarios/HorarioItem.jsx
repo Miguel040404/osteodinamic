@@ -1,17 +1,40 @@
+"use client";
+
 import { Clock } from 'lucide-react';
 import { HorarioActions } from './HorarioAction';
 import { HorarioUsersList } from './HorarioUserList';
+import { apuntarseAHorario } from "@/lib/actions";
+import { useState } from 'react';
 
-
-export const HorarioItem = ({ horario, userId, esAdmin, tipo }) => {
+export const HorarioItem = ({ 
+  horario, 
+  userId, 
+  esAdmin, 
+  tipo,
+  bloqueado, // Nuevo prop para conflicto horario
+  dia // Día actual en español
+}) => {
   const yaApuntado = horario.reservas.some((r) => r.userId === userId);
   const plazasOcupadas = horario.reservas.length;
   const plazasTotales = 6;
   const lleno = plazasOcupadas === plazasTotales;
   const pocasPlazas = plazasOcupadas >= 4 && plazasOcupadas < plazasTotales;
+  
+  // Nuevo estado para mostrar mensaje de error
+  const [error, setError] = useState(null);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError(null);
+    try {
+      await apuntarseAHorario(horario.id, tipo);
+    } catch (err) {
+      setError(err.message);
+    }
+  };
 
   return (
-    <div className="p-6">
+    <div className={`p-6 ${bloqueado && !yaApuntado ? 'bg-amber-50 border-l-4 border-amber-500' : ''}`}>
       <div className="flex justify-between items-start">
         <div className="flex flex-row-reverse gap-4 sm:gap-6">
           <span className={`inline-flex items-center px-5 py-1 h-8 rounded-full text-xs font-medium ${horario.sala === 'Sala 1'
@@ -43,16 +66,95 @@ export const HorarioItem = ({ horario, userId, esAdmin, tipo }) => {
           </div>
         </div>
       </div>
+      
+      {/* Mensaje de conflicto horario */}
+      {/* {bloqueado && !yaApuntado && (
+        <div className="mt-2 text-xs text-amber-700 flex items-center gap-1">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+            <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+          </svg>
+          <span>Ya estás apuntado a otra clase a esta misma hora.</span>
+        </div>
+      )} */}
+      
+      {/* Mostrar errores */}
+      {error && (
+        <div className="mt-2 text-xs text-red-600">
+          {error}
+        </div>
+      )}
+      
       <HorarioActions
         horario={horario}
         esAdmin={esAdmin}
         tipo={tipo}
         yaApuntado={yaApuntado}
         lleno={lleno}
+        bloqueado={bloqueado} // Nuevo prop
+        onSubmit={handleSubmit} // Manejo de submit
       />
+      
       {esAdmin && horario.reservas.length > 0 && (
         <HorarioUsersList horario={horario} tipo={tipo} />
       )}
     </div>
   );
 };
+// import { Clock } from 'lucide-react';
+// import { HorarioActions } from './HorarioAction';
+// import { HorarioUsersList } from './HorarioUserList';
+
+
+// export const HorarioItem = ({ horario, userId, esAdmin, tipo }) => {
+//   const yaApuntado = horario.reservas.some((r) => r.userId === userId);
+//   const plazasOcupadas = horario.reservas.length;
+//   const plazasTotales = 6;
+//   const lleno = plazasOcupadas === plazasTotales;
+//   const pocasPlazas = plazasOcupadas >= 4 && plazasOcupadas < plazasTotales;
+
+//   return (
+//     <div className="p-6">
+//       <div className="flex justify-between items-start">
+//         <div className="flex flex-row-reverse gap-4 sm:gap-6">
+//           <span className={`inline-flex items-center px-5 py-1 h-8 rounded-full text-xs font-medium ${horario.sala === 'Sala 1'
+//               ? 'bg-amber-100 text-amber-800 border border-amber-500'
+//               : 'bg-[#fac156] text-[#913b02] border border-[#823400]'
+//             }`}>
+//             {horario.sala}
+//           </span>
+//           <div className="flex flex-col items-start">
+//             <div className="bg-gray-100 p-3 rounded-lg border border-gray-200 text-center">
+//               <Clock className="mx-auto w-6 h-6 text-gray-700" />
+//               <div className="text-sm font-semibold text-gray-900 mt-1">
+//                 {horario.hora}
+//               </div>
+//             </div>
+//           </div>
+//         </div>
+//         <div className="flex flex-col items-end gap-2">
+//           <span className={`text-sm font-semibold ${lleno ? 'text-red-600' : pocasPlazas ? 'text-amber-600' : 'text-green-600'
+//             }`}>
+//             {plazasOcupadas} / {plazasTotales} plazas
+//           </span>
+//           <div className="w-20 h-2 bg-gray-200 rounded-full overflow-hidden">
+//             <div
+//               className={`h-full ${lleno ? 'bg-red-500' : pocasPlazas ? 'bg-amber-500' : 'bg-green-500'
+//                 }`}
+//               style={{ width: `${(plazasOcupadas / plazasTotales) * 100}%` }}
+//             ></div>
+//           </div>
+//         </div>
+//       </div>
+//       <HorarioActions
+//         horario={horario}
+//         esAdmin={esAdmin}
+//         tipo={tipo}
+//         yaApuntado={yaApuntado}
+//         lleno={lleno}
+//       />
+//       {esAdmin && horario.reservas.length > 0 && (
+//         <HorarioUsersList horario={horario} tipo={tipo} />
+//       )}
+//     </div>
+//   );
+// };
