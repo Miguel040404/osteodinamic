@@ -1,7 +1,7 @@
 "use client";
 
 import { XCircle, Plus, LoaderCircle } from "lucide-react";
-import { apuntarseAHorario, cancelarReserva } from "@/lib/actions";
+import { apuntarseAHorario, cancelarReservaForm } from "@/lib/actions";
 import { EditarHorarioModal, EliminarHorarioModal } from "./HorarioModals";
 import { useActionState } from "react";
 
@@ -15,7 +15,7 @@ export const HorarioActions = ({
 }) => {
 
     const [stateApuntarse, actionApuntarse, pendingApuntarse] = useActionState(apuntarseAHorario, {});
-    const [stateNoApuntarse, actionNoApuntarse, pendingNoApuntarse] = useActionState(cancelarReserva, {});
+    const [stateNoApuntarse, actionNoApuntarse, pendingNoApuntarse] = useActionState(cancelarReservaForm, {});
   const estado = yaApuntado
     ? "apuntado"
     : lleno

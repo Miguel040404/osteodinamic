@@ -322,11 +322,27 @@ export async function getReservasDelUsuario(userId) {
   });
 }
 
-export async function cancelarReserva(prevState, formData) {
+export async function cancelarReservaForm(prevState, formData) {
 
     const tipo = formData.get('tipo')?.toString();
   const horarioId = formData.get('horarioId')?.toString();
    
+  const session = await auth();
+  if (!session) throw new Error("No autenticado");
+
+  const userId = session.user.id;
+
+  await prisma.reserva.deleteMany({
+    where: {
+      userId,
+      horarioId,
+    },
+  });
+
+  revalidatePath(`/clases/${tipo}`);
+}
+
+export async function cancelarReserva(horarioId, tipo) {
   const session = await auth();
   if (!session) throw new Error("No autenticado");
 
