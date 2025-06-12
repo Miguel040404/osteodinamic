@@ -1,4 +1,4 @@
-import { diasSemana } from "@/lib/utils";
+import { diasSemana, horaPasada } from "@/lib/utils";
 
 function getProximaFecha(dia, hora) {
   const hoy = new Date();

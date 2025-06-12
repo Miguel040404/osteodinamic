@@ -10,8 +10,8 @@ export const diasSemana = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes"]
 
 export function getProximaFecha(dia, hora) {
   const hoy = new Date();
-  const diaActual = hoy.getDay(); // 0 (Domingo) - 6 (Sábado)
-  const diaObjetivo = diasSemana.indexOf(dia) + 1; // Lunes = 1
+  const diaActual = hoy.getDay();
+  const diaObjetivo = diasSemana.indexOf(dia) + 1;
 
   let diferenciaDias = diaObjetivo - diaActual;
   if (diferenciaDias < 0 || (diferenciaDias === 0 && horaPasada(hora))) {
@@ -27,7 +27,7 @@ export function getProximaFecha(dia, hora) {
   });
 }
 
-function horaPasada(hora) {
+export function horaPasada(hora) {
   const [h, m] = hora.split(":").map(Number);
   const ahora = new Date();
   return ahora.getHours() > h || (ahora.getHours() === h && ahora.getMinutes() > m);

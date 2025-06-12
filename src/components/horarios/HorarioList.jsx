@@ -17,6 +17,7 @@ const getDiaNombre = (dia) => {
 
 const ordenarHorarios = (horarios) => {
   const diasOrden = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'];
+  
   return horarios.sort((a, b) => {
     const diaA = diasOrden.indexOf(getDiaNombre(a.dia));
     const diaB = diasOrden.indexOf(getDiaNombre(b.dia));
