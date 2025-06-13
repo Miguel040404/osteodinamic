@@ -91,7 +91,7 @@ export const HorarioItem = ({
     </div>
   );
 };
-// import { Clock } from 'lucide-react';
+
 // import { HorarioActions } from './HorarioAction';
 // import { HorarioUsersList } from './HorarioUserList';
 
