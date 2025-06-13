@@ -262,9 +262,8 @@ export function EliminarHorarioModal({ horarioId }) {
             formRef.current?.reset();
             toast.success('Horario eliminado correctamente');
 
-            // Preferible si estás usando App Router con SSR o ISR
             setTimeout(() => {
-                router.refresh(); // en lugar de window.location.reload()
+                router.refresh();
             }, 300);
         }
     }, [state]);

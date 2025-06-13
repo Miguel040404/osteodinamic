@@ -68,7 +68,6 @@ async function Users() {
 
   return (
     <div className="space-y-6 mt-6">
-      {/* Botón añadir usuario */}
       <div className="flex justify-end">
         <Modal
           title="Crear perfil de usuario"
