@@ -1,5 +1,6 @@
 import { HowItWorksStep } from "./HowItWorksStep";
 
+
 export const HowItWorksSection = () => (
   <div className="mt-12 bg-white rounded-xl shadow-md p-6 mb-5">
     <h2 className="text-2xl font-bold text-gray-800 mb-4">¿Cómo funciona?</h2>

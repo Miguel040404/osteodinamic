@@ -6,6 +6,7 @@ import Spinner1 from '@/components/Spinner1';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 
+
 function RegisterForm() {
     const [state, action, pending] = useActionState(register, {});
     const router = useRouter();

@@ -8,6 +8,7 @@ import {
   useEffect,
 } from 'react'
 
+
 const Modal = forwardRef(({ openElement, children, title }, ref) => {
   const modalRef = useRef()
   const [isOpen, setIsOpen] = useState(false)

@@ -3,6 +3,7 @@
 import { signOut } from "next-auth/react";
 import { LogOut } from "lucide-react";
 
+
 export default function LogoutButton() {
   const handleLogout = () => {
     signOut({ callbackUrl: "/auth/login" });

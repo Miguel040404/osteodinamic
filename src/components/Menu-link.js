@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+
 function MenuLink({ label, href, icon }) {
   const pathname = usePathname();
   const isActive = pathname.startsWith(href);

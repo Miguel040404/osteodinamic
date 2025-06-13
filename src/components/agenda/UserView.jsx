@@ -2,6 +2,7 @@ import { ordenDias } from "@/lib/utils";
 import { UserReservationItem } from "./UserReservationItem";
 import { cancelarReservaForm } from "@/lib/actions";
 
+
 export const UserView = ({ reservas }) => {
   const reservasOrdenadas = [...reservas].sort((a, b) => {
     const diaA = ordenDias[a.horario.dia] || 99;

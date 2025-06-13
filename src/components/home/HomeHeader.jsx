@@ -1,5 +1,6 @@
 import { NotificationButton } from "./NotificationButton";
 
+
 export const HomeHeader = ({ notificationCount }) => (
   <div className="flex justify-between items-center mb-8 sm:flex-row flex-col-reverse">
     <div>

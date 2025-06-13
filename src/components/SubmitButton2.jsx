@@ -1,5 +1,6 @@
 import { LoadingSpinner } from "./LoadingSpinner";
 
+
 export const SubmitButton2 = ({
   isSubmitting,
   children,

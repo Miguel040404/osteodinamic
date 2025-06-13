@@ -2,6 +2,7 @@ import { AdminView } from "./AdminView";
 import { HeaderAgenda } from "./HeaderAgenda";
 import { UserView } from "./UserView";
 
+
 export const AgendaContent = ({ reservas, esAdmin }) => {
   return (
     <>

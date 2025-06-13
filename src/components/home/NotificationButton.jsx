@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+
 export const NotificationButton = ({ count }) => (
   <Link href="/notificaciones">
     <button className="flex items-center bg-[#4d4037] text-[#f9faf5] px-4 py-2 rounded-xl transition-colors shadow-md hover:shadow-lg cursor-pointer hover:bg-[#a57551]">

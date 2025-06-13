@@ -4,6 +4,7 @@ import Modal from '@/components/Modal'
 import { Pencil } from 'lucide-react'
 import UserModificar from './auth/edit-form'
 
+
 export default function EditarPerfilButton({ user }) {
   return (
     <Modal
